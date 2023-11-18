@@ -11,8 +11,7 @@ namespace Field {
     #ifdef VERSION_SHIELD
     static const u64 FetchAreaHash_offset = 0xd7e310;
     #else
-    // TODO: sword offsets
-    static const u64 FetchAreaHash_offset = 0xd7e310;
+    static const u64 FetchAreaHash_offset = 0xd7e310 - 0x30;
     #endif
 
     static u64 FetchAreaHash() {
@@ -26,10 +25,9 @@ namespace OverworldEncount {
     static const u64 FetchSymbolEncountTable_offset = 0xd05750;
     static const u64 TryGenerateSymbolEncount_offset = 0xdaf380;
     #else
-    // TODO: sword offsets
-    static const u64 GenerateSymbolEncountParam_offset = 0xd050b0;
-    static const u64 FetchSymbolEncountTable_offset = 0xd05750;
-    static const u64 TryGenerateSymbolEncount_offset = 0xdaf380;
+    static const u64 GenerateSymbolEncountParam_offset = 0xd050b0 - 0x30;
+    static const u64 FetchSymbolEncountTable_offset = 0xd05750 - 0x30;
+    static const u64 TryGenerateSymbolEncount_offset = 0xdaf380 - 0x30;
     #endif
 
     typedef void EncountSpawner;
