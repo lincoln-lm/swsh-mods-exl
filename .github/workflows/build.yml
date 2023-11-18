@@ -18,8 +18,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: version=${{ matrix.version }} ./exlaunch.sh build
-      run: version=${{ matrix.version }} ./exlaunch.sh deploy-artifact
+      run: |
+        version=${{ matrix.version }} ./exlaunch.sh build
+        version=${{ matrix.version }} ./exlaunch.sh deploy-artifact
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.3
       with:
