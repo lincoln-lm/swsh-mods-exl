@@ -7,6 +7,22 @@ typedef struct {
     u8 data[566];
 } encounter_tables_t;
 
+#ifdef VERSION_SHIELD
+static const u64 SendCommand_offset = 0xea2190;
+static const u64 AuraHandler_offset = 0xdcac10;
+#else
+#endif
+static void SendCommand(const char* command) {
+    return external<void>(SendCommand_offset, command);
+}
+
+namespace EncountObject {
+    #ifdef VERSION_SHIELD
+    static const u64 FromParams_offset = 0xea2670;
+    #else
+    #endif
+}
+
 namespace Field {
     #ifdef VERSION_SHIELD
     static const u64 FetchAreaHash_offset = 0xd7e310;
@@ -24,6 +40,7 @@ namespace OverworldEncount {
     static const u64 GenerateSymbolEncountParam_offset = 0xd050b0;
     static const u64 FetchSymbolEncountTable_offset = 0xd05750;
     static const u64 TryGenerateSymbolEncount_offset = 0xdaf380;
+    static const u64 GenerateMainSpec_offset = 0xd311f0;
     #else
     static const u64 GenerateSymbolEncountParam_offset = 0xd050b0 - 0x30;
     static const u64 FetchSymbolEncountTable_offset = 0xd05750 - 0x30;
