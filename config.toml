@@ -1,6 +1,8 @@
+# Mod that makes symbol encounters (visible overworld spawns) pull from the hidden encounter spawn table
 [underworld]
 active = true
 
+# Mod that makes shiny pokemon visible in the overworld
 [overworld_shiny]
 active = true
 
