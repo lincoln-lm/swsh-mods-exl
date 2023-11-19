@@ -12,6 +12,7 @@ jobs:
     container: devkitpro/devkita64:latest
 
     strategy:
+      fail-fast: false
       matrix:
         version: [SWORD, SHIELD]
 
