@@ -1,7 +1,6 @@
-#include "external.hpp"
+#pragma once
 
-#ifndef SYMBOLS_HPP
-#define SYMBOLS_HPP
+#include "external.hpp"
 
 typedef struct {
     u8 data[566];
@@ -10,7 +9,11 @@ typedef struct {
 #ifdef VERSION_SHIELD
 static const u64 SendCommand_offset = 0xea2190;
 static const u64 AuraHandler_offset = 0xdcac10;
+static const u64 MainInit_offset = 0xf112b0; // initializes the class holding field objects
 #else
+static const u64 SendCommand_offset = 0xea2190 - 0x30;
+static const u64 AuraHandler_offset = 0xdcac10 - 0x30;
+static const u64 MainInit_offset = 0xf112b0 - 0x30;
 #endif
 static void SendCommand(const char* command) {
     return external<void>(SendCommand_offset, command);
@@ -20,6 +23,7 @@ namespace EncountObject {
     #ifdef VERSION_SHIELD
     static const u64 FromParams_offset = 0xea2670;
     #else
+    static const u64 FromParams_offset = 0xea2670 - 0x30;
     #endif
 }
 
@@ -59,4 +63,3 @@ namespace OverworldEncount {
         return external<bool>(TryGenerateSymbolEncount_offset);
     }
 }
-#endif
