@@ -49,6 +49,7 @@ namespace OverworldEncount {
     static const u64 GenerateSymbolEncountParam_offset = 0xd050b0 - 0x30;
     static const u64 FetchSymbolEncountTable_offset = 0xd05750 - 0x30;
     static const u64 TryGenerateSymbolEncount_offset = 0xdaf380 - 0x30;
+    static const u64 GenerateMainSpec_offset = 0xd311f0 - 0x30;
     #endif
 
     typedef void EncountSpawner;
