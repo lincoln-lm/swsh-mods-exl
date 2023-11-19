@@ -1,0 +1,18 @@
+[underworld]
+active = true
+
+[overworld_shiny]
+active = true
+
+# some sounds:
+# "Play_Ba_sys_rare_effect"
+# "Play_Audience_cheer_riser_rnd"
+# "Play_UI_netbattle_rank_up"
+# "Play_UI_Lcircuit_Goal"
+# "Play_Camp_Cooking_Explosion"
+# set to "" for no sound
+sound = "Play_Camp_Cooking_Explosion"
+# false for regular aura mechanics, true for aura as shiny indicator
+repurpose_aura = true
+# 0 for regular shiny rate, [1,100] for modified rate
+boosted_percentage = 10
