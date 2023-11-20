@@ -121,7 +121,7 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/e9f19b4a-16f8-4bcb-9
 Mod that removes the level cap-based shiny lock & (optionally) catch lock
 
 #### Example
-
+https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/067555d6-4efc-4f55-8fff-73e8ffed8d3b
 
 #### Config
 - ``active``
