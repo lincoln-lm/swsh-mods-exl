@@ -5,10 +5,13 @@
 #ifdef VERSION_SHIELD
 static const u64 SendCommand_offset = 0xea2190;
 static const u64 AuraHandler_offset = 0xdcac10;
+static const u64 FishAuraHandler_offset = 0xd66b20;
 static const u64 MainInit_offset = 0xf112b0; // initializes the class holding field objects
 #else
 static const u64 SendCommand_offset = 0xea2190 - 0x30;
 static const u64 AuraHandler_offset = 0xdcac10 - 0x30;
+static const u64 FishAuraHandler_offset = 0xd66b20 - 0x30;
+
 static const u64 MainInit_offset = 0xf112b0 - 0x30;
 #endif
 static void SendCommand(const char* command) {

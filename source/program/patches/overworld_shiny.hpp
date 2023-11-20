@@ -38,8 +38,19 @@ HOOK_DEFINE_INLINE(RepurposeBrilliantAura) {
     }
 };
 
+HOOK_DEFINE_INLINE(RepurposeFishBrilliantAura) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        EXL_ASSERT(global_config.initialized);
+        if (global_config.overworld_shiny.active && global_config.overworld_shiny.repurpose_aura) {
+            // check shiny flag rather than brilliant
+            ctx->W[8] = *reinterpret_cast<u8*>(ctx->X[19] + 0x530) == 1;
+        }
+    }
+};
+
 void install_overworld_shiny_patch() {
     PlayShinySound::InstallAtOffset(EncountObject::FromParams_offset+0x194);
     ModifyShinyRate::InstallAtOffset(OverworldEncount::GenerateMainSpec_offset+0x2D8);
     RepurposeBrilliantAura::InstallAtOffset(AuraHandler_offset+0x16C);
+    RepurposeFishBrilliantAura::InstallAtOffset(FishAuraHandler_offset+0x238);
 }
