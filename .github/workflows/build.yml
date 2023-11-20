@@ -39,6 +39,9 @@ jobs:
         uses: actions/download-artifact@v2.1.1
         with:
           path: artifacts/
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: artifacts
       - name: Publish release
         uses: softprops/action-gh-release@v1
         with:
