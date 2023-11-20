@@ -8,7 +8,9 @@ HOOK_DEFINE_INLINE(PlayShinySound) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
         EXL_ASSERT(global_config.initialized);
         if (global_config.overworld_shiny.active) {
-            if (ctx->W[25] == 1) {
+            // ensure shininess is pulled from the OverworldSpec
+            OverworldEncount::OverworldSpec* overworld_spec = reinterpret_cast<OverworldEncount::OverworldSpec*>(ctx->X[21] + 0x270);
+            if (overworld_spec->shininess == 1) {
                 // sounds close enough to shiny sparkles
                 SendCommand(global_config.overworld_shiny.sound.c_str());
             }
