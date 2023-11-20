@@ -1,6 +1,11 @@
 # swsh-mods-exl
-### Configurable [exlaunch](https://github.com/shadowninja108/exlaunch)-based mods for Pokemon Sword and Shield
+### Configurable [exlaunch](https://github.com/shadowninja108/exlaunch)-based mods for Pokemon Sword and Shield 
+### v.1.3.2 (latest version) only !
 
+## Installation
+1. Download the [latest release](https://github.com/Lincoln-LM/swsh-mods-exl/releases/tag/release) for your game version
+1. Unzip the release to your sd card (or the sdmc directory of your emulator)
+1. Edit ``sd:/config/swsh-mods-exl/config.toml`` to your liking
 
 ## Mods
 
