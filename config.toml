@@ -18,3 +18,7 @@ sound = "Play_Camp_Cooking_Explosion"
 repurpose_aura = true
 # 0 for regular shiny rate, [1,100] for modified rate
 boosted_percentage = 10
+
+# Mod that actively randomizes every new spawn
+[randomizer]
+active = false

@@ -4,7 +4,7 @@
 #include "config.hpp"
 
 HOOK_DEFINE_TRAMPOLINE(SwapSymbolTableHash) {
-    static void Callback(void* param_1, encounter_tables_t* encounter_tables, u64 unused, void* overworld_spec) {
+    static void Callback(void* param_1, OverworldEncount::encounter_tables_t* encounter_tables, u64 unused, void* overworld_spec) {
         EXL_ASSERT(global_config.initialized);
         if (global_config.underworld.active) {
             // pull the hidden table based on the player's current location
