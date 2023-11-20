@@ -19,6 +19,15 @@ struct PatchConfig {
         bool active;
     } randomizer;
 
+    struct {
+        bool active;
+        float adjustment_speed;
+        float min_pitch;
+        float max_pitch;
+        float min_distance;
+        float max_distance;
+    } camera_tweaks;
+
     void from_table(toml::parse_result &table) {
         underworld.active = table["underworld"]["active"].value_or(false);
 
@@ -28,6 +37,13 @@ struct PatchConfig {
         overworld_shiny.sound = table["overworld_shiny"]["sound"].value_or("Play_Camp_Cooking_Explosion");
 
         randomizer.active = table["randomizer"]["active"].value_or(false);
+
+        camera_tweaks.active = table["camera_tweaks"]["active"].value_or(false);
+        camera_tweaks.adjustment_speed = table["camera_tweaks"]["adjustment_speed"].value_or(3.0);
+        camera_tweaks.min_pitch = table["camera_tweaks"]["min_pitch"].value_or(-20.0);
+        camera_tweaks.max_pitch = table["camera_tweaks"]["max_pitch"].value_or(-5.0);
+        camera_tweaks.min_distance = table["camera_tweaks"]["min_distance"].value_or(370.0);
+        camera_tweaks.max_distance = table["camera_tweaks"]["max_distance"].value_or(800.0);
 
         initialized = true;
     }

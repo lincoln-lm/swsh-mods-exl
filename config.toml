@@ -22,3 +22,18 @@ boosted_percentage = 10
 # Mod that actively randomizes every new spawn
 [randomizer]
 active = false
+
+# Mod that lets you tweak the camera speed, pitch range, and field of view
+[camera_tweaks]
+active = false
+
+# camera speed in degrees per time unit
+adjustment_speed = 3.75
+# min pitch in degrees
+min_pitch = -71.6197244
+# max pitch in degrees
+max_pitch = 14.3239449
+# base camera distance
+min_distance = 450.0
+# zoomed out camera distance
+max_distance = 1000.0
