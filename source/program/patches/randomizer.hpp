@@ -31,6 +31,7 @@ HOOK_DEFINE_TRAMPOLINE(RandomizeSlotSpawns) {
 
 HOOK_DEFINE_TRAMPOLINE(RandomizeGimmickSpawns) {
     static void Callback(OverworldEncount::GimmickSpec *gimmick_spec, OverworldEncount::OverworldSpec* overworld_spec) {
+        EXL_ASSERT(global_config.initialized);
         if (global_config.randomizer.active) {
             auto [species, form] = random_species_and_form();
             gimmick_spec->species = species;
