@@ -16,7 +16,7 @@ sound = "Play_Camp_Cooking_Explosion"
 # false for regular aura mechanics, true for aura as shiny indicator
 repurpose_aura = true
 # 0 for regular shiny rate, [1,100] for modified rate
-boosted_percentage = 10
+boosted_percentage = 70
 
 # Mod that actively randomizes every new spawn
 [randomizer]
