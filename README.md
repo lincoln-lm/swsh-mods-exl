@@ -47,6 +47,8 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/f2a553aa-2f44-40c4-b
 
 Mod that makes [symbol encounters](https://bulbapedia.bulbagarden.net/wiki/Symbol_encounter) pull from the encounter tables of [hidden encounters](https://bulbapedia.bulbagarden.net/wiki/Hidden_encounter), allowing "underworld"-exclusive pokemon to spawn and be visible in the overworld
 
+This is a reimplementation of [norainthefuture](https://twitter.com/norainthefuture)'s mod which accomplishes the swapping via exefs patching rather than manually swapping the data tables. The idea is entirely by her!
+
 #### Example
 https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/06888db2-8cd5-409a-931d-5fa9fb14f62e
 
@@ -86,6 +88,8 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/c598db1b-d42d-4f3f-b
 ### Camera Tweaks ``[camera_tweaks]``
 
 Mod that overwrites the default camera constants to allow tweaking of camera speed, pitch range, and field of view
+
+Idea & recommendations by [norainthefuture](https://twitter.com/norainthefuture)
 
 #### Example
 https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/e9f19b4a-16f8-4bcb-973e-67ccfa19e6aa
