@@ -66,7 +66,8 @@ Mod that makes [symbol encounters](https://bulbapedia.bulbagarden.net/wiki/Symbo
 Mod that live randomizes the species and form of all overworld spawns rather than statically randomizing the encounter tables they pull from
 
 #### Example
-![]()
+https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/c598db1b-d42d-4f3f-b5ff-db5652c9dfc0
+
 
 #### Config
 - ``active``
