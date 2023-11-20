@@ -48,7 +48,7 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/f2a553aa-2f44-40c4-b
 Mod that makes [symbol encounters](https://bulbapedia.bulbagarden.net/wiki/Symbol_encounter) pull from the encounter tables of [hidden encounters](https://bulbapedia.bulbagarden.net/wiki/Hidden_encounter), allowing "underworld"-exclusive pokemon to spawn and be visible in the overworld
 
 #### Example
-![]()
+https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/06888db2-8cd5-409a-931d-5fa9fb14f62e
 
 #### Config
 - ``active``
