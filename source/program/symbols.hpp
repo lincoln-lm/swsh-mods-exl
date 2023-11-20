@@ -8,12 +8,16 @@ static const u64 AuraHandler_offset = 0xdcac10;
 static const u64 FishAuraHandler_offset = 0xd66b20;
 static const u64 MainInit_offset = 0xf112b0; // initializes the class holding field objects
 static const u64 EncountSpawnerInit_offset = 0xdae210; // not a ctor
+static const u64 GetLevelCap_0_offset = 0x13ae400;
+static const u64 GetLevelCap_1_offset = 0x13ae390;
 #else
 static const u64 SendCommand_offset = 0xea2190 - 0x30;
 static const u64 AuraHandler_offset = 0xdcac10 - 0x30;
 static const u64 FishAuraHandler_offset = 0xd66b20 - 0x30;
 static const u64 MainInit_offset = 0xf112b0 - 0x30;
 static const u64 EncountSpawnerInit_offset = 0xdae210 - 0x30;
+static const u64 GetLevelCap_0_offset = 0x13ae400 - 0x30;
+static const u64 GetLevelCap_1_offset = 0x13ae390 - 0x30;
 #endif
 
 namespace Camera {

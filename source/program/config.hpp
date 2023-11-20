@@ -28,6 +28,11 @@ struct PatchConfig {
         float max_distance;
     } camera_tweaks;
 
+    struct {
+        bool active;
+        bool fully;
+    } uncap_level;
+
     void from_table(toml::parse_result &table) {
         underworld.active = table["underworld"]["active"].value_or(false);
 
@@ -44,6 +49,9 @@ struct PatchConfig {
         camera_tweaks.max_pitch = table["camera_tweaks"]["max_pitch"].value_or(-5.0);
         camera_tweaks.min_distance = table["camera_tweaks"]["min_distance"].value_or(370.0);
         camera_tweaks.max_distance = table["camera_tweaks"]["max_distance"].value_or(800.0);
+
+        uncap_level.active = table["uncap_level"]["active"].value_or(false);
+        uncap_level.fully = table["uncap_level"]["fully"].value_or(true);
 
         initialized = true;
     }

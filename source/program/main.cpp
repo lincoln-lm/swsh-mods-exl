@@ -2,6 +2,7 @@
 #include "config.hpp"
 #include "file_handler.hpp"
 #include "external.hpp"
+#include "patches/uncap_level.hpp"
 #include "patches/camera_tweaks.hpp"
 #include "patches/randomizer.hpp"
 #include "patches/underworld.hpp"
@@ -30,6 +31,7 @@ extern "C" void exl_main(void* x0, void* x1) {
     install_overworld_shiny_patch();
     install_randomizer_patch();
     install_camera_tweaks_patch();
+    install_uncap_level_patch();
 }
 
 extern "C" NORETURN void exl_exception_entry() {

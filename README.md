@@ -115,3 +115,23 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/e9f19b4a-16f8-4bcb-9
 
 #### Notes
 - Hooks the camera constructor to overwrite the applicable constants
+
+### Level Cap Removal ``[uncap_level]``
+
+Mod that removes the level cap-based shiny lock & (optionally) catch lock
+
+#### Example
+
+
+#### Config
+- ``active``
+    - Controls whether or not the mod is activated
+    - boolean (``true``, ``false``)
+- ``fully``
+    - Controls whether or not all level caps are removed
+    - Must be set to true for level capped pokemon to be catchable
+    - boolean (``true``, ``false``)
+
+#### Notes
+- Hooks the functions that set level cap based on badge count
+    - if ``fully`` is set to ``true``: always return 100, otherwise: only return 100 when shiny locking
