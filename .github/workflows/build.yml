@@ -43,8 +43,9 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           draft: false
-          prerelease: true
+          prerelease: false
           name: Release
+          tag_name: release
           body: ${{ github.event.head_commit.message }}
           files: artifacts/*
           
