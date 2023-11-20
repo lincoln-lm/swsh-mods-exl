@@ -82,7 +82,7 @@ Mod that live randomizes the species and form of all overworld spawns rather tha
 Mod that overwrites the default camera constants to allow tweaking of camera speed, pitch range, and field of view
 
 #### Example
-![]()
+https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/e9f19b4a-16f8-4bcb-973e-67ccfa19e6aa
 
 #### Config
 - ``active``
