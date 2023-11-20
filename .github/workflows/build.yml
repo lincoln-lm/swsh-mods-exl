@@ -30,3 +30,21 @@ jobs:
         name: ${{ matrix.version }}_artifact
         path: ./artifact/
               
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v2.1.1
+        with:
+          path: artifacts/
+      - name: Publish release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          prerelease: true
+          name: Release
+          body: ${{ github.event.head_commit.message }}
+          files: artifacts/*
+          
