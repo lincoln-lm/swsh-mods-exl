@@ -1,4 +1,5 @@
 #include "lib.hpp"
+#include "err.hpp"
 #include "config.hpp"
 #include "file_handler.hpp"
 #include "external.hpp"
@@ -15,9 +16,25 @@ HOOK_DEFINE_TRAMPOLINE(MainInitHook){
     static void Callback(void* x0, void* x1, void* x2, void* x3){
         R_ABORT_UNLESS(FileHandler::MountSD());
         std::string config_str;
-        R_ABORT_UNLESS(FileHandler::ReadFile("sd:/config/swsh-mods-exl/config.toml", config_str));
+        if (R_FAILED(FileHandler::ReadFile("sd:/config/swsh-mods-exl/config.toml", config_str))) {
+            nn::err::ApplicationErrorArg err(
+                nn::err::MakeErrorCode(nn::err::ErrorCodeCategoryType::unk1, 0x420), "Failed to read config!",
+                "Please ensure 'sd:/config/swsh-mods-exl/config.toml' exists",
+                nn::settings::LanguageCode::Make(nn::settings::Language::Language_English)
+            );
+            nn::err::ShowApplicationError(err);
+            EXL_ABORT(0x420);
+        }
         auto config = toml::parse(config_str);
-        EXL_ASSERT(config);
+        if (!config) {
+            nn::err::ApplicationErrorArg err(
+                nn::err::MakeErrorCode(nn::err::ErrorCodeCategoryType::unk1, 0x420), "Invalid config!",
+                "Please ensure 'sd:/config/swsh-mods-exl/config.toml' contains a valid TOML",
+                nn::settings::LanguageCode::Make(nn::settings::Language::Language_English)
+            );
+            nn::err::ShowApplicationError(err);
+            EXL_ABORT(0x420);
+        }
         global_config.from_table(config);
         Orig(x0, x1, x2, x3);
     }
