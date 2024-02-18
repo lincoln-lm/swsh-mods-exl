@@ -1,3 +1,6 @@
 [submodule "include/tomlplusplus"]
 	path = include/tomlplusplus
 	url = https://github.com/marzer/tomlplusplus.git
+[submodule "include/flatbuffers"]
+	path = include/flatbuffers
+	url = https://github.com/google/flatbuffers.git
