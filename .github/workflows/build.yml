@@ -23,7 +23,7 @@ jobs:
     - name: Build flatc
       run: |
         cd ./include/flatbuffers/
-        git fetch --tags
+        git fetch --unshallow
         cmake -G "Unix Makefiles"
         make
         sudo make install
