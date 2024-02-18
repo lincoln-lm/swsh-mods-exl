@@ -29,7 +29,7 @@ SOURCES		:=	$(foreach module,$(MODULES),$(shell find $(module) -type d))
 SOURCES		:= 	$(foreach source,$(SOURCES),$(source:$(TOPDIR)/%=%)/)
 
 DATA		:=	data
-INCLUDES	:=	include
+INCLUDES	:=	include include/flatbuffers/include
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -112,6 +112,7 @@ export APP_JSON := $(TOPDIR)/$(VERSION)_config.json
 all: $(BUILD)
 
 $(BUILD):
+	@flatc -c -o $(ROOT_SOURCE)/schemas $(ROOT_SOURCE)/schemas/*.fbs
 	@[ -d $@ ] || mkdir -p $@
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(MK_PATH)/common.mk
 	@$(SHELL) $(SCRIPTS_PATH)/post-build.sh

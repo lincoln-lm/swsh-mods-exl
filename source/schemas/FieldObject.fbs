@@ -1,0 +1,82 @@
+table FieldObject {
+    x: float;
+    y: float;
+    z: float;
+
+    pitch: float;
+    yaw: float;
+    roll: float;
+
+    scale_x: float;
+    scale_y: float;
+    scale_z: float;
+
+    unique_hash: ulong;
+    hash_188: ulong;
+    hash_1a0: ulong;
+}
+
+table FieldSparkleItemSlot {
+    unk: ulong;
+    rate: uint;
+    amount: uint;
+}
+
+table FieldSparkleItemUnk {
+    unk: ushort;
+    unk1: uint;
+    unk2: uint;
+    unk3: uint;
+    unk4: float;
+    unk5: uint;
+    angle_deg: float;
+}
+
+table FieldSparkleItemInner {
+    field_object: FieldObject;
+    unk: FieldSparkleItemUnk;
+    item_table: [FieldSparkleItemSlot]; // maximum 8 entries
+    unk1: uint;
+    unk2: uint;
+    unk3: uint;
+}
+
+table FieldSparkleItem {
+    inner: FieldSparkleItemInner;
+}
+
+table FieldBallItemInner {
+    field_object: FieldObject;
+    unk: ulong;
+    model_path: string;
+    unk1: float;
+    unk2: float;
+    unk3: ulong;
+    hashes: [ulong];
+    unk4: [uint];
+    count: ubyte;
+    unk5: FieldBallItemInnerUnk;
+}
+
+table FieldBallItemInnerUnk {
+    unk: bool;
+    unk1: ushort;
+}
+
+table FieldBallItem {
+    inner: FieldBallItemInner;
+}
+
+table FieldParticleInner {
+    field_object: FieldObject;
+    ptcl_path: string;
+    unk: uint;
+}
+
+table FieldParticle {
+    inner: FieldParticleInner;
+}
+
+table NestHoleEmitter {
+    inner: FieldParticleInner;
+}
