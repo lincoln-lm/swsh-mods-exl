@@ -24,7 +24,7 @@ jobs:
       run: |
         cd ./include/flatbuffers/
         git fetch --unshallow
-        sudo apt-get update && sudo apt-get install build-essential
+        sudo apt-get update && sudo apt-get install build-essential -y
         cmake -G "Unix Makefiles"
         make
         sudo make install
