@@ -58,9 +58,13 @@ table FieldBallItemInner {
     unk5: FieldBallItemInnerUnk;
 }
 
+table FieldBallItemInnerUnkInner {
+    
+}
+
 table FieldBallItemInnerUnk {
     unk: bool;
-    unk1: ushort;
+    unk1: FieldBallItemInnerUnkInner;
 }
 
 table FieldBallItem {

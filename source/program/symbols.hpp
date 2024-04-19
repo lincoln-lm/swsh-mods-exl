@@ -16,6 +16,94 @@ const u64 MainInit_offset = 0xf112b0 - VER_OFF; // initializes the class holding
 const u64 EncountSpawnerInit_offset = 0xdae210 - VER_OFF; // not a ctor
 const u64 GetLevelCap_0_offset = 0x13ae400 - VER_OFF;
 const u64 GetLevelCap_1_offset = 0x13ae390 - VER_OFF;
+const u64 EulerToQuaternion_offset = 0x992cd0 - VER_OFF;
+const u64 QuaternionToEuler_offset = 0x6101c0 - VER_OFF;
+
+union Vec4f {
+    f128 q;
+    f64 d[2];
+    f32 f[4];
+    struct {
+        float x;
+        float y;
+        float z;
+        float w;
+    } quat;
+    struct {
+        float pitch;
+        float yaw;
+        float roll;
+        float _;
+    } euler;
+};
+
+Vec4f QuaternionToEuler(Vec4f* q) {
+    Vec4f result;
+    result.q = external<f128>(QuaternionToEuler_offset, q);
+    return result;
+}
+
+Vec4f EulerToQuaternion(float yaw, float pitch, float roll) {
+    Vec4f result;
+    result.q = external<f128>(EulerToQuaternion_offset, yaw, pitch, roll);
+    return result;
+}
+
+namespace HID {
+    const u64 PollNpad_offset = 0xf1f9d0 - VER_OFF;
+
+    enum NpadButton {
+        A = 1 << 0,
+        B = 1 << 1,
+        X = 1 << 2,
+        Y = 1 << 3,
+        StickL = 1 << 4,
+        StickR = 1 << 5,
+        L = 1 << 6,
+        R = 1 << 7,
+        ZL = 1 << 8,
+        ZR = 1 << 9,
+        Plus = 1 << 10,
+        Minus = 1 << 11,
+        Left = 1 << 12,
+        Up = 1 << 13,
+        Right = 1 << 14,
+        Down = 1 << 15,
+        StickLLeft = 1 << 16,
+        StickLUp = 1 << 17,
+        StickLRight = 1 << 18,
+        StickLDown = 1 << 19,
+        StickRLeft = 1 << 20,
+        StickRUp = 1 << 21,
+        StickRRight = 1 << 22,
+        StickRDown = 1 << 23,
+        LeftSL = 1 << 24,
+        LeftSR = 1 << 25,
+        RightSL = 1 << 26,
+        RightSR = 1 << 27,
+        Palma = 1 << 28,
+        // other
+    };
+
+    struct HIDData {
+        u64 unk_0;
+        u64 buttons;
+        // TODO: when is this actually set properly?
+        u64 old_buttons;
+        struct {
+            float x;
+            float y;
+        } stick_r, stick_l;
+        u32 unk_1;
+        u32 unk_2;
+        u32 unk_3;
+        u8 unk_4;
+    } PACKED;
+
+    void PollNpad(HIDData* data) {
+        return external<void>(PollNpad_offset, data);
+    }
+}
 
 namespace Camera {
     const u64 Camera_offset = 0xd3ae00 - VER_OFF;
@@ -35,6 +123,7 @@ namespace EncountObject {
 
 namespace Field {
     const u64 FetchAreaHash_offset = 0xd7e310 - VER_OFF;
+    const u64 GetPlayerObject_offset = 0xd7e290 - VER_OFF;
     const u64 PushNestHoleEmitter_offset = 0xec5400 - VER_OFF;
     const u64 PushFieldBallItem_offset = 0xd21b20 - VER_OFF;
     const u64 FieldObjects_offset = 0x2955208;
@@ -52,7 +141,10 @@ namespace Field {
         if (std::is_same_v<T, NestHoleEmitter>) return PushNestHoleEmitter_offset;
         assert(false);
     }
-    
+
+    u64 GetPlayerObject() {
+        return external<u64>(GetPlayerObject_offset);
+    }
 
     template<typename T>
     u64 PushFieldObject(const T* flatbuffer) {

@@ -3,6 +3,8 @@
 #include "config.hpp"
 #include "file_handler.hpp"
 #include "external.hpp"
+#include "symbols.hpp"
+#include "hid_handler.hpp"
 #include "patches/uncap_level.hpp"
 #include "patches/camera_tweaks.hpp"
 #include "patches/randomizer.hpp"
@@ -43,6 +45,7 @@ HOOK_DEFINE_TRAMPOLINE(MainInitHook){
 extern "C" void exl_main(void* x0, void* x1) {
     exl::hook::Initialize();
     MainInitHook::InstallAtOffset(MainInit_offset);
+    HookNpad::InstallAtOffset(HID::PollNpad_offset + 0x84);
 
     install_underworld_patch();
     install_overworld_shiny_patch();
