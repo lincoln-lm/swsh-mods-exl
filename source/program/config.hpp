@@ -57,7 +57,7 @@ struct PatchConfig {
         uncap_level.active = table["uncap_level"]["active"].value_or(false);
         uncap_level.fully = table["uncap_level"]["fully"].value_or(true);
 
-        uncap_level.active = table["freecam"]["active"].value_or(false);
+        freecam.active = table["freecam"]["active"].value_or(false);
 
         initialized = true;
     }
