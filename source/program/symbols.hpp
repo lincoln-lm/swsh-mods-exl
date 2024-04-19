@@ -107,6 +107,11 @@ namespace HID {
 
 namespace Camera {
     const u64 Camera_offset = 0xd3ae00 - VER_OFF;
+    const u64 GetInheritance_offset = 0xd3e2f0 - VER_OFF;
+
+    void* GetInheritance() {
+        return external<void*>(GetInheritance_offset);
+    }
 }
 
 void SendCommand(const char* command) {
@@ -135,20 +140,8 @@ namespace Field {
         return read_main<void*>(FieldObjects_offset);
     }
 
-    template<typename T>
-    constexpr u64 getPushOffset() {
-        if (std::is_same_v<T, FieldBallItem>) return PushFieldBallItem_offset;
-        if (std::is_same_v<T, NestHoleEmitter>) return PushNestHoleEmitter_offset;
-        assert(false);
-    }
-
     u64 GetPlayerObject() {
         return external<u64>(GetPlayerObject_offset);
-    }
-
-    template<typename T>
-    u64 PushFieldObject(const T* flatbuffer) {
-        return external<u64>(getPushOffset<T>(), getFieldObjects(), flatbuffer);
     }
 }
 
@@ -164,11 +157,6 @@ namespace PersonalInfo {
     }
     u32 GetField(InfoField info_field) {
         return external<u32>(GetField_offset, info_field);
-    }
-    bool IsInGame(u16 species, u16 form) {
-        FetchInfo(species, form);
-        u8* current_personal_info = read_main<u8*>(static_CurrentPersonalInfo_offset);
-        return ((*(current_personal_info + 0x31)) >> 6) & 1;
     }
 }
 

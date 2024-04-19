@@ -139,3 +139,26 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/067555d6-4efc-4f55-8
 #### Notes
 - Hooks the functions that set level cap based on badge count
     - if ``fully`` is set to ``true``: always return 100, otherwise: only return 100 when shiny locking
+
+### Freecam ``[freecam]``
+
+Mod that allows detaching the camera from the player and moving it on its own
+
+#### Example
+<placeholder>
+
+#### Config
+- ``active``
+    - Controls whether or not the mod is activated
+    - boolean (``true``, ``false``)
+
+#### Notes
+- Currently only functional on "Wide Roads" (wild area/ioa/ct)
+- Inputs only register from "Npad" controllers (only tested on pro controller)
+
+### Controls
+- R+A to detach/reattach the camera from the player
+- In detached state:
+    - D-Pad to move camera
+    - L/R to decrease/increase movement speed
+    - ZL/ZR to decrease/increase height

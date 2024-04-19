@@ -43,3 +43,7 @@ active = false
 
 # remove all badge-based level caps (if false, shiny uncatchables are possible)
 fully = true
+
+# Mod that allows detaching the camera from the player and moving it on its own
+[freecam]
+active = false

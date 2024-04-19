@@ -2,6 +2,7 @@
 #include "lib/util/random.hpp"
 #include "external.hpp"
 #include "symbols.hpp"
+#include "util.hpp"
 #include "config.hpp"
 
 std::tuple<u32, u16> random_species_and_form() {
@@ -12,7 +13,7 @@ std::tuple<u32, u16> random_species_and_form() {
         PersonalInfo::FetchInfo(species, 0);
         u32 form_count = PersonalInfo::GetField(PersonalInfo::InfoField::FORM_COUNT);
         form = exl::util::GetRandomU64() % form_count;
-    } while (!PersonalInfo::IsInGame(species, form));
+    } while (!PersonalInfo::isInGame(species, form));
     return {species, form};
 }
 

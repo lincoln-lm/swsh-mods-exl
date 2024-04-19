@@ -33,6 +33,10 @@ struct PatchConfig {
         bool fully;
     } uncap_level;
 
+    struct {
+        bool active;
+    } freecam;
+
     void from_table(toml::parse_result &table) {
         underworld.active = table["underworld"]["active"].value_or(false);
 
@@ -52,6 +56,8 @@ struct PatchConfig {
 
         uncap_level.active = table["uncap_level"]["active"].value_or(false);
         uncap_level.fully = table["uncap_level"]["fully"].value_or(true);
+
+        uncap_level.active = table["freecam"]["active"].value_or(false);
 
         initialized = true;
     }
