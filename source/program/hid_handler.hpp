@@ -8,7 +8,7 @@ std::vector<HIDCallback*> hid_callbacks;
 u64 old_buttons = 0;
 
 // TODO: other controllers
-struct HookNpad : public ::exl::hook::impl::InlineHook<HookNpad> {
+HOOK_DEFINE_INLINE(HookNpad) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
         auto data = reinterpret_cast<HID::HIDData*>(ctx->X[0]);
         for (auto& callback : hid_callbacks) {
