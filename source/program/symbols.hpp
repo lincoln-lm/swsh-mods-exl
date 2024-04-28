@@ -19,6 +19,8 @@ const u64 GetLevelCap_1_offset = 0x13ae390 - VER_OFF;
 const u64 EulerToQuaternion_offset = 0x992cd0 - VER_OFF;
 const u64 QuaternionToEuler_offset = 0x6101c0;
 
+// to use the q/v registers (128-bit float/float vector)
+// using f128 is often required
 union Vec4f {
     f128 q;
     f64 d[2];
@@ -35,18 +37,17 @@ union Vec4f {
         float roll;
         float _;
     } euler;
+
+    Vec4f() {}
+    Vec4f(f128 _q) : q(_q) {}
 };
 
 Vec4f QuaternionToEuler(Vec4f* q) {
-    Vec4f result;
-    result.q = external<f128>(QuaternionToEuler_offset, q);
-    return result;
+    return external<f128>(QuaternionToEuler_offset, q);
 }
 
 Vec4f EulerToQuaternion(float yaw, float pitch, float roll) {
-    Vec4f result;
-    result.q = external<f128>(EulerToQuaternion_offset, yaw, pitch, roll);
-    return result;
+    return external<f128>(EulerToQuaternion_offset, yaw, pitch, roll);
 }
 
 namespace HID {
