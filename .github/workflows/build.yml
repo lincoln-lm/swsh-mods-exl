@@ -53,7 +53,7 @@ jobs:
           for i in */; do zip -r "${i%/}.zip" "$i"; done
         working-directory: artifacts
       - name: Publish release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           draft: false
           prerelease: false
