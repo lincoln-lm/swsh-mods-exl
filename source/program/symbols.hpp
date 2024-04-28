@@ -17,7 +17,7 @@ const u64 EncountSpawnerInit_offset = 0xdae210 - VER_OFF; // not a ctor
 const u64 GetLevelCap_0_offset = 0x13ae400 - VER_OFF;
 const u64 GetLevelCap_1_offset = 0x13ae390 - VER_OFF;
 const u64 EulerToQuaternion_offset = 0x992cd0 - VER_OFF;
-const u64 QuaternionToEuler_offset = 0x6101c0 - VER_OFF;
+const u64 QuaternionToEuler_offset = 0x6101c0;
 
 union Vec4f {
     f128 q;
