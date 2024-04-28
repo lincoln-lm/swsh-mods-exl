@@ -99,8 +99,8 @@ void install_freecam_patch() {
     hid_callbacks.push_back(input_callback);
     // TODO: symbols
     Tick::InstallAtOffset(0xcba730 - VER_OFF);
-    StorePos1::InstallAtOffset(0x60f5a0 - VER_OFF);
-    SetPos1::InstallAtOffset(0x60f5a4 - VER_OFF);
+    StorePos1::InstallAtOffset(0x60f5a0);
+    SetPos1::InstallAtOffset(0x60f5a4);
     StorePos2::InstallAtOffset(0xd3c36c - VER_OFF);
     SetPos2::InstallAtOffset(0xd3c370 - VER_OFF);
 }
