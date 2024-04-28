@@ -137,10 +137,6 @@ namespace Field {
     u64 FetchAreaHash() {
         return external<u64>(FetchAreaHash_offset);
     }
-    void* getFieldObjects() {
-        return read_main<void*>(FieldObjects_offset);
-    }
-
     u64 GetPlayerObject() {
         return external<u64>(GetPlayerObject_offset);
     }

@@ -16,6 +16,9 @@ namespace Field {
         if (std::is_same_v<T, NestHoleEmitter>) return PushNestHoleEmitter_offset;
         assert(false);
     }
+    void* getFieldObjects() {
+        return read_main<void*>(FieldObjects_offset);
+    }
     template<typename T>
     u64 pushFieldObject(const T* flatbuffer) {
         return external<u64>(getPushOffset<T>(), getFieldObjects(), flatbuffer);
