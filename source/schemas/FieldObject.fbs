@@ -1,3 +1,4 @@
+namespace FlatbufferObjects;
 table FieldObject {
     x: float;
     y: float;

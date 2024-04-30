@@ -12,8 +12,8 @@ namespace PersonalInfo {
 namespace Field {
     template<typename T>
     constexpr u64 getPushOffset() {
-        if (std::is_same_v<T, FieldBallItem>) return PushFieldBallItem_offset;
-        if (std::is_same_v<T, NestHoleEmitter>) return PushNestHoleEmitter_offset;
+        if (std::is_same_v<T, FlatbufferObjects::FieldBallItem>) return PushFieldBallItem_offset;
+        if (std::is_same_v<T, FlatbufferObjects::NestHoleEmitter>) return PushNestHoleEmitter_offset;
         assert(false);
     }
     FieldSingleton* getFieldSingleton() {

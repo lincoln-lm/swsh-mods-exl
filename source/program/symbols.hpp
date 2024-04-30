@@ -40,7 +40,7 @@ union Vec4f {
 
     Vec4f() {}
     Vec4f(f128 _q) : q(_q) {}
-};
+} PACKED;
 
 Vec4f QuaternionToEuler(Vec4f* q) {
     return external<f128>(QuaternionToEuler_offset, q);
@@ -106,15 +106,6 @@ namespace HID {
     }
 }
 
-namespace Camera {
-    const u64 Camera_offset = 0xd3ae00 - VER_OFF;
-    const u64 GetInheritance_offset = 0xd3e2f0 - VER_OFF;
-
-    void* GetInheritance() {
-        return external<void*>(GetInheritance_offset);
-    }
-}
-
 void SendCommand(const char* command) {
     return external<void>(SendCommand_offset, command);
 }
@@ -134,18 +125,73 @@ namespace Field {
     const u64 PushFieldBallItem_offset = 0xd21b20 - VER_OFF;
     const u64 FieldSingleton_offset = 0x2955208;
 
-    // TODO: inner objects, inheritance, etc
-    struct FieldObject {
+    // TODO: naming
+    struct BaseObject {
         u64 vtable;
-        u8 base_obj_inner[0x48];
+        u8 unk_0[0x10];
+        u64 size;
+        u64 allign;
+        u8 unk_1[0x28];
         // main+offset to a function returning the object's inheritance pointer
         u64* inheritance_function;
-        // ...
-
+        u64 unk_2;
         void* GetInheritance() {
             return external_absolute<void*>(*inheritance_function);
         }
     } PACKED;
+    static_assert(sizeof(BaseObject) == 0x60);
+
+    // TODO: naming
+    struct WorldObject : BaseObject {
+        u8 unk_3[0x40];
+        Vec4f rotation;
+        Vec4f position;
+        bool position_modified;
+        u8 unk_4[0xF];
+        Vec4f scale;
+        u8 unk_5[0xB0];
+    } PACKED;
+    static_assert(sizeof(WorldObject) == 0x190);
+
+    // TODO: inner objects, inheritance, etc
+    struct FieldObject : WorldObject {
+        u8 unk_6[0x10];
+        u64 unique_hash;
+        u8 unk_7[0x70];
+        bool is_visible;
+        bool is_culling;
+        u8 unk_8[0x17E];
+    } PACKED;
+    static_assert(sizeof(FieldObject) == 0x398);
+
+    struct Camera : FieldObject {
+        u8 unk_9[0x3C];
+        float pitch;
+        u8 unk_10[0x28];
+        float distance_from_player;
+        u8 unk_11[0x1C];
+        float toggle_distance_0;
+        u8 unk_12[0x1C];
+        float toggle_distance_1;
+        u8 unk_13[0x2C];
+        float camera_speed;
+        float maximum_pitch;
+        float minimum_pitch;
+        u8 unk_14[0x24];
+        float minimum_distance;
+        u8 unk_15[0x1C];
+        float maximum_distance;
+        u8 unk_16[0x17C];
+
+        static const u64 Camera_offset = 0xd3ae00 - VER_OFF;
+        static const u64 GetInheritance_offset = 0xd3e2f0 - VER_OFF;
+
+        static void* GetInheritance() {
+            return external<void*>(GetInheritance_offset);
+        }
+    } PACKED;
+    static_assert(sizeof(Camera) == 0x640);
+
     // TODO: naming
     struct FieldSingleton {
         u8 unk_0[0xb0];

@@ -9,13 +9,13 @@ bool directions[4] = {false, false, false, false};
 f32 speed = 128.0;
 int vertical_direction = 0;
 
-u64 get_camera() {
+Field::Camera* get_camera() {
     auto objs = Field::getFieldObjects();
-    void* camera_inheritance = Camera::GetInheritance();
+    void* camera_inheritance = Field::Camera::GetInheritance();
     auto camera = std::find_if(objs.begin(), objs.end(), [camera_inheritance](Field::FieldObject* obj) {
         return Field::checkInheritance(obj, camera_inheritance);
     });
-    return camera != objs.end() ? reinterpret_cast<u64>(*camera) : 0;
+    return camera != objs.end() ? reinterpret_cast<Field::Camera*>(*camera) : nullptr;
 }
 
 HOOK_DEFINE_INLINE(Tick) {
@@ -23,15 +23,14 @@ HOOK_DEFINE_INLINE(Tick) {
         EXL_ASSERT(global_config.initialized);
         auto camera = get_camera();
         if (is_freecam && camera) {
-            auto camera_pos = reinterpret_cast<Vec4f*>(camera + 0xb0);
-            auto camera_dir = QuaternionToEuler(reinterpret_cast<Vec4f*>(camera + 0xa0)).euler.yaw;
+            auto camera_dir = QuaternionToEuler(&camera->rotation).euler.yaw;
             for (int i = 0; i < 4; i++) {
                 if (directions[i]) {
-                    camera_pos->quat.x += sin(camera_dir + M_PI_2 * i) * speed;
-                    camera_pos->quat.z += cos(camera_dir + M_PI_2 * i) * speed;
+                    camera->position.quat.x += sin(camera_dir + M_PI_2 * i) * speed;
+                    camera->position.quat.z += cos(camera_dir + M_PI_2 * i) * speed;
                 }
             }
-            camera_pos->quat.y += vertical_direction * speed;
+            camera->position.quat.y += vertical_direction * speed;
         }
     }
 };
