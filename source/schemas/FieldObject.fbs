@@ -34,29 +34,29 @@ table FieldSparkleItemUnk {
 }
 
 table FieldSparkleItemInner {
-    field_object: FieldObject;
-    unk: FieldSparkleItemUnk;
-    item_table: [FieldSparkleItemSlot]; // maximum 8 entries
+    field_object: FieldObject (required);
+    unk: FieldSparkleItemUnk (required);
+    item_table: [FieldSparkleItemSlot] (required); // maximum 8 entries
     unk1: uint;
     unk2: uint;
     unk3: uint;
 }
 
 table FieldSparkleItem {
-    inner: FieldSparkleItemInner;
+    inner: FieldSparkleItemInner (required);
 }
 
 table FieldBallItemInner {
-    field_object: FieldObject;
+    field_object: FieldObject (required);
     unk: ulong;
-    model_path: string;
+    model_path: string (required);
     unk1: float;
     unk2: float;
     unk3: ulong;
-    hashes: [ulong];
-    unk4: [uint];
+    hashes: [ulong] (required);
+    unk4: [uint] (required);
     count: ubyte;
-    unk5: FieldBallItemInnerUnk;
+    unk5: FieldBallItemInnerUnk (required);
 }
 
 table FieldBallItemInnerUnkInner {
@@ -69,19 +69,139 @@ table FieldBallItemInnerUnk {
 }
 
 table FieldBallItem {
-    inner: FieldBallItemInner;
+    inner: FieldBallItemInner (required);
 }
 
 table FieldParticleInner {
-    field_object: FieldObject;
-    ptcl_path: string;
+    field_object: FieldObject (required);
+    ptcl_path: string (required);
     unk: uint;
 }
 
 table FieldParticle {
-    inner: FieldParticleInner;
+    inner: FieldParticleInner (required);
 }
 
 table NestHoleEmitter {
-    inner: FieldParticleInner;
+    inner: FieldParticleInner (required);
+}
+
+table PokemonModelInner {
+    inner: PokemonModelInnerInner (required);
+}
+
+table PokemonModelInnerInnerInner {
+    unk: uint;
+
+    unk1: float;
+    unk2: float;
+    unk3: float;
+
+    radius: float;
+
+    unk_angle: float;
+    unk_angle1: float;
+    unk_angle2: float;
+
+    unk4: float;
+    unk5: float;
+    unk6: float;
+}
+
+table PokemonModelInnerInner {
+    field_object: FieldObject (required);
+    hash_4c8: ulong;
+    name_hash: ulong;
+    hash_560: ulong;
+    unk3: PokemonModelInnerInnerInner (required);
+    unk4: bool;
+    unk5: ulong;
+    unk6: PokemonModelInnerInnerInner (required);
+}
+
+table PokemonModelUnk {
+    unk: bool;
+    unk1: bool;
+    unk2: bool;
+    unk3: uint;
+    unk4: ulong;
+    unk5: bool;
+    unk6: bool;
+    unk7: ulong;
+    unk8: uint;
+    unk9: uint;
+}
+
+table PokemonModel {
+    // unused?
+    unused: ushort;
+    inner: PokemonModelInner (required);
+    species: uint;
+    form: uint;
+    unk: uint;
+    is_shiny: bool;
+    unk1: uint;
+    unk2: ulong;
+    unk3: ulong;
+    unk4: ulong;
+    unk5: [ushort] (required);
+    unk6: float;
+    unk7: PokemonModelUnk (required);
+    unk8: uint;
+    unk9: uint;
+    unk10: bool;
+}
+
+enum SpawnerType : uint { Ground = 0, Sky, Water, AnyGround }
+
+table EncountArea {
+    type: uint;
+    offset_x: float;
+    offset_y: float;
+    offset_z: float;
+    radius_0: float;
+    unused0: float;
+    angle: float;
+    unused1: float;
+    radius_1: float;
+    unused2: float;
+    radius_2: float;
+}
+
+table EncountSpawnerInner {
+    field_object: FieldObject (required);
+    spawner_type: SpawnerType;
+    create_area: EncountArea (required);
+    vanish_area: EncountArea (required);
+    movement_area: EncountArea (required);
+    spawn_area: EncountArea (required);
+    max_spawns: int;
+    encounter_table_hash: ulong;
+}
+
+table EncountSpawner {
+    inner: EncountSpawnerInner (required);
+}
+
+table GimmickSpawn {
+    hash: ulong;
+    behavior: string (required);
+    unk0: ulong;
+    unk1: uint;
+    unk2: EncountArea (required);
+}
+
+table GimmickEncountSpawnerInner {
+    field_object: FieldObject (required);
+    unk_3a0: uint;
+    active_chance: uint;
+    unk_3a8: bool;
+    unk_3a9: bool;
+    spawn_table: [GimmickSpawn] (required);
+    unk0: EncountArea (required);
+    unk1: EncountArea (required);
+}
+
+table GimmickEncountSpawner {
+    inner: GimmickEncountSpawnerInner (required);
 }
