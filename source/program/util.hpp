@@ -16,15 +16,18 @@ namespace Field {
         if (std::is_same_v<T, NestHoleEmitter>) return PushNestHoleEmitter_offset;
         assert(false);
     }
-    void* getFieldObjects() {
-        return read_main<void*>(FieldObjects_offset);
+    FieldSingleton* getFieldSingleton() {
+        return read_main<FieldSingleton*>(FieldSingleton_offset);
+    }
+    std::vector<FieldObject*> getFieldObjects() {
+        return getFieldSingleton()->field_objects;
     }
     template<typename T>
     u64 pushFieldObject(const T* flatbuffer) {
-        return external<u64>(getPushOffset<T>(), getFieldObjects(), flatbuffer);
+        return external<u64>(getPushOffset<T>(), getFieldSingleton(), flatbuffer);
     }
-    bool checkInheritance(u64 obj, void* inheritance) {
-        void* obj_inheritance = external_absolute<void*>(**reinterpret_cast<u64**>(obj + 0x50));
+    bool checkInheritance(FieldObject* obj, void* inheritance) {
+        void* obj_inheritance = obj->GetInheritance();
         while (obj_inheritance != nullptr) {
             if (obj_inheritance == inheritance) return true;
             obj_inheritance = *reinterpret_cast<void**>(obj_inheritance);

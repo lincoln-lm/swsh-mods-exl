@@ -10,15 +10,12 @@ f32 speed = 128.0;
 int vertical_direction = 0;
 
 u64 get_camera() {
-    auto current_ptr = *reinterpret_cast<u64**>(Field::getFieldObjects() + 0xb0);
-    auto end = *reinterpret_cast<u64**>(Field::getFieldObjects() + 0xb8);
-    for (; current_ptr < end; current_ptr++) {
-        auto obj = *current_ptr;
-        if (Field::checkInheritance(obj, Camera::GetInheritance())) {
-            return obj;
-        };
-    }
-    return 0;
+    auto objs = Field::getFieldObjects();
+    void* camera_inheritance = Camera::GetInheritance();
+    auto camera = std::find_if(objs.begin(), objs.end(), [camera_inheritance](Field::FieldObject* obj) {
+        return Field::checkInheritance(obj, camera_inheritance);
+    });
+    return camera != objs.end() ? reinterpret_cast<u64>(*camera) : 0;
 }
 
 HOOK_DEFINE_INLINE(Tick) {

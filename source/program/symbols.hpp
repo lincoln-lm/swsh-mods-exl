@@ -132,7 +132,27 @@ namespace Field {
     const u64 GetPlayerObject_offset = 0xd7e290 - VER_OFF;
     const u64 PushNestHoleEmitter_offset = 0xec5400 - VER_OFF;
     const u64 PushFieldBallItem_offset = 0xd21b20 - VER_OFF;
-    const u64 FieldObjects_offset = 0x2955208;
+    const u64 FieldSingleton_offset = 0x2955208;
+
+    // TODO: inner objects, inheritance, etc
+    struct FieldObject {
+        u64 vtable;
+        u8 base_obj_inner[0x48];
+        // main+offset to a function returning the object's inheritance pointer
+        u64* inheritance_function;
+        // ...
+
+        void* GetInheritance() {
+            return external_absolute<void*>(*inheritance_function);
+        }
+    } PACKED;
+    // TODO: naming
+    struct FieldSingleton {
+        u8 unk_0[0xb0];
+        std::vector<FieldObject*> field_objects;
+        u64 unk_1;
+    } PACKED;
+    static_assert(sizeof(FieldSingleton) == 0xd0);
 
     u64 FetchAreaHash() {
         return external<u64>(FetchAreaHash_offset);
