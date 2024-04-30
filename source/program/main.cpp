@@ -11,6 +11,7 @@
 #include "patches/underworld.hpp"
 #include "patches/overworld_shiny.hpp"
 #include "patches/freecam.hpp"
+#include "patches/glimwood_overworld.hpp"
 #include "tomlplusplus/toml.hpp"
 
 PatchConfig global_config;
@@ -54,6 +55,7 @@ extern "C" void exl_main(void* x0, void* x1) {
     install_camera_tweaks_patch();
     install_uncap_level_patch();
     install_freecam_patch();
+    install_glimwood_overworld_patch();
 }
 
 extern "C" NORETURN void exl_exception_entry() {

@@ -164,6 +164,15 @@ namespace Field {
     } PACKED;
     static_assert(sizeof(FieldObject) == 0x398);
 
+    struct EncountSpawner : FieldObject {
+        u8 unk_9[0xB0];
+        s32 maximum_symbol_encounts;
+        u8 unk_10[0x2D4];
+
+        static const u64 EncountSpawner_offset = 0xdae0b0 - VER_OFF;
+    } PACKED;
+    static_assert(sizeof(EncountSpawner) == 0x720);
+
     struct Camera : FieldObject {
         u8 unk_9[0x3C];
         float pitch;
@@ -230,8 +239,6 @@ namespace OverworldEncount {
     const u64 GenerateMainSpec_offset = 0xd311f0 - VER_OFF;
     const u64 GenerateBasicSpec_offset = 0xd32a00 - VER_OFF;
     const u64 InitGimmickSpec_offset = 0xd30d60 - VER_OFF;
-
-    typedef void EncountSpawner;
 
     struct OverworldSpec {
         u32 species;
@@ -301,7 +308,7 @@ namespace OverworldEncount {
     encounter_tables_t FetchSymbolEncountTable(u64 unused, u64* hash) {
         return external<encounter_tables_t>(FetchSymbolEncountTable_offset, unused, hash);
     }
-    bool TryGenerateSymbolEncount(EncountSpawner* encount_spawner, void* param_2) {
+    bool TryGenerateSymbolEncount(Field::EncountSpawner* encount_spawner, void* param_2) {
         return external<bool>(TryGenerateSymbolEncount_offset);
     }
 }

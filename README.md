@@ -162,3 +162,21 @@ Mod that allows detaching the camera from the player and moving it on its own
     - D-Pad to move camera
     - L/R to decrease/increase movement speed
     - ZL/ZR to decrease/increase height
+
+### Glimwood w/ Overworld Spawns ``[glimwood_overworld]``
+
+Mod that overwrites the maximum symbol encounter spawn count for spawners in glimwood tangle
+
+#### Example
+<placeholder>
+
+#### Config
+- ``active``
+    - Controls whether or not the mod is activated
+    - boolean (``true``, ``false``)
+- ``maximum_spawns``
+    - Maximum symbol count per spawner
+    - int
+
+#### Notes
+- Overwrites the maximum symbol count field on any new EncountSpawner with a hash within the hard-coded glimwood list
