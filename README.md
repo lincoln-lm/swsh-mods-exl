@@ -145,7 +145,7 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/067555d6-4efc-4f55-8
 Mod that allows detaching the camera from the player and moving it on its own
 
 #### Example
-<placeholder>
+https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/87cf634b-e205-48ff-88a2-a09ee89119e1
 
 #### Config
 - ``active``
@@ -168,7 +168,7 @@ Mod that allows detaching the camera from the player and moving it on its own
 Mod that overwrites the maximum symbol encounter spawn count for spawners in glimwood tangle
 
 #### Example
-<placeholder>
+https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/ada85d46-1754-4750-b909-49cd5649466e
 
 #### Config
 - ``active``
