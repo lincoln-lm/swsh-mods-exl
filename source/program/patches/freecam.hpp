@@ -21,16 +21,18 @@ Field::Camera* get_camera() {
 HOOK_DEFINE_INLINE(Tick) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
         EXL_ASSERT(global_config.initialized);
-        auto camera = get_camera();
-        if (is_freecam && camera) {
-            auto camera_dir = QuaternionToEuler(&camera->rotation).euler.yaw;
-            for (int i = 0; i < 4; i++) {
-                if (directions[i]) {
-                    camera->position.quat.x += sin(camera_dir + M_PI_2 * i) * speed;
-                    camera->position.quat.z += cos(camera_dir + M_PI_2 * i) * speed;
+        if (global_config.freecam.active) {
+            auto camera = get_camera();
+            if (is_freecam && camera) {
+                auto camera_dir = QuaternionToEuler(&camera->rotation).euler.yaw;
+                for (int i = 0; i < 4; i++) {
+                    if (directions[i]) {
+                        camera->position.quat.x += sin(camera_dir + M_PI_2 * i) * speed;
+                        camera->position.quat.z += cos(camera_dir + M_PI_2 * i) * speed;
+                    }
                 }
+                camera->position.quat.y += vertical_direction * speed;
             }
-            camera->position.quat.y += vertical_direction * speed;
         }
     }
 };
