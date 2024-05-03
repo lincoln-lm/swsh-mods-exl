@@ -13,7 +13,12 @@ Field::Camera* get_camera() {
     auto objs = Field::getFieldObjects();
     void* camera_inheritance = getClassInheritance<Field::Camera>();
     auto camera = std::find_if(objs.begin(), objs.end(), [camera_inheritance](Field::FieldObject* obj) {
-        return Field::checkInheritance(obj, camera_inheritance);
+        return Field::checkInheritance(obj, camera_inheritance)
+          && !(
+            obj->position.quat.x == obj->position.quat.y
+              && obj->position.quat.y == obj->position.quat.z
+              && obj->position.quat.x == 0
+            );
     });
     return camera != objs.end() ? reinterpret_cast<Field::Camera*>(*camera) : nullptr;
 }
@@ -71,6 +76,22 @@ HOOK_DEFINE_INLINE(SetPos2) {
         }
     }
 };
+HOOK_DEFINE_INLINE(StorePos3) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        EXL_ASSERT(global_config.initialized);
+        if (global_config.freecam.active) {
+            pos = *reinterpret_cast<u128*>(ctx->X[0]+0xb0);
+        }
+    }
+};
+HOOK_DEFINE_INLINE(SetPos3) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        EXL_ASSERT(global_config.initialized);
+        if (global_config.freecam.active) {
+            if (is_freecam) *reinterpret_cast<u128*>(ctx->X[0]+0xb0) = pos;
+        }
+    }
+};
 
 void input_callback(HID::HIDData* data) {
     EXL_ASSERT(global_config.initialized);
@@ -101,4 +122,8 @@ void install_freecam_patch() {
     SetPos1::InstallAtOffset(0x60f5a4);
     StorePos2::InstallAtOffset(0xd3c36c - VER_OFF);
     SetPos2::InstallAtOffset(0xd3c370 - VER_OFF);
+    StorePos3::InstallAtOffset(0xd93780 - VER_OFF);
+    SetPos3::InstallAtOffset(0xd93784 - VER_OFF);
+// set *(int*)($base+0xccfca4) = 0x1e203800
+// set *(int*)($base+0xcce0d8) = 0x1e203800
 }

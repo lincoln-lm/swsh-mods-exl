@@ -147,7 +147,8 @@ struct WorldObject : public BaseObject
     Vec4f rotation;
     Vec4f position;
     bool position_modified;
-};
+    u8 _padding[3];
+} PACKED;
 
 struct ScaledWorldObject : public WorldObject
 {
@@ -169,7 +170,7 @@ namespace Field {
     {
         static const u64 vtable_offset = 0x254f888;
         virtual int func_0x38();
-        virtual int func_0x40();
+        virtual int OnDespawn();
         virtual int func_0x48();
         virtual int func_0x50();
         virtual int func_0x58();
@@ -229,16 +230,22 @@ namespace Field {
     static_assert(sizeof(EncountSpawner) == 0x720);
 
     struct Camera : FieldObject {
-        static const u64 vtable_offset = 0x25573d0;
+        static const u64 vtable_offset = 0x2550f30;
         virtual int func_0x178();
         // setter
         virtual int func_0x180();
         // getter
         virtual int func_0x188();
-
         u8 unk_9[0x3C];
         float pitch;
-        u8 unk_10[0x28];
+        float unk_91[3];
+    } PACKED;
+    static_assert(sizeof(Camera) == 0x3E4);
+
+    struct ExtendedCamera : Camera {
+        static const u64 vtable_offset = 0x25573d0;
+
+        u8 unk_10[0x1C];
         float distance_from_player;
         u8 unk_11[0x1C];
         float toggle_distance_0;
@@ -254,9 +261,9 @@ namespace Field {
         float maximum_distance;
         u8 unk_16[0x17C];
 
-        static const u64 Camera_offset = 0xd3ae00 - VER_OFF;
+        static const u64 ExtendedCamera_offset = 0xd3ae00 - VER_OFF;
     } PACKED;
-    static_assert(sizeof(Camera) == 0x640);
+    static_assert(sizeof(ExtendedCamera) == 0x640);
 
     // TODO: naming
     struct FieldSingleton {
