@@ -153,7 +153,7 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/87cf634b-e205-48ff-8
     - boolean (``true``, ``false``)
 
 #### Notes
-- Currently only functional on "Wide Roads" (wild area/ioa/ct)
+- Manual camera angle adjustment only possible on "Wide Roads" (wild area/ioa/ct)
 - Inputs only register from "Npad" controllers (only tested on pro controller)
 
 ### Controls
