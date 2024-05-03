@@ -3,6 +3,7 @@
 #include "symbols.hpp"
 #include "config.hpp"
 #include <cmath>
+#include <limits>
 
 bool is_freecam = false;
 bool directions[4] = {false, false, false, false};
@@ -92,6 +93,26 @@ HOOK_DEFINE_INLINE(SetPos3) {
         }
     }
 };
+HOOK_DEFINE_INLINE(DisableTerrainCulling1) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        EXL_ASSERT(global_config.initialized);
+        if (global_config.freecam.active && global_config.freecam.disable_terrain_culling) {
+            if (is_freecam) {
+                reinterpret_cast<f32**>(ctx->X[19]+0xaf0)[0][8] = std::numeric_limits<float>::infinity();
+            }
+        }
+    }
+};
+HOOK_DEFINE_INLINE(DisableTerrainCulling2) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        EXL_ASSERT(global_config.initialized);
+        if (global_config.freecam.active && global_config.freecam.disable_terrain_culling) {
+            if (is_freecam) {
+                reinterpret_cast<f32**>(ctx->X[20]+0xaf0)[0][8] = std::numeric_limits<float>::infinity();
+            };
+        }
+    }
+};
 
 void input_callback(HID::HIDData* data) {
     EXL_ASSERT(global_config.initialized);
@@ -124,6 +145,6 @@ void install_freecam_patch() {
     SetPos2::InstallAtOffset(0xd3c370 - VER_OFF);
     StorePos3::InstallAtOffset(0xd93780 - VER_OFF);
     SetPos3::InstallAtOffset(0xd93784 - VER_OFF);
-// set *(int*)($base+0xccfca4) = 0x1e203800
-// set *(int*)($base+0xcce0d8) = 0x1e203800
+    DisableTerrainCulling1::InstallAtOffset(0xccfc24 - VER_OFF);
+    DisableTerrainCulling2::InstallAtOffset(0xcce05c - VER_OFF);
 }

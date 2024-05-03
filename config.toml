@@ -47,6 +47,7 @@ fully = true
 # Mod that allows detaching the camera from the player and moving it on its own
 [freecam]
 active = false
+disable_terrain_culling = true
 
 # Mod that overwrites the maximum symbol encounter spawn count for spawners in glimwood tangle
 [glimwood_overworld]
