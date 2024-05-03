@@ -1,6 +1,14 @@
 #pragma once
 #include "symbols.hpp"
 
+// requires vtable_offset
+template<typename T>
+void* getClassInheritance() {
+    static_assert(std::is_base_of_v<WorldObject, T>);
+    // GetInstanceInheritance() is at vtable_offset + 0x30
+    return external_absolute<void*>(read_main<u64>(T::vtable_offset + 0x30));
+}
+
 namespace PersonalInfo {
     bool isInGame(u16 species, u16 form) {
         FetchInfo(species, form);
@@ -27,7 +35,7 @@ namespace Field {
         return external<u64>(getPushOffset<T>(), getFieldSingleton(), flatbuffer);
     }
     bool checkInheritance(FieldObject* obj, void* inheritance) {
-        void* obj_inheritance = obj->GetInheritance();
+        void* obj_inheritance = obj->GetInstanceInheritance();
         while (obj_inheritance != nullptr) {
             if (obj_inheritance == inheritance) return true;
             obj_inheritance = *reinterpret_cast<void**>(obj_inheritance);

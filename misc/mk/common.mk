@@ -36,7 +36,7 @@ INCLUDES	:=	include include/flatbuffers/include
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIC -fvisibility=hidden
 
-CFLAGS	:=	-g -Wall -O3 \
+CFLAGS	:=	-g -gdwarf-4 -Wall -O3 \
 			-ffunction-sections \
 			-fdata-sections \
 			$(ARCH) \

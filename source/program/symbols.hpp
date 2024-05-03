@@ -118,6 +118,46 @@ namespace EncountObject {
     const u64 FromParams_offset = 0xea2670 - VER_OFF;
 }
 
+// TODO: multiple inheritance shenanigans
+struct BaseObject
+{
+    static const u64 vtable_offset = 0x2508468;
+    virtual ~BaseObject();
+    virtual int func_0x10();
+    virtual int func_0x18();
+    virtual int func_0x20();
+    virtual int func_0x28();
+
+    u8 unk_0[0x10];
+    u64 size;
+    u64 align;
+    u8 unk_1[0x28];
+    // main+offset to a function returning the object's inheritance pointer
+    u64* inheritance_function;
+    u64 unk_2;
+} PACKED;
+static_assert(sizeof(BaseObject) == 0x60);
+
+struct WorldObject : public BaseObject
+{
+    static const u64 vtable_offset = 0x250a0b0;
+    virtual void* GetInstanceInheritance() const;
+    // defaults to identity
+    f32 some_matrix[4][4];
+    Vec4f rotation;
+    Vec4f position;
+    bool position_modified;
+};
+
+struct ScaledWorldObject : public WorldObject
+{
+    static const u64 vtable_offset = 0x250aa78;
+    f32 unk_3[3];
+    Vec4f scale;
+    u8 unk_5[0xB0];
+} PACKED;
+static_assert(sizeof(ScaledWorldObject) == 0x190);
+
 namespace Field {
     const u64 FetchAreaHash_offset = 0xd7e310 - VER_OFF;
     const u64 GetPlayerObject_offset = 0xd7e290 - VER_OFF;
@@ -125,36 +165,50 @@ namespace Field {
     const u64 PushFieldBallItem_offset = 0xd21b20 - VER_OFF;
     const u64 FieldSingleton_offset = 0x2955208;
 
-    // TODO: naming
-    struct BaseObject {
-        u64 vtable;
-        u8 unk_0[0x10];
-        u64 size;
-        u64 allign;
-        u8 unk_1[0x28];
-        // main+offset to a function returning the object's inheritance pointer
-        u64* inheritance_function;
-        u64 unk_2;
-        void* GetInheritance() {
-            return external_absolute<void*>(*inheritance_function);
-        }
-    } PACKED;
-    static_assert(sizeof(BaseObject) == 0x60);
+    struct FieldObject : public ScaledWorldObject
+    {
+        static const u64 vtable_offset = 0x254f888;
+        virtual int func_0x38();
+        virtual int func_0x40();
+        virtual int func_0x48();
+        virtual int func_0x50();
+        virtual int func_0x58();
+        virtual int func_0x60();
+        virtual int func_0x68();
+        virtual int func_0x70();
+        virtual int func_0x78();
+        virtual int func_0x80();
+        virtual int func_0x88();
+        virtual int OnTick();
+        virtual int func_0x98();
+        virtual int func_0xa0();
+        virtual int func_0xa8();
+        virtual int func_0xb0();
+        virtual int func_0xb8();
+        virtual int func_0xc0();
+        virtual int func_0xc8();
+        virtual int func_0xd0();
+        virtual int func_0xd8();
+        virtual int func_0xe0();
+        virtual int func_0xe8();
+        virtual int OnLoad();
+        virtual int func_0xf8();
+        virtual int func_0x100();
+        virtual int func_0x108();
+        virtual int func_0x110();
+        virtual int func_0x118();
+        virtual int func_0x120();
+        virtual int func_0x128();
+        virtual int func_0x130();
+        virtual int func_0x138();
+        virtual int func_0x140();
+        virtual int func_0x148();
+        virtual int func_0x150();
+        virtual int func_0x158();
+        virtual int func_0x160();
+        virtual int func_0x168();
+        virtual int func_0x170();
 
-    // TODO: naming
-    struct WorldObject : BaseObject {
-        u8 unk_3[0x40];
-        Vec4f rotation;
-        Vec4f position;
-        bool position_modified;
-        u8 unk_4[0xF];
-        Vec4f scale;
-        u8 unk_5[0xB0];
-    } PACKED;
-    static_assert(sizeof(WorldObject) == 0x190);
-
-    // TODO: inner objects, inheritance, etc
-    struct FieldObject : WorldObject {
         u8 unk_6[0x10];
         u64 unique_hash;
         u8 unk_7[0x70];
@@ -165,6 +219,7 @@ namespace Field {
     static_assert(sizeof(FieldObject) == 0x398);
 
     struct EncountSpawner : FieldObject {
+        static const u64 vtable_offset = 0x255ee90;
         u8 unk_9[0xB0];
         s32 maximum_symbol_encounts;
         u8 unk_10[0x2D4];
@@ -174,6 +229,13 @@ namespace Field {
     static_assert(sizeof(EncountSpawner) == 0x720);
 
     struct Camera : FieldObject {
+        static const u64 vtable_offset = 0x25573d0;
+        virtual int func_0x178();
+        // setter
+        virtual int func_0x180();
+        // getter
+        virtual int func_0x188();
+
         u8 unk_9[0x3C];
         float pitch;
         u8 unk_10[0x28];
@@ -193,11 +255,6 @@ namespace Field {
         u8 unk_16[0x17C];
 
         static const u64 Camera_offset = 0xd3ae00 - VER_OFF;
-        static const u64 GetInheritance_offset = 0xd3e2f0 - VER_OFF;
-
-        static void* GetInheritance() {
-            return external<void*>(GetInheritance_offset);
-        }
     } PACKED;
     static_assert(sizeof(Camera) == 0x640);
 
@@ -206,7 +263,7 @@ namespace Field {
         u8 unk_0[0xb0];
         std::vector<FieldObject*> field_objects;
         u64 unk_1;
-    } PACKED;
+    };
     static_assert(sizeof(FieldSingleton) == 0xd0);
 
     u64 FetchAreaHash() {

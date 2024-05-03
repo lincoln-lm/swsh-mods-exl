@@ -11,7 +11,7 @@ int vertical_direction = 0;
 
 Field::Camera* get_camera() {
     auto objs = Field::getFieldObjects();
-    void* camera_inheritance = Field::Camera::GetInheritance();
+    void* camera_inheritance = getClassInheritance<Field::Camera>();
     auto camera = std::find_if(objs.begin(), objs.end(), [camera_inheritance](Field::FieldObject* obj) {
         return Field::checkInheritance(obj, camera_inheritance);
     });
