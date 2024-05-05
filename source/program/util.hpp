@@ -17,11 +17,25 @@ namespace PersonalInfo {
     }
 }
 
+hashed_string_t getFNV1aHashedString(const char* string) {
+    hashed_string_t hashed_string = {
+        .hash = 0xcbf29ce484222645,
+        .string = string,
+        .length = strlen(string),
+        .unk = 0
+    };
+    for (size_t i = 0; i < strlen(string); i++) {
+        hashed_string.hash = (hashed_string.hash ^ string[i]) * 0x100000001b3;
+    }
+    return hashed_string;
+}
+
 namespace Field {
     template<typename T>
     constexpr u64 getPushOffset() {
         if (std::is_same_v<T, FlatbufferObjects::FieldBallItem>) return PushFieldBallItem_offset;
         if (std::is_same_v<T, FlatbufferObjects::NestHoleEmitter>) return PushNestHoleEmitter_offset;
+        if (std::is_same_v<T, FlatbufferObjects::UnitObject>) return PushUnitObject_offset;
         assert(false);
     }
     FieldSingleton* getFieldSingleton() {
@@ -31,8 +45,8 @@ namespace Field {
         return getFieldSingleton()->field_objects;
     }
     template<typename T>
-    u64 pushFieldObject(const T* flatbuffer) {
-        return external<u64>(getPushOffset<T>(), getFieldSingleton(), flatbuffer);
+    FieldObject* pushFieldObject(const T* flatbuffer) {
+        return external<FieldObject*>(getPushOffset<T>(), getFieldSingleton(), flatbuffer);
     }
     bool checkInheritance(FieldObject* obj, void* inheritance) {
         void* obj_inheritance = obj->GetInstanceInheritance();

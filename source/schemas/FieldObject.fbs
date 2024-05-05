@@ -17,6 +17,14 @@ table FieldObject {
     hash_1a0: ulong;
 }
 
+table UnitObjectInner {
+    field_object: FieldObject (required);
+}
+
+table UnitObject {
+    inner: UnitObjectInner (required);
+}
+
 table FieldSparkleItemSlot {
     unk: ulong;
     rate: uint;

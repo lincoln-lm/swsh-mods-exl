@@ -42,6 +42,13 @@ union Vec4f {
     Vec4f(f128 _q) : q(_q) {}
 } PACKED;
 
+struct hashed_string_t {
+    u64 hash;
+    const char* string;
+    u64 length;
+    u64 unk;
+} PACKED;
+
 Vec4f QuaternionToEuler(Vec4f* q) {
     return external<f128>(QuaternionToEuler_offset, q);
 }
@@ -164,6 +171,7 @@ namespace Field {
     const u64 GetPlayerObject_offset = 0xd7e290 - VER_OFF;
     const u64 PushNestHoleEmitter_offset = 0xec5400 - VER_OFF;
     const u64 PushFieldBallItem_offset = 0xd21b20 - VER_OFF;
+    const u64 PushUnitObject_offset = 0xd25810 - VER_OFF;
     const u64 FieldSingleton_offset = 0x2955208;
 
     struct FieldObject : public ScaledWorldObject
@@ -242,6 +250,28 @@ namespace Field {
     } PACKED;
     static_assert(sizeof(Camera) == 0x3E4);
 
+    struct ModelObject : FieldObject {
+        static const u64 vtable_offset = 0x254fd18;
+        // definitely bigger
+        u8 unk_9[0x58];
+        hashed_string_t primary_model_path;
+        u8 unk_10[0xad];
+        static const u64 UnitObject_offset = 0xcbc9d0 - VER_OFF;
+    } PACKED;
+    static_assert(sizeof(ModelObject) == 0x4BD);
+    struct UnitObject : ModelObject {
+        static const u64 vtable_offset = 0x255e658;
+        void AddModel(const hashed_string_t* path, u64 param_3) {
+            external<void>(AddModel_offset, this, path, param_3);
+        }
+        void AddAnimation(const hashed_string_t* path, u64 param_3) {
+            external<void>(AddAnimation_offset, this, path, param_3);
+        }
+        static const u64 AddModel_offset = 0xcd8670;
+        static const u64 AddAnimation_offset = 0xcda070;
+    } PACKED;
+    static_assert(sizeof(UnitObject) == 0x4BD);
+
     struct ExtendedCamera : Camera {
         static const u64 vtable_offset = 0x25573d0;
 
@@ -276,8 +306,9 @@ namespace Field {
     u64 FetchAreaHash() {
         return external<u64>(FetchAreaHash_offset);
     }
-    u64 GetPlayerObject() {
-        return external<u64>(GetPlayerObject_offset);
+    // TODO: PlayerObject
+    FieldObject* GetPlayerObject() {
+        return external<FieldObject*>(GetPlayerObject_offset);
     }
 }
 
