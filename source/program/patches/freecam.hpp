@@ -16,9 +16,9 @@ Field::Camera* get_camera() {
     auto camera = std::find_if(objs.begin(), objs.end(), [camera_inheritance](Field::FieldObject* obj) {
         return Field::checkInheritance(obj, camera_inheritance)
           && !(
-            obj->position.quat.x == obj->position.quat.y
-              && obj->position.quat.y == obj->position.quat.z
-              && obj->position.quat.x == 0
+            obj->position.x == obj->position.y
+              && obj->position.y == obj->position.z
+              && obj->position.x == 0
             );
     });
     return camera != objs.end() ? reinterpret_cast<Field::Camera*>(*camera) : nullptr;
@@ -30,14 +30,14 @@ HOOK_DEFINE_INLINE(Tick) {
         if (global_config.freecam.active) {
             auto camera = get_camera();
             if (is_freecam && camera) {
-                auto camera_dir = QuaternionToEuler(&camera->rotation).euler.yaw;
+                auto camera_dir = QuaternionToEuler(&camera->rotation).yaw;
                 for (int i = 0; i < 4; i++) {
                     if (directions[i]) {
-                        camera->position.quat.x += sin(camera_dir + M_PI_2 * i) * speed;
-                        camera->position.quat.z += cos(camera_dir + M_PI_2 * i) * speed;
+                        camera->position.x += sin(camera_dir + M_PI_2 * i) * speed;
+                        camera->position.z += cos(camera_dir + M_PI_2 * i) * speed;
                     }
                 }
-                camera->position.quat.y += vertical_direction * speed;
+                camera->position.y += vertical_direction * speed;
             }
         }
     }

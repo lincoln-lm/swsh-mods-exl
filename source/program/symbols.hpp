@@ -30,17 +30,19 @@ union Vec4f {
         float y;
         float z;
         float w;
-    } quat;
+    };
     struct {
         float pitch;
         float yaw;
         float roll;
         float _;
-    } euler;
+    };
 
-    Vec4f() {}
     Vec4f(f128 _q) : q(_q) {}
 } PACKED;
+
+// padded to 16 bytes anyway
+typedef Vec4f Vec3f;
 
 struct hashed_string_t {
     u64 hash;
@@ -49,7 +51,7 @@ struct hashed_string_t {
     u64 unk;
 } PACKED;
 
-Vec4f QuaternionToEuler(Vec4f* q) {
+Vec3f QuaternionToEuler(Vec4f* q) {
     return external<f128>(QuaternionToEuler_offset, q);
 }
 
@@ -152,7 +154,7 @@ struct WorldObject : public BaseObject
     // defaults to identity
     f32 some_matrix[4][4];
     Vec4f rotation;
-    Vec4f position;
+    Vec3f position;
     bool position_modified;
     u8 _padding[3];
 } PACKED;
@@ -161,7 +163,7 @@ struct ScaledWorldObject : public WorldObject
 {
     static const u64 vtable_offset = 0x250aa78;
     f32 unk_3[3];
-    Vec4f scale;
+    Vec3f scale;
     u8 unk_5[0xB0];
 } PACKED;
 static_assert(sizeof(ScaledWorldObject) == 0x190);
