@@ -127,6 +127,12 @@ namespace EncountObject {
     const u64 FromParams_offset = 0xea2670 - VER_OFF;
 }
 
+// TODO: fill out
+struct Allocator {
+    virtual ~Allocator();
+    virtual void* Alloc(u64 size, u64 align);
+};
+
 // TODO: multiple inheritance shenanigans
 struct BaseObject
 {
@@ -137,7 +143,8 @@ struct BaseObject
     virtual int func_0x20();
     virtual int func_0x28();
 
-    u8 unk_0[0x10];
+    Allocator* allocator;
+    u8 unk_0[0x8];
     u64 size;
     u64 align;
     u8 unk_1[0x28];
@@ -182,7 +189,7 @@ namespace Field {
         virtual int func_0x38();
         virtual int OnDespawn();
         virtual int func_0x48();
-        virtual int func_0x50();
+        virtual bool HandleRender(u64 param_2, bool value);
         virtual int func_0x58();
         virtual int func_0x60();
         virtual int func_0x68();
@@ -222,7 +229,9 @@ namespace Field {
 
         u8 unk_6[0x10];
         u64 unique_hash;
-        u8 unk_7[0x70];
+        u8 unk_7[0x1C];
+        bool is_rendered;
+        u8 unk_88[0x53];
         bool is_visible;
         bool is_culling;
         u8 unk_8[0x17E];

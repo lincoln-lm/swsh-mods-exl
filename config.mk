@@ -16,6 +16,11 @@ PROGRAM_ID = 01008DB008C2C000
 else
 PROGRAM_ID = 0100ABF008968000
 endif
+ifdef debug
+DEBUG_FLAGS = -DDEBUG
+else
+DEBUG_FLAGS =
+endif
 
 # Optional path to copy the final ELF to, for convenience.
 ELF_EXTRACT :=
