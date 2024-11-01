@@ -68,19 +68,23 @@ def main(*args: Tuple[Any], **kwargs: Dict[str, Any]) -> NoneType:
         # Make output directory.
         ftp_host.makedirs(SD_OUT, exist_ok=True)
         ftp_host.makedirs("config/swsh-mods-exl/", exist_ok=True)
-
-        # Iterate every file in the deploy directory.
-        for name in os.listdir(OUT):
-            # Ignore directories, for now.
-            if not os.path.isfile(os.path.join(OUT, name)):
-                continue
-
-            # Upload file to server.
-            ftp_host.upload(os.path.join(OUT, name), ftp_host.path.join(SD_OUT, name))
-            ftp_host.upload(
-                os.path.join(os.curdir, "config.toml"),
-                ftp_host.path.join("config/swsh-mods-exl/", "config.toml"),
-            )
+        # Upload config file.
+        ftp_host.upload(
+            os.path.join(os.curdir, "config.toml"),
+            ftp_host.path.join("config/swsh-mods-exl/", "config.toml"),
+        )
+        def upload_directory(sub_directory: str) -> NoneType:
+            directory = os.path.join(OUT, sub_directory)
+            ftp_directory = os.path.join(SD_OUT, sub_directory)
+            for name in os.listdir(directory):
+                if not os.path.isfile(os.path.join(directory, name)):
+                    upload_directory(os.path.join(sub_directory, name))
+                else:
+                    ftp_host.upload(
+                        os.path.join(directory, name),
+                        ftp_host.path.join(ftp_directory, name)
+                    )
+        upload_directory("")
 
 
 if __name__ == "__main__":

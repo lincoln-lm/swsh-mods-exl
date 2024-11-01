@@ -1,14 +1,16 @@
 #!/bin/bash
 set -e
 
-OUT_NSO=${OUT}/${BINARY_NAME}
-OUT_NPDM=${OUT}/main.npdm
+OUT_NSO=${OUT}/exefs/${BINARY_NAME}
+OUT_NPDM=${OUT}/exefs/main.npdm
 
 # Clear older build.
 rm -rf ${OUT}
 
 # Create out directory.
 mkdir ${OUT}
+mkdir ${OUT}/exefs
+mkdir ${OUT}/romfs
 
 # Copy build into out
 mv ${NAME}.nso ${OUT_NSO}

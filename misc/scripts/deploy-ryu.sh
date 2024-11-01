@@ -10,7 +10,7 @@ fi
 export MODS_PATH=${RYU_PATH}/mods/contents/${PROGRAM_ID}/mods
 
 # Ensure directory exists.
-mkdir -p ${MODS_PATH}/exefs;
+mkdir -p ${MODS_PATH}/;
 
 # Copy over files.
-cp ${OUT}/* ${MODS_PATH}/exefs
+cp ${OUT}/* ${MODS_PATH}/
