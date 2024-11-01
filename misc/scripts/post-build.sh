@@ -12,6 +12,8 @@ mkdir ${OUT}
 mkdir ${OUT}/exefs
 mkdir ${OUT}/romfs
 
+${PYTHON} ${SCRIPTS_PATH}/build_romfs.py
+
 # Copy build into out
 mv ${NAME}.nso ${OUT_NSO}
 mv ${NAME}.npdm ${OUT_NPDM}
