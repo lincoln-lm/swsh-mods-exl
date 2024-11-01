@@ -112,7 +112,6 @@ export APP_JSON := $(TOPDIR)/$(VERSION)_config.json
 all: $(BUILD)
 
 $(BUILD):
-	@flatc -c -o $(ROOT_SOURCE)/schemas $(ROOT_SOURCE)/schemas/*.fbs
 	@[ -d $@ ] || mkdir -p $@
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(MK_PATH)/common.mk
 	@$(SHELL) $(SCRIPTS_PATH)/post-build.sh
@@ -148,6 +147,10 @@ $(OFILES_SRC)	: $(HFILES_BIN)
 #---------------------------------------------------------------------------------
 	@echo $(notdir $<)
 	@$(bin2o)
+
+%_generated.h :	%.fbs
+	@echo Generating header for $(notdir $<)
+	@flatc -c -o $(dir $<) $<
 
 -include $(DEPENDS)
 
