@@ -30,13 +30,16 @@ hashed_string_t getFNV1aHashedString(const char* string) {
     return hashed_string;
 }
 
+template <class...> constexpr std::false_type always_false{};
+
 namespace Field {
     template<typename T>
     constexpr u64 getPushOffset() {
-        if (std::is_same_v<T, FlatbufferObjects::FieldBallItem>) return PushFieldBallItem_offset;
-        if (std::is_same_v<T, FlatbufferObjects::NestHoleEmitter>) return PushNestHoleEmitter_offset;
-        if (std::is_same_v<T, FlatbufferObjects::UnitObject>) return PushUnitObject_offset;
-        assert(false);
+        if constexpr (std::is_same_v<T, FlatbufferObjects::FieldBallItem>) return PushFieldBallItem_offset;
+        else if constexpr (std::is_same_v<T, FlatbufferObjects::NestHoleEmitter>) return PushNestHoleEmitter_offset;
+        else if constexpr (std::is_same_v<T, FlatbufferObjects::UnitObject>) return PushUnitObject_offset;
+        else if constexpr (std::is_same_v<T, FlatbufferObjects::PokemonModel>) return PushPokemonModel_offset;
+        else static_assert(always_false<T>);
     }
     FieldSingleton* getFieldSingleton() {
         return read_main<FieldSingleton*>(FieldSingleton_offset);

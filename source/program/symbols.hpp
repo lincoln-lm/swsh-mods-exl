@@ -181,6 +181,7 @@ namespace Field {
     const u64 PushNestHoleEmitter_offset = 0xec5400 - VER_OFF;
     const u64 PushFieldBallItem_offset = 0xd21b20 - VER_OFF;
     const u64 PushUnitObject_offset = 0xd25810 - VER_OFF;
+    const u64 PushPokemonModel_offset = 0xd204f0 - VER_OFF;
     const u64 FieldSingleton_offset = 0x2955208;
 
     struct FieldObject : public ScaledWorldObject

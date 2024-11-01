@@ -13,8 +13,8 @@ table FieldObject {
     scale_z: float;
 
     unique_hash: ulong;
-    hash_188: ulong;
-    hash_1a0: ulong;
+    vanish_flag: ulong;
+    script_id: ulong;
 }
 
 table UnitObjectInner {
@@ -146,7 +146,7 @@ table PokemonModel {
     inner: PokemonModelInner (required);
     species: uint;
     form: uint;
-    unk: uint;
+    gender: uint;
     is_shiny: bool;
     unk1: uint;
     unk2: ulong;
