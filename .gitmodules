@@ -4,3 +4,6 @@
 [submodule "include/flatbuffers"]
 	path = include/flatbuffers
 	url = https://github.com/google/flatbuffers.git
+[submodule "include/gf-pawncc"]
+	path = include/gf-pawncc
+	url = https://github.com/Lincoln-LM/gf-pawncc.git
