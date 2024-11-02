@@ -76,6 +76,7 @@ def main(*args: Tuple[Any], **kwargs: Dict[str, Any]) -> NoneType:
         def upload_directory(sub_directory: str) -> NoneType:
             directory = os.path.join(OUT, sub_directory)
             ftp_directory = os.path.join(SD_OUT, sub_directory)
+            ftp_host.makedirs(ftp_directory, exist_ok=True)
             for name in os.listdir(directory):
                 if not os.path.isfile(os.path.join(directory, name)):
                     upload_directory(os.path.join(sub_directory, name))

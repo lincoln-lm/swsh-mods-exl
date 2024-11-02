@@ -1,0 +1,11 @@
+table ScriptRecord {
+    script_id: ulong (key);
+    amx_path: string (required);
+    text_path: string (required);
+}
+
+table ScriptRecordTable {
+    scripts: [ScriptRecord] (required);
+}
+
+root_type ScriptRecordTable;

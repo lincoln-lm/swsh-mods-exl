@@ -29,6 +29,15 @@ jobs:
         make
         sudo make install
         cd ../../
+    - name: Build gf-pawncc
+      run: |
+        cd ./include/gf-pawncc/
+        mkdir build
+        cd build
+        cmake ..
+        make
+        cp ./gf-pawncc /usr/local/bin/gf-pawncc
+        cd ../../../
     - name: Build
       run: |
         version=${{ matrix.version }} ./exlaunch.sh build

@@ -112,11 +112,104 @@ void NewModel(Vec4f pos, const char* gfpak, const char* mdl) {
     external<void>(0xcba890 - VER_OFF, getFieldSingleton(), 1);
 }
 
+FieldObject* NewPokemonModel(Vec4f pos, float scale, u16 species, u16 form, u16 gender, bool is_shiny, u64 script_id) {
+    flatbuffers::FlatBufferBuilder builder;
+    builder.Finish(
+        FlatbufferObjects::CreatePokemonModel(
+            builder,
+            0,
+            FlatbufferObjects::CreatePokemonModelInner(
+                builder,
+                FlatbufferObjects::CreatePokemonModelInnerInner(
+                    builder,
+                    FlatbufferObjects::CreateFieldObject(
+                        builder,
+                        pos.x,
+                        pos.y,
+                        pos.z,
+                        0,
+                        0,
+                        0,
+                        scale,
+                        scale,
+                        scale,
+                        0xabcd,
+                        0xabcd,
+                        script_id
+                    ),
+                    0xcbf29ce484222645Ul,
+                    0xcbf29ce484222645Ul,
+                    0xcbf29ce484222645Ul,
+                    FlatbufferObjects::CreatePokemonModelInnerInnerInner(
+                        builder,
+                        1,
+                        0,
+                        50,
+                        0,
+                        45,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    ),
+                    true,
+                    0xcbf29ce484222645Ul,
+                    FlatbufferObjects::CreatePokemonModelInnerInnerInner(
+                        builder,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    )
+                )
+            ),
+            species,
+            form,
+            gender,
+            is_shiny,
+            1,
+            0xcbf29ce484222645Ul,
+            0xcbf29ce484222645Ul,
+            0xcbf29ce484222645Ul,
+            builder.CreateVector<u16>({}),
+            1.0,
+            FlatbufferObjects::CreatePokemonModelUnk(
+                builder,
+                false,
+                false,
+                false,
+                0,
+                0xcbf29ce484222645Ul,
+                false,
+                false,
+                0xcbf29ce484222645Ul,
+                3,
+                0
+            ),
+            0,
+            14,
+            true
+        )
+    );
+    return reinterpret_cast<FieldObject*>(pushFieldObject(flatbuffers::GetRoot<FlatbufferObjects::PokemonModel>(builder.GetBufferPointer())));
+}
+
 void debug_input_callback(HID::HIDData* data) {
     EXL_ASSERT(global_config.initialized);
     if (is_newly_pressed(data, HID::NpadButton::R | HID::NpadButton::A)) {
         auto player = GetPlayerObject();
-        NewModel(player->position, "sd:/pm0840_00.gfpak", "bin/pokemon/pm0840_00/mdl/pm0840_00_rare.gfbmdl");
+        NewPokemonModel(player->position, 2.0, 132, 0, 0, true, getFNV1aHashedString("debug_msg_1").hash);
+        external<void>(0xcba890 - VER_OFF, getFieldSingleton(), 1);
+        // NewModel(player->position, "sd:/pm0840_00.gfpak", "bin/pokemon/pm0840_00/mdl/pm0840_00_rare.gfbmdl");
     }
 }
 
