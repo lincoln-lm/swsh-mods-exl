@@ -20,7 +20,7 @@ sound = "Play_Camp_Cooking_Explosion"
 # set to "" for no particle
 shiny_ptcl = "bin/field/effect/particle/ef_cyc_aura/ef_cyc_aura_rare_bk.ptcl"
 # whether or not brilliant spawns show their aura
-show_aura_for_brilliants = false
+show_aura_for_brilliants = true
 # 0 for regular shiny rate, [1,100] for modified rate
 boosted_percentage = 15
 
