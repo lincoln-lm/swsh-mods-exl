@@ -4,7 +4,7 @@ active = false
 
 # Mod that makes shiny pokemon visible in the overworld
 [overworld_shiny]
-active = true
+active = false
 
 # some sounds:
 # "Play_Audience_cheer_riser_rnd"
