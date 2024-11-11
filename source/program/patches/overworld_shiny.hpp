@@ -44,7 +44,7 @@ HOOK_DEFINE_INLINE(PlayAuraPtcl) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
         EXL_ASSERT(global_config.initialized);
         if (global_config.overworld_shiny.active && !global_config.overworld_shiny.shiny_ptcl.empty()) {
-            if (*reinterpret_cast<u8*>(ctx->X[19] + 0x5D8) == 1) {
+            if (*reinterpret_cast<u8*>(ctx->X[19] + 0x8B0) == 1) {
                 ctx->X[20] = getFNV1aHashedString(global_config.overworld_shiny.shiny_ptcl.c_str()).hash;
             }
         }
@@ -66,7 +66,7 @@ HOOK_DEFINE_INLINE(StopAuraPtcl) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
         EXL_ASSERT(global_config.initialized);
         if (global_config.overworld_shiny.active && !global_config.overworld_shiny.shiny_ptcl.empty()) {
-            if (*reinterpret_cast<u8*>(ctx->X[19] + 0x5D8) == 1) {
+            if (*reinterpret_cast<u8*>(ctx->X[19] + 0x8B0) == 1) {
                 ctx->X[8] = getFNV1aHashedString(global_config.overworld_shiny.shiny_ptcl.c_str()).hash;
             }
         }
