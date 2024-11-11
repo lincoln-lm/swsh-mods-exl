@@ -14,6 +14,7 @@
 Mod that makes shiny pokemon visible in the overworld with a sound indicator & particle effect
 
 #### Example
+<!-- TODO: new video with particle effects -->
 https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/f2a553aa-2f44-40c4-bf16-9b0dd924e1bf
 
 #### Config
