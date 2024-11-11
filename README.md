@@ -11,7 +11,7 @@
 
 ### Overworld Shiny Indicatiors ``[overworld_shiny]``
 
-Mod that makes shiny pokemon visible in the overworld with a sound indicator & aura effect
+Mod that makes shiny pokemon visible in the overworld with a sound indicator & particle effect
 
 #### Example
 https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/f2a553aa-2f44-40c4-bf16-9b0dd924e1bf
