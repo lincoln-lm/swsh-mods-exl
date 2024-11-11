@@ -22,7 +22,7 @@ shiny_ptcl = "bin/field/effect/particle/ef_cyc_aura/ef_cyc_aura_rare_bk.ptcl"
 # whether or not brilliant spawns show their aura
 show_aura_for_brilliants = true
 # 0 for regular shiny rate, [1,100] for modified rate
-boosted_percentage = 15
+boosted_percentage = 70
 
 # Mod that actively randomizes every new spawn
 [randomizer]
