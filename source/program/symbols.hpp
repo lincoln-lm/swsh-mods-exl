@@ -11,6 +11,10 @@ const u64 VER_OFF = 0x30;
 
 const u64 SendCommand_offset = 0xea2190 - VER_OFF;
 const u64 AuraHandler_offset = 0xdcac10 - VER_OFF;
+const u64 EncountObject_offset = 0xd5da60 - VER_OFF;
+const u64 FishingPoint_offset = 0xd665c0 - VER_OFF;
+// TODO: handles a few more things other than just aura
+const u64 UpdatesAura_offset = 0xd5fa80 - VER_OFF;
 const u64 FishAuraHandler_offset = 0xd66b20 - VER_OFF;
 const u64 MainInit_offset = 0xf112b0 - VER_OFF; // initializes the class holding field objects
 const u64 EncountSpawnerInit_offset = 0xdae210 - VER_OFF; // not a ctor

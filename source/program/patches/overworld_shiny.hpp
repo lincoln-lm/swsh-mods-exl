@@ -29,12 +29,67 @@ HOOK_DEFINE_INLINE(ModifyShinyRate) {
     }
 };
 
+HOOK_DEFINE_INLINE(SetUpAuraPtcl) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        EXL_ASSERT(global_config.initialized);
+        if (global_config.overworld_shiny.active && !global_config.overworld_shiny.shiny_ptcl.empty()) {
+            auto ptcl = getFNV1aHashedString(global_config.overworld_shiny.shiny_ptcl.c_str());
+            // TODO: symbol something like "AddPtclEffect"
+            external<void>(0xcc07f0 - VER_OFF, ctx->X[19], &ptcl, -1);
+        }
+    }
+};
+
+HOOK_DEFINE_INLINE(PlayAuraPtcl) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        EXL_ASSERT(global_config.initialized);
+        if (global_config.overworld_shiny.active && !global_config.overworld_shiny.shiny_ptcl.empty()) {
+            if (*reinterpret_cast<u8*>(ctx->X[19] + 0x8B0) == 1) {
+                ctx->X[20] = getFNV1aHashedString(global_config.overworld_shiny.shiny_ptcl.c_str()).hash;
+            }
+        }
+    }
+};
+
+HOOK_DEFINE_INLINE(PlayFishAuraPtcl) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        EXL_ASSERT(global_config.initialized);
+        if (global_config.overworld_shiny.active && !global_config.overworld_shiny.shiny_ptcl.empty()) {
+            if (*reinterpret_cast<u8*>(ctx->X[19] + 0x530) == 1) {
+                ctx->X[20] = getFNV1aHashedString(global_config.overworld_shiny.shiny_ptcl.c_str()).hash;
+            }
+        }
+    }
+};
+
+HOOK_DEFINE_INLINE(StopAuraPtcl) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        EXL_ASSERT(global_config.initialized);
+        if (global_config.overworld_shiny.active && !global_config.overworld_shiny.shiny_ptcl.empty()) {
+            if (*reinterpret_cast<u8*>(ctx->X[19] + 0x8B0) == 1) {
+                ctx->X[8] = getFNV1aHashedString(global_config.overworld_shiny.shiny_ptcl.c_str()).hash;
+            }
+        }
+    }
+};
+
+HOOK_DEFINE_INLINE(StopFishAuraPtcl) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        EXL_ASSERT(global_config.initialized);
+        if (global_config.overworld_shiny.active && !global_config.overworld_shiny.shiny_ptcl.empty()) {
+            if (*reinterpret_cast<u8*>(ctx->X[20] + 0x530) == 1) {
+                ctx->X[24] = getFNV1aHashedString(global_config.overworld_shiny.shiny_ptcl.c_str()).hash;
+            }
+        }
+    }
+};
+
 HOOK_DEFINE_INLINE(RepurposeBrilliantAura) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
         EXL_ASSERT(global_config.initialized);
-        if (global_config.overworld_shiny.active && global_config.overworld_shiny.repurpose_aura) {
-            // check shiny flag rather than brilliant
-            ctx->W[8] = *reinterpret_cast<u8*>(ctx->X[0] + 0x8B0) == 1;
+        if (global_config.overworld_shiny.active && !global_config.overworld_shiny.shiny_ptcl.empty()) {
+            // check shiny flag or brilliant flag
+            ctx->W[8] |= *reinterpret_cast<u8*>(ctx->X[0] + 0x8B0) == 1;
         }
     }
 };
@@ -47,9 +102,9 @@ HOOK_DEFINE_INLINE(FishAuraAndShinySound) {
             if (is_shiny) {
                 SendCommand(global_config.overworld_shiny.sound.c_str());
             }
-            if (global_config.overworld_shiny.repurpose_aura) {
-                // check shiny flag rather than brilliant
-                ctx->W[8] = is_shiny;
+            if (!global_config.overworld_shiny.shiny_ptcl.empty()) {
+                // check shiny flag or brilliant flag
+                ctx->W[8] |= is_shiny;
             }
         }
     }
@@ -60,4 +115,11 @@ void install_overworld_shiny_patch() {
     ModifyShinyRate::InstallAtOffset(OverworldEncount::GenerateMainSpec_offset+0x2D8);
     RepurposeBrilliantAura::InstallAtOffset(AuraHandler_offset+0x16C);
     FishAuraAndShinySound::InstallAtOffset(FishAuraHandler_offset+0x238);
+    SetUpAuraPtcl::InstallAtOffset(EncountObject_offset+0x4C4);
+    SetUpAuraPtcl::InstallAtOffset(FishingPoint_offset+0x114);
+    PlayAuraPtcl::InstallAtOffset(UpdatesAura_offset+0x3FC);
+    PlayFishAuraPtcl::InstallAtOffset(FishAuraHandler_offset+0x270);
+    StopAuraPtcl::InstallAtOffset(UpdatesAura_offset+0x4A8);
+    // TODO: label offset for whatever the fishing function does
+    StopFishAuraPtcl::InstallAtOffset(0xd6683c-VER_OFF);
 }

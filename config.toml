@@ -13,8 +13,12 @@ active = false
 # "Play_Camp_Cooking_Explosion"
 # set to "" for no sound
 sound = "Play_Camp_Cooking_Explosion"
-# false for regular aura mechanics, true for aura as shiny indicator
-repurpose_aura = true
+# some particles:
+# "bin/field/effect/particle/particle/ef_poke_symbol_aura.ptcl" (brilliant aura)
+# "bin/field/effect/particle/ef_cyc_aura/ef_cyc_aura_rare_bk.ptcl" (squares from the black bike)
+# "bin/field/effect/particle/ef_cyc_aura/ef_cyc_aura_rare_wh.ptcl" (stars from the white bike)
+# set to "" for no particle
+shiny_ptcl = "bin/field/effect/particle/ef_cyc_aura/ef_cyc_aura_rare_bk.ptcl"
 # 0 for regular shiny rate, [1,100] for modified rate
 boosted_percentage = 70
 
