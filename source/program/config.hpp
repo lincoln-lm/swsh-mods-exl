@@ -13,6 +13,7 @@ struct PatchConfig {
         u32 boosted_percentage;
         std::string sound;
         std::string shiny_ptcl;
+        bool show_aura_for_brilliants;
     } overworld_shiny;
 
     struct {
@@ -50,6 +51,7 @@ struct PatchConfig {
         overworld_shiny.boosted_percentage = table["overworld_shiny"]["boosted_percentage"].value_or(0);
         overworld_shiny.sound = table["overworld_shiny"]["sound"].value_or("Play_Camp_Cooking_Explosion");
         overworld_shiny.shiny_ptcl = table["overworld_shiny"]["shiny_ptcl"].value_or("bin/field/effect/particle/ef_cyc_aura/ef_cyc_aura_rare_bk.ptcl");
+        overworld_shiny.show_aura_for_brilliants = table["overworld_shiny"]["show_aura_for_brilliants"].value_or(true);
 
         randomizer.active = table["randomizer"]["active"].value_or(false);
 

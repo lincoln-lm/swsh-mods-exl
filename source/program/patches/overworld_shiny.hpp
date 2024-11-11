@@ -87,9 +87,18 @@ HOOK_DEFINE_INLINE(StopFishAuraPtcl) {
 HOOK_DEFINE_INLINE(RepurposeBrilliantAura) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
         EXL_ASSERT(global_config.initialized);
-        if (global_config.overworld_shiny.active && !global_config.overworld_shiny.shiny_ptcl.empty()) {
+        if (global_config.overworld_shiny.active) {
+            bool show_aura = false;
+            if (global_config.overworld_shiny.show_aura_for_brilliants) {
+                // default brilliant check
+                show_aura |= ctx->W[8];
+            }
+            if (!global_config.overworld_shiny.shiny_ptcl.empty()) {
+                // shinies use aura for sparkles
+                show_aura |= *reinterpret_cast<u8*>(ctx->X[0] + 0x8B0) == 1;
+            }
             // check shiny flag or brilliant flag
-            ctx->W[8] |= *reinterpret_cast<u8*>(ctx->X[0] + 0x8B0) == 1;
+            ctx->W[8] = show_aura;
         }
     }
 };
@@ -98,14 +107,20 @@ HOOK_DEFINE_INLINE(FishAuraAndShinySound) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
         EXL_ASSERT(global_config.initialized);
         if (global_config.overworld_shiny.active) {
+            bool show_aura = false;
             bool is_shiny = *reinterpret_cast<u8*>(ctx->X[19] + 0x530) == 1;
             if (is_shiny) {
                 SendCommand(global_config.overworld_shiny.sound.c_str());
             }
-            if (!global_config.overworld_shiny.shiny_ptcl.empty()) {
-                // check shiny flag or brilliant flag
-                ctx->W[8] |= is_shiny;
+            if (global_config.overworld_shiny.show_aura_for_brilliants) {
+                // default brilliant check
+                show_aura |= ctx->W[8];
             }
+            if (!global_config.overworld_shiny.shiny_ptcl.empty()) {
+                // shinies use aura for sparkles
+                show_aura |= is_shiny;
+            }
+            ctx->W[8] = show_aura;
         }
     }
 };

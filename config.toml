@@ -4,7 +4,7 @@ active = false
 
 # Mod that makes shiny pokemon visible in the overworld
 [overworld_shiny]
-active = false
+active = true
 
 # some sounds:
 # "Play_Audience_cheer_riser_rnd"
@@ -19,8 +19,10 @@ sound = "Play_Camp_Cooking_Explosion"
 # "bin/field/effect/particle/ef_cyc_aura/ef_cyc_aura_rare_wh.ptcl" (stars from the white bike)
 # set to "" for no particle
 shiny_ptcl = "bin/field/effect/particle/ef_cyc_aura/ef_cyc_aura_rare_bk.ptcl"
+# whether or not brilliant spawns show their aura
+show_aura_for_brilliants = false
 # 0 for regular shiny rate, [1,100] for modified rate
-boosted_percentage = 70
+boosted_percentage = 15
 
 # Mod that actively randomizes every new spawn
 [randomizer]

@@ -31,6 +31,9 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/f2a553aa-2f44-40c4-b
     - Leave empty (``""``) for no particle
     - Any .ptcl in romfs or custom layeredfs should work but needs to be configured to repeat
     - string (``""``, ``"bin/field/effect/particle/particle/ef_poke_symbol_aura.ptcl"``, etc.)
+- ``show_aura_for_brilliants``
+    - Controls whether or not regular brilliant spawns show their aura
+    - boolean (``true``, ``false``)
 - ``boosted_percentage``
     - Controls the percentage for the modified overworld shiny odds
     - Set to 0 for regular shiny odds
