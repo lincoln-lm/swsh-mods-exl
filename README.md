@@ -25,11 +25,11 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/f2a553aa-2f44-40c4-b
     - Leave empty (``""``) for no command
     - Sound effects are commands and that is the intended use of this setting
     - string (``""``, ``"Play_Camp_Cooking_Explosion"``, etc.)
-- ``repurpose_aura``
-    - Controls whether or not the brilliant aura effect is used as a shiny indicator
-    - Brilliant auras will only appear around shiny pokemon and not regular brilliant spawns
-    - Brilliant spawns still happen as normal but will not have the indicator
-    - boolean (``true``, ``false``)
+- ``shiny_ptcl``
+    - Controls the particle effect that is played around a shiny
+    - Leave empty (``""``) for no particle
+    - Any .ptcl in romfs or custom layeredfs should work but needs to be configured to repeat
+    - string (``""``, ``"bin/field/effect/particle/particle/ef_poke_symbol_aura.ptcl"``, etc.)
 - ``boosted_percentage``
     - Controls the percentage for the modified overworld shiny odds
     - Set to 0 for regular shiny odds
@@ -39,7 +39,8 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/f2a553aa-2f44-40c4-b
 #### Notes
 - Hooks the check that determines whether or not a PokemonModel should display shininess to always return true (normally only true for following pokemon)
     - If the PokemonModel is shiny -> call SendCommand to trigger the sound effect
-- Hooks the brilliant aura check (only for displaying the effect) for both EncountObjects and FishingPoints to check the shiny flag instead of the brilliant flag
+- Hooks the functions responsible for adding & playing the particle effects to supply a custom .ptcl path
+- Hooks the brilliant aura check (only for displaying the effect) for both EncountObjects and FishingPoints to check the shiny flag or the brilliant flag
     - FishingPoints do not use PokemonModels so the sound effect for them is triggered here
 - Hooks the instruction that sets the shiny flag to call an external PRNG to determine shininess based on percentage (``randU64() % 100 < boosted_rate``)
 
