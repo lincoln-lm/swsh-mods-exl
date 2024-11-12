@@ -125,7 +125,36 @@ HOOK_DEFINE_INLINE(FishAuraAndShinySound) {
     }
 };
 
+HOOK_DEFINE_INLINE(IncludeBattleSoundBank) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        EXL_ASSERT(global_config.initialized);
+        if (global_config.overworld_shiny.active && global_config.overworld_shiny.include_battle_sounds) {
+            auto bank = getFNV1aHashedString("Battle_System_Flow.bnk");
+            // TODO: unload sound bank later?
+            LoadSoundBank(ctx->X[0], &bank, 0, 0, 0);
+        }
+    }
+};
+
+HOOK_DEFINE_INLINE(DisableVanillaBattleSoundBank) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        EXL_ASSERT(global_config.initialized);
+        if (global_config.overworld_shiny.active && global_config.overworld_shiny.include_battle_sounds) {
+            // Battle_System_Flow.bnk is already loaded and additionally should not be unloaded at the end of a battle
+            // replacing this with a dummy string that doesn't point to a valid file fixes both issues
+            auto dummy_bank = getFNV1aHashedString("");
+            auto bank = reinterpret_cast<hashed_string_t*>(ctx->X[1]);
+            bank->hash = dummy_bank.hash;
+            bank->length = dummy_bank.length;
+            bank->string = dummy_bank.string;
+            bank->unk = dummy_bank.unk;
+        }
+    }
+};
+
 void install_overworld_shiny_patch() {
+    DisableVanillaBattleSoundBank::InstallAtOffset(SetUpBattleEnvironment_offset+0x608);
+    IncludeBattleSoundBank::InstallAtOffset(InitSoundEngine_offset+0x2B4);
     PlayShinySound::InstallAtOffset(EncountObject::FromParams_offset+0x194);
     ModifyShinyRate::InstallAtOffset(OverworldEncount::GenerateMainSpec_offset+0x2D8);
     RepurposeBrilliantAura::InstallAtOffset(AuraHandler_offset+0x16C);

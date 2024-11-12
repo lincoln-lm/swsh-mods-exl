@@ -22,6 +22,9 @@ const u64 GetLevelCap_0_offset = 0x13ae400 - VER_OFF;
 const u64 GetLevelCap_1_offset = 0x13ae390 - VER_OFF;
 const u64 EulerToQuaternion_offset = 0x992cd0 - VER_OFF;
 const u64 QuaternionToEuler_offset = 0x6101c0;
+const u64 SetUpBattleEnvironment_offset = 0x968b70;
+const u64 InitSoundEngine_offset = 0x7937f0;
+const u64 LoadSoundBank_offset = 0x795650;
 
 // to use the q/v registers (128-bit float/float vector)
 // using f128 is often required
@@ -121,6 +124,10 @@ namespace HID {
 
 void SendCommand(const char* command) {
     return external<void>(SendCommand_offset, command);
+}
+
+void LoadSoundBank(u64 unk0, hashed_string_t* name, u64 unk1, u64 unk2, u64 unk3) {
+    return external<void>(LoadSoundBank_offset, unk0, name, unk1, unk2, unk3);
 }
 
 namespace GimmickSpawner {

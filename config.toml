@@ -4,15 +4,16 @@ active = false
 
 # Mod that makes shiny pokemon visible in the overworld
 [overworld_shiny]
-active = false
+active = true
 
 # some sounds:
+# "Play_Ba_sys_rare_effect" (battle shiny sound)
 # "Play_Audience_cheer_riser_rnd"
 # "Play_UI_netbattle_rank_up"
 # "Play_UI_Lcircuit_Goal"
 # "Play_Camp_Cooking_Explosion"
 # set to "" for no sound
-sound = "Play_Camp_Cooking_Explosion"
+sound = "Play_Ba_sys_rare_effect"
 # some particles:
 # "bin/field/effect/particle/particle/ef_poke_symbol_aura.ptcl" (brilliant aura)
 # "bin/field/effect/particle/ef_cyc_aura/ef_cyc_aura_rare_bk.ptcl" (squares from the black bike)
@@ -21,6 +22,8 @@ sound = "Play_Camp_Cooking_Explosion"
 shiny_ptcl = "bin/field/effect/particle/ef_cyc_aura/ef_cyc_aura_rare_bk.ptcl"
 # whether or not brilliant spawns show their aura
 show_aura_for_brilliants = true
+# whether or not to load the battle sound bank in the overworld (needed for battle shiny sound)
+include_battle_sounds = true
 # 0 for regular shiny rate, [1,100] for modified rate
 boosted_percentage = 70
 
