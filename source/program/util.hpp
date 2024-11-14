@@ -1,6 +1,32 @@
 #pragma once
 #include "symbols.hpp"
 
+Vec3f operator+(const Vec3f& lhs, const Vec3f& rhs) {
+    Vec3f result(0);
+    result.x = lhs.x + rhs.x;
+    result.y = lhs.y + rhs.y;
+    result.z = lhs.z + rhs.z;
+    return result;
+}
+
+Vec3f operator-(const Vec3f& lhs, const Vec3f& rhs) {
+    Vec3f result(0);
+    result.x = lhs.x - rhs.x;
+    result.y = lhs.y - rhs.y;
+    result.z = lhs.z - rhs.z;
+    return result;
+}
+
+namespace V3f {
+    float magnitude(const Vec3f& v) {
+        return std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+    }
+
+    float distance(const Vec3f& lhs, const Vec3f& rhs) {
+        return magnitude(lhs - rhs);
+    }
+}
+
 // requires vtable_offset
 template<typename T>
 void* getClassInheritance() {
