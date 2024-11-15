@@ -15,6 +15,8 @@ struct PatchConfig {
         std::string shiny_ptcl;
         bool show_aura_for_brilliants;
         bool include_battle_sounds;
+        bool play_sound_for_following;
+        bool show_ptcl_for_following;
     } overworld_shiny;
 
     struct {
@@ -58,6 +60,8 @@ struct PatchConfig {
         overworld_shiny.shiny_ptcl = table["overworld_shiny"]["shiny_ptcl"].value_or("bin/field/effect/particle/ef_cyc_aura/ef_cyc_aura_rare_bk.ptcl");
         overworld_shiny.show_aura_for_brilliants = table["overworld_shiny"]["show_aura_for_brilliants"].value_or(true);
         overworld_shiny.include_battle_sounds = table["overworld_shiny"]["include_battle_sounds"].value_or(true);
+        overworld_shiny.play_sound_for_following = table["overworld_shiny"]["play_sound_for_following"].value_or(false);
+        overworld_shiny.show_ptcl_for_following = table["overworld_shiny"]["show_ptcl_for_following"].value_or(true);
 
         randomizer.active = table["randomizer"]["active"].value_or(false);
 

@@ -24,6 +24,10 @@ shiny_ptcl = "bin/field/effect/particle/ef_cyc_aura/ef_cyc_aura_rare_bk.ptcl"
 show_aura_for_brilliants = true
 # whether or not to load the battle sound bank in the overworld (needed for battle shiny sound)
 include_battle_sounds = true
+# whether or not to play the shiny sound when the following pokemon respawns
+play_sound_for_following = false
+# whether or not to show the shiny particle for the following pokemon
+show_ptcl_for_following = true
 # 0 for regular shiny rate, [1,100] for modified rate
 boosted_percentage = 70
 

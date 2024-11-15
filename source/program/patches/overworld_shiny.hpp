@@ -10,9 +10,12 @@ HOOK_DEFINE_INLINE(PlayShinySound) {
         if (global_config.overworld_shiny.active) {
             // ensure shininess is pulled from the OverworldSpec
             OverworldEncount::OverworldSpec* overworld_spec = reinterpret_cast<OverworldEncount::OverworldSpec*>(ctx->X[21] + 0x270);
-            if (overworld_spec->shininess == 1) {
-                // sounds close enough to shiny sparkles
-                SendCommand(global_config.overworld_shiny.sound.c_str());
+            // in the base game W[9] should only be set for following pokemon
+            if (global_config.overworld_shiny.play_sound_for_following || !ctx->W[9]) {
+                if (overworld_spec->shininess == 1) {
+                    // sounds close enough to shiny sparkles
+                    SendCommand(global_config.overworld_shiny.sound.c_str());
+                }
             }
             // always show shininess
             ctx->W[9] = true;
@@ -95,7 +98,10 @@ HOOK_DEFINE_INLINE(RepurposeBrilliantAura) {
             }
             if (!global_config.overworld_shiny.shiny_ptcl.empty()) {
                 // shinies use aura for sparkles
-                show_aura |= *reinterpret_cast<u8*>(ctx->X[0] + 0x8B0) == 1;
+                // !is_following
+                if (global_config.overworld_shiny.show_ptcl_for_following || !*reinterpret_cast<bool*>(ctx->X[19] + 0xd58)) {
+                    show_aura |= *reinterpret_cast<u8*>(ctx->X[0] + 0x8B0) == 1;
+                }
             }
             // check shiny flag or brilliant flag
             ctx->W[8] = show_aura;

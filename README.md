@@ -37,6 +37,12 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/f2a553aa-2f44-40c4-b
 - ``include_battle_sounds``
     - Controls whether or not to load the battle sound bank in the overworld (needed for battle shiny sound)
     - boolean (``true``, ``false``)
+- ``play_sound_for_following``
+    - Controls whether or not to play the shiny sound when the following pokemon respawns
+    - boolean (``true``, ``false``)
+- ``show_ptcl_for_following``
+    - Controls whether or not to show the shiny particle for the following pokemon
+    - boolean (``true``, ``false``)
 - ``boosted_percentage``
     - Controls the percentage for the modified overworld shiny odds
     - Set to 0 for regular shiny odds
