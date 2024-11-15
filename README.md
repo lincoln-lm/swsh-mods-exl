@@ -188,3 +188,25 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/ada85d46-1754-4750-b
 
 #### Notes
 - Overwrites the maximum symbol count field on any new EncountSpawner with a hash within the hard-coded glimwood list
+
+### Synchro Mode ``[synchro_mode]``
+
+Mod that allows you to pilot your following pokemon
+
+Idea & recommendations by [norainthefuture](https://twitter.com/norainthefuture)
+
+#### Example
+
+
+#### Config
+- ``active``
+    - Controls whether or not the mod is activated
+    - boolean (``true``, ``false``)
+
+#### Notes
+- Inputs only register from "Npad" controllers (only tested on pro controller)
+- Movement can be buggy at times
+- If the following pokemon gets forcefully despawned you may teleport to (0,0)
+
+### Controls
+- L+R to toggle in and out of the state

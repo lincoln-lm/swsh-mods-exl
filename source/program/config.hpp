@@ -45,6 +45,10 @@ struct PatchConfig {
         s32 maximum_spawns;
     } glimwood_overworld;
 
+    struct {
+        bool active;
+    } synchro_mode;
+
     void from_table(toml::parse_result &table) {
         underworld.active = table["underworld"]["active"].value_or(false);
 
@@ -72,6 +76,8 @@ struct PatchConfig {
 
         glimwood_overworld.active = table["glimwood_overworld"]["active"].value_or(false);
         glimwood_overworld.maximum_spawns = table["glimwood_overworld"]["maximum_spawns"].value_or(1);
+
+        synchro_mode.active = table["synchro_mode"]["active"].value_or(false);
 
         initialized = true;
     }
