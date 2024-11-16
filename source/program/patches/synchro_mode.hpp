@@ -12,6 +12,9 @@ void synchro_input_callback(HID::HIDData* data) {
         if (is_newly_pressed(data, HID::NpadButton::R | HID::NpadButton::L)) {
             auto player = Field::GetPlayerObject();
             synchro_mode_active = !synchro_mode_active;
+            if (!synchro_mode_active) {
+                reinterpret_cast<bool*>(player)[0x218] = true;
+            }
             last_player_position = player->position;
         }
     }
