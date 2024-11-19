@@ -22,12 +22,12 @@ namespace exl::setting {
     constexpr size_t HeapSize = 0x5000;
 
     /* How large the JIT area will be for hooks. */
-    constexpr size_t JitSize = 0x2000;
+    constexpr size_t JitSize = 0x4000;
 
     /* How large the area will be inline hook pool. */
-    constexpr size_t InlinePoolSize = 0x2000;
+    constexpr size_t InlinePoolSize = 0x4000;
 
     /* Sanity checks. */
     static_assert(ALIGN_UP(JitSize, PAGE_SIZE) == JitSize, "");
-    static_assert(ALIGN_UP(InlinePoolSize, PAGE_SIZE) == JitSize, "");
+    static_assert(ALIGN_UP(InlinePoolSize, PAGE_SIZE) == InlinePoolSize, "");
 }

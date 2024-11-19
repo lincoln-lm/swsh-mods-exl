@@ -152,7 +152,7 @@ $(OFILES_SRC)	:	$(HFILES_BIN) $(HFILES_FBS)
 
 %_generated.h :	%.fbs
 	@echo Generating header for $(notdir $<)
-	@flatc -c -o $(dir $<) $<
+	@flatc -c -o $(dir $<) $< $(DEBUG_FBFLAGS)
 
 -include $(DEPENDS)
 

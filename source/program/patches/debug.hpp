@@ -120,6 +120,12 @@ void debug_input_callback(HID::HIDData* data) {
     }
 }
 
+HOOK_DEFINE_INLINE(DumpFlatbuffer) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        external<void>(0x18fe1d0, FlatbufferObjects::ObjectToString(reinterpret_cast<FlatbufferObjects::GimmickEncountSpawner*>(ctx->X[3])).c_str());
+    };
+};
+
 HOOK_DEFINE_INLINE(DebugTick) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {};
 };
@@ -127,4 +133,5 @@ HOOK_DEFINE_INLINE(DebugTick) {
 void install_debug_patch() {
     hid_callbacks.push_back(debug_input_callback);
     DebugTick::InstallAtOffset(0xcba730 - VER_OFF);
+    DumpFlatbuffer::InstallAtOffset(GimmickSpawner::GimmickSpawner_offset);
 }

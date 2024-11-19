@@ -1,5 +1,7 @@
 #pragma once
+
 #include "symbols.hpp"
+#include "flatbuffers/minireflect.h"
 
 Vec3f operator+(const Vec3f& lhs, const Vec3f& rhs) {
     Vec3f result(0);
@@ -15,6 +17,21 @@ Vec3f operator-(const Vec3f& lhs, const Vec3f& rhs) {
     result.y = lhs.y - rhs.y;
     result.z = lhs.z - rhs.z;
     return result;
+}
+
+namespace FlatbufferObjects {
+    template<typename T>
+    inline std::string ObjectToString(
+        const T* object,
+        bool multi_line = false,
+        bool vector_delimited = true,
+        const std::string &indent = "",
+        bool quotes = false
+    ) {
+        flatbuffers::ToStringVisitor tostring_visitor(multi_line ? "\n" : " ", quotes, indent, vector_delimited);
+        flatbuffers::IterateObject(reinterpret_cast<const u8*>(object), T::MiniReflectTypeTable(), &tostring_visitor);
+        return tostring_visitor.s;
+    }
 }
 
 namespace V3f {
