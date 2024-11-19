@@ -40,6 +40,7 @@ struct PatchConfig {
     struct {
         bool active;
         bool disable_terrain_culling;
+        bool always_use_extended_camera;
     } freecam;
 
     struct {
@@ -77,6 +78,7 @@ struct PatchConfig {
 
         freecam.active = table["freecam"]["active"].value_or(false);
         freecam.disable_terrain_culling = table["freecam"]["disable_terrain_culling"].value_or(true);
+        freecam.always_use_extended_camera = table["freecam"]["always_use_extended_camera"].value_or(false);
 
         glimwood_overworld.active = table["glimwood_overworld"]["active"].value_or(false);
         glimwood_overworld.maximum_spawns = table["glimwood_overworld"]["maximum_spawns"].value_or(1);

@@ -165,9 +165,15 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/87cf634b-e205-48ff-8
 - ``active``
     - Controls whether or not the mod is activated
     - boolean (``true``, ``false``)
+- ``disable_terrain_culling``
+    - Controls whether or not the game's automatic culling of far away terrain is disabled
+    - boolean (``true``, ``false``)
+- ``always_use_extended_camera``
+    - Controls whether or not the extended camera (the wild area camera that you can adjust) is enabled by default in all areas
+    - boolean (``true``, ``false``)
 
 #### Notes
-- Manual camera angle adjustment only possible on "Wide Roads" (wild area/ioa/ct)
+- Manual camera angle adjustment only possible on "Wide Roads" (wild area/ioa/ct) unless ``always_use_extended_camera`` is set
 - Inputs only register from "Npad" controllers (only tested on pro controller)
 
 ### Controls

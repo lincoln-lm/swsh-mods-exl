@@ -61,6 +61,8 @@ fully = true
 [freecam]
 active = false
 disable_terrain_culling = true
+# forces the extended camera to be active by default
+always_use_extended_camera = false
 
 # Mod that overwrites the maximum symbol encounter spawn count for spawners in glimwood tangle
 [glimwood_overworld]

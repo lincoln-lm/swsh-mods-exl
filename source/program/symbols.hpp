@@ -263,10 +263,8 @@ namespace Field {
     struct Camera : FieldObject {
         static const u64 vtable_offset = 0x2550f30;
         virtual int func_0x178();
-        // setter
-        virtual int func_0x180();
-        // getter
-        virtual int func_0x188();
+        virtual void SetCameraInInUse(bool value);
+        virtual bool GetCameraIsInUse();
         u8 unk_9[0x3C];
         float pitch;
         float unk_91[3];

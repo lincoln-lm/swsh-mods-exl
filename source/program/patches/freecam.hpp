@@ -10,25 +10,21 @@ bool directions[4] = {false, false, false, false};
 f32 speed = 128.0;
 int vertical_direction = 0;
 
-Field::Camera* get_camera() {
+Field::Camera* get_active_camera() {
     auto objs = Field::getFieldObjects();
     void* camera_inheritance = getClassInheritance<Field::Camera>();
-    auto camera = std::find_if(objs.begin(), objs.end(), [camera_inheritance](Field::FieldObject* obj) {
+    auto camera_location = std::find_if(objs.begin(), objs.end(), [camera_inheritance](Field::FieldObject* obj) {
         return Field::checkInheritance(obj, camera_inheritance)
-          && !(
-            obj->position.x == obj->position.y
-              && obj->position.y == obj->position.z
-              && obj->position.x == 0
-            );
+          && reinterpret_cast<Field::Camera*>(obj)->GetCameraIsInUse();
     });
-    return camera != objs.end() ? reinterpret_cast<Field::Camera*>(*camera) : nullptr;
+    return camera_location != objs.end() ? reinterpret_cast<Field::Camera*>(*camera_location) : nullptr;
 }
 
 HOOK_DEFINE_INLINE(Tick) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
         EXL_ASSERT(global_config.initialized);
         if (global_config.freecam.active) {
-            auto camera = get_camera();
+            auto camera = get_active_camera();
             if (is_freecam && camera) {
                 auto camera_dir = QuaternionToEuler(&camera->rotation).yaw;
                 for (int i = 0; i < 4; i++) {
@@ -113,6 +109,18 @@ HOOK_DEFINE_INLINE(DisableTerrainCulling2) {
         }
     }
 };
+HOOK_DEFINE_INLINE(EnableExtendedCamera) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        EXL_ASSERT(global_config.initialized);
+        if (global_config.freecam.active && global_config.freecam.always_use_extended_camera) {
+            // extended cameras call ExtendedCamera->SetCameraInInUse(false)
+            // and are manually enabled at some point later.
+            // enabling them in initialization is the easiest way to ensure its set up properly
+            // but has some side effects.
+            ctx->W[1] = true;
+        }
+    }
+};
 
 void input_callback(HID::HIDData* data) {
     EXL_ASSERT(global_config.initialized);
@@ -147,4 +155,5 @@ void install_freecam_patch() {
     SetPos3::InstallAtOffset(0xd93784 - VER_OFF);
     DisableTerrainCulling1::InstallAtOffset(0xccfc24 - VER_OFF);
     DisableTerrainCulling2::InstallAtOffset(0xcce05c - VER_OFF);
+    EnableExtendedCamera::InstallAtOffset(Field::ExtendedCamera::ExtendedCamera_offset + 0x3E0);
 }
