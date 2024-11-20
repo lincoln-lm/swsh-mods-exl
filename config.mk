@@ -18,7 +18,7 @@ PROGRAM_ID = 0100ABF008968000
 endif
 ifdef debug
 DEBUG_FLAGS = -DDEBUG
-DEBUG_FBFLAGS = --reflect-types
+DEBUG_FBFLAGS = --reflect-names
 else
 DEBUG_FLAGS =
 DEBUG_FBFLAGS =
