@@ -52,6 +52,10 @@ struct PatchConfig {
         bool active;
     } synchro_mode;
 
+    struct {
+        bool active;
+    } extended_following;
+
     void from_table(toml::parse_result &table) {
         underworld.active = table["underworld"]["active"].value_or(false);
 
@@ -84,6 +88,8 @@ struct PatchConfig {
         glimwood_overworld.maximum_spawns = table["glimwood_overworld"]["maximum_spawns"].value_or(1);
 
         synchro_mode.active = table["synchro_mode"]["active"].value_or(false);
+
+        extended_following.active = table["extended_following"]["active"].value_or(false);
 
         initialized = true;
     }

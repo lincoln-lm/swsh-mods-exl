@@ -222,3 +222,17 @@ Idea & recommendations by [norainthefuture](https://twitter.com/norainthefuture)
 
 ### Controls
 - L+R to toggle in and out of the state
+
+### Extended Following ``[extended_following]``
+
+Mod that allows following pokemon in the galar mainland wild area
+
+#### Example
+
+
+#### Config
+- ``active``
+    - Controls whether or not the mod is activated
+    - boolean (``true``, ``false``)
+
+<!-- #### Notes -->

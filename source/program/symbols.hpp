@@ -187,12 +187,13 @@ struct ScaledWorldObject : public WorldObject
 static_assert(sizeof(ScaledWorldObject) == 0x190);
 
 namespace Field {
-    const u64 FetchAreaHash_offset = 0xd7e310 - VER_OFF;
+    const u64 FetchZoneHash_offset = 0xd7e310 - VER_OFF;
     const u64 GetPlayerObject_offset = 0xd7e290 - VER_OFF;
     const u64 PushNestHoleEmitter_offset = 0xec5400 - VER_OFF;
     const u64 PushFieldBallItem_offset = 0xd21b20 - VER_OFF;
     const u64 PushUnitObject_offset = 0xd25810 - VER_OFF;
     const u64 PushPokemonModel_offset = 0xd204f0 - VER_OFF;
+    const u64 PushGimmickEncountSpawner_offset = 0xd2a6e0 - VER_OFF;
     const u64 FieldSingleton_offset = 0x2955208;
 
     struct FieldObject : public ScaledWorldObject
@@ -324,8 +325,8 @@ namespace Field {
     };
     static_assert(sizeof(FieldSingleton) == 0xd0);
 
-    u64 FetchAreaHash() {
-        return external<u64>(FetchAreaHash_offset);
+    u64 FetchZoneHash() {
+        return external<u64>(FetchZoneHash_offset);
     }
     // TODO: PlayerObject
     FieldObject* GetPlayerObject() {

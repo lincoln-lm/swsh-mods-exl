@@ -74,3 +74,7 @@ maximum_spawns = 1
 # Mod that allows you to pilot your following pokemon
 [synchro_mode]
 active = false
+
+# Mod that allows following pokemon in the galar mainland wild area
+[extended_following]
+active = false

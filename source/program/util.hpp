@@ -82,6 +82,7 @@ namespace Field {
         else if constexpr (std::is_same_v<T, FlatbufferObjects::NestHoleEmitter>) return PushNestHoleEmitter_offset;
         else if constexpr (std::is_same_v<T, FlatbufferObjects::UnitObject>) return PushUnitObject_offset;
         else if constexpr (std::is_same_v<T, FlatbufferObjects::PokemonModel>) return PushPokemonModel_offset;
+        else if constexpr (std::is_same_v<T, FlatbufferObjects::GimmickEncountSpawner>) return PushGimmickEncountSpawner_offset;
         else static_assert(always_false<T>);
     }
     FieldSingleton* getFieldSingleton() {

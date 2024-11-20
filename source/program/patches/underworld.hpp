@@ -13,7 +13,7 @@ HOOK_DEFINE_TRAMPOLINE(SwapSymbolTableHash) {
             // SKY and WATER
             if (current_spawner_type != 1 && current_spawner_type != 2) {
                 // pull the hidden table based on the player's current location
-                u64 hidden_encount_table_hash = Field::FetchAreaHash();
+                u64 hidden_encount_table_hash = Field::FetchZoneHash();
                 *encounter_tables = OverworldEncount::FetchSymbolEncountTable(0, &hidden_encount_table_hash);
             }
             current_spawner_type = -1;
