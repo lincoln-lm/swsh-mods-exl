@@ -4,27 +4,26 @@
 #include "config.hpp"
 #include <unordered_set>
 
-// TODO: crack hashes?
 const std::unordered_set<u64> glimwood_spawners = {
-    0x70478112111c5ac1,
-    0xc0ff974997204bbe,
-    0xc0ff984997204d71,
-    0xc0ff954997204858,
-    0xc0ff964997204a0b,
-    0xc0ff9b499720528a,
-    0xc0ff9c499720543d,
-    0xc0ff994997204f24,
-    0xc0ff9a49972050d7,
-    0xc0ff8f4997203e26,
-    0xc0ff904997203fd9,
-    0x129d060bcbe34573,
-    0x129d050bcbe343c0,
-    0x129d080bcbe348d9,
-    0x129d070bcbe34726,
-    0x129d0a0bcbe34c3f,
-    0x129d090bcbe34a8c,
-    0x129d0c0bcbe34fa5,
-    0x129d0b0bcbe34df2,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_0").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_1").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_2").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_3").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_4").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_5").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_6").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_7").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_8").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_9").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_10").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_11").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_12").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_13").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_14").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_15").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_16").hash,
+    getFNV1aHashedString("z_d0401_SymbolEncountPokemonSpawner_D04_Grass_01_17").hash,
 };
 
 HOOK_DEFINE_INLINE(PatchMaximumSpawns) {
