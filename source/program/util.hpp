@@ -44,12 +44,16 @@ namespace V3f {
     }
 }
 
-// requires vtable_offset
+void* getClassInheritance(u64 vtable_offset) {
+    // GetInstanceInheritance() is at vtable_offset + 0x30
+    return external_absolute<void*>(read_main<u64>(vtable_offset + 0x30));
+}
+
+// requires ::vtable_offset
 template<typename T>
 void* getClassInheritance() {
     static_assert(std::is_base_of_v<WorldObject, T>);
-    // GetInstanceInheritance() is at vtable_offset + 0x30
-    return external_absolute<void*>(read_main<u64>(T::vtable_offset + 0x30));
+    return getClassInheritance(T::vtable_offset);
 }
 
 namespace PersonalInfo {
