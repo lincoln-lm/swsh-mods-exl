@@ -2,10 +2,17 @@
 ### Configurable [exlaunch](https://github.com/shadowninja108/exlaunch)-based mods for Pokemon Sword and Shield 
 ### v.1.3.2 (latest version) only !
 
-## Installation
+## Installation (Console)
 1. Download the [latest release](https://github.com/Lincoln-LM/swsh-mods-exl/releases/tag/release) for your game version
-1. Unzip the release to your sd card (or the sdmc directory of your emulator)
+1. Unzip the release to your sd card
 1. Edit ``sd:/config/swsh-mods-exl/config.toml`` to your liking
+
+## Installation (Ryujinx)
+1. Download the [latest release](https://github.com/Lincoln-LM/swsh-mods-exl/releases/tag/release) for your game version
+    - Extract the ``atmosphere/contents/<title_id>`` folder and rename it to ``swsh-mods-exl`` as well as the ``config`` folder
+1. Right click on the game in Ryujinx and select "Open Atmosphere Mods Directory"
+1. Place the ``swsh-mods-exl`` folder in the opened directory
+1. Navigate out of the ``sdcard/atmosphere/contents/<title_id>`` directory to the ``sdcard`` directory and place the ``config`` folder there
 
 ## Mods
 
