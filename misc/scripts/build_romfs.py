@@ -17,8 +17,8 @@ shutil.copytree("static_romfs", "deploy/romfs", dirs_exist_ok=True)
 
 # {script name: [script ids], ...}
 custom_scripts = {
-    "debug": [
-        "debug_msg_1",
+    "custom_message": [
+        "custom_message",
     ]
 }
 

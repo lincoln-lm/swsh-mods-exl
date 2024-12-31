@@ -66,6 +66,12 @@ Vec4f EulerToQuaternion(float yaw, float pitch, float roll) {
     return external<f128>(EulerToQuaternion_offset, yaw, pitch, roll);
 }
 
+namespace AMX {
+    const u64 CallPawnScript_offset = 0x14c9aa0 - VER_OFF;
+    const u64 PG_WordSetRegister_offset = 0x14b6690 - VER_OFF;
+    const u64 WordSetRegister_PlayerName_offset = 0x13c9060 - VER_OFF;
+}
+
 namespace HID {
     const u64 PollNpad_offset = 0xf1f9d0 - VER_OFF;
 

@@ -206,6 +206,7 @@ FieldObject* NewPokemonModel(Vec4f pos, float scale, u16 species, u16 form, u16 
 void debug_input_callback(HID::HIDData* data) {
     EXL_ASSERT(global_config.initialized);
     if (is_newly_pressed(data, HID::NpadButton::R | HID::NpadButton::A)) {
+        AMX::show_custom_message(u"\023R+A pressed\023");
         auto player = GetPlayerObject();
         NewPokemonModel(player->position, 2.0, 132, 0, 0, true, getFNV1aHashedString("debug_msg_1").hash);
         external<void>(0xcba890 - VER_OFF, getFieldSingleton(), 1);
