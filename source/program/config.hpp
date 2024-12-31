@@ -13,6 +13,10 @@ struct PatchConfig {
         u32 boosted_percentage;
         std::string sound;
         std::string shiny_ptcl;
+        bool show_aura_for_brilliants;
+        bool include_battle_sounds;
+        bool play_sound_for_following;
+        bool show_ptcl_for_following;
     } overworld_shiny;
 
     struct {
@@ -36,12 +40,21 @@ struct PatchConfig {
     struct {
         bool active;
         bool disable_terrain_culling;
+        bool always_use_extended_camera;
     } freecam;
 
     struct {
         bool active;
         s32 maximum_spawns;
     } glimwood_overworld;
+
+    struct {
+        bool active;
+    } synchro_mode;
+
+    struct {
+        bool active;
+    } extended_following;
 
     void from_table(toml::parse_result &table) {
         underworld.active = table["underworld"]["active"].value_or(false);
@@ -50,6 +63,10 @@ struct PatchConfig {
         overworld_shiny.boosted_percentage = table["overworld_shiny"]["boosted_percentage"].value_or(0);
         overworld_shiny.sound = table["overworld_shiny"]["sound"].value_or("Play_Camp_Cooking_Explosion");
         overworld_shiny.shiny_ptcl = table["overworld_shiny"]["shiny_ptcl"].value_or("bin/field/effect/particle/ef_cyc_aura/ef_cyc_aura_rare_bk.ptcl");
+        overworld_shiny.show_aura_for_brilliants = table["overworld_shiny"]["show_aura_for_brilliants"].value_or(true);
+        overworld_shiny.include_battle_sounds = table["overworld_shiny"]["include_battle_sounds"].value_or(true);
+        overworld_shiny.play_sound_for_following = table["overworld_shiny"]["play_sound_for_following"].value_or(false);
+        overworld_shiny.show_ptcl_for_following = table["overworld_shiny"]["show_ptcl_for_following"].value_or(true);
 
         randomizer.active = table["randomizer"]["active"].value_or(false);
 
@@ -65,9 +82,14 @@ struct PatchConfig {
 
         freecam.active = table["freecam"]["active"].value_or(false);
         freecam.disable_terrain_culling = table["freecam"]["disable_terrain_culling"].value_or(true);
+        freecam.always_use_extended_camera = table["freecam"]["always_use_extended_camera"].value_or(false);
 
         glimwood_overworld.active = table["glimwood_overworld"]["active"].value_or(false);
         glimwood_overworld.maximum_spawns = table["glimwood_overworld"]["maximum_spawns"].value_or(1);
+
+        synchro_mode.active = table["synchro_mode"]["active"].value_or(false);
+
+        extended_following.active = table["extended_following"]["active"].value_or(false);
 
         initialized = true;
     }

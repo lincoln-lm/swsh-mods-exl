@@ -22,6 +22,9 @@ const u64 GetLevelCap_0_offset = 0x13ae400 - VER_OFF;
 const u64 GetLevelCap_1_offset = 0x13ae390 - VER_OFF;
 const u64 EulerToQuaternion_offset = 0x992cd0 - VER_OFF;
 const u64 QuaternionToEuler_offset = 0x6101c0;
+const u64 SetUpBattleEnvironment_offset = 0x968b70;
+const u64 InitSoundEngine_offset = 0x7937f0;
+const u64 LoadSoundBank_offset = 0x795650;
 
 // to use the q/v registers (128-bit float/float vector)
 // using f128 is often required
@@ -123,6 +126,10 @@ void SendCommand(const char* command) {
     return external<void>(SendCommand_offset, command);
 }
 
+void LoadSoundBank(u64 unk0, hashed_string_t* name, u64 unk1, u64 unk2, u64 unk3) {
+    return external<void>(LoadSoundBank_offset, unk0, name, unk1, unk2, unk3);
+}
+
 namespace GimmickSpawner {
     const u64 GimmickSpawner_offset = 0xd5aad0 - VER_OFF;
 }
@@ -180,12 +187,13 @@ struct ScaledWorldObject : public WorldObject
 static_assert(sizeof(ScaledWorldObject) == 0x190);
 
 namespace Field {
-    const u64 FetchAreaHash_offset = 0xd7e310 - VER_OFF;
+    const u64 FetchZoneHash_offset = 0xd7e310 - VER_OFF;
     const u64 GetPlayerObject_offset = 0xd7e290 - VER_OFF;
     const u64 PushNestHoleEmitter_offset = 0xec5400 - VER_OFF;
     const u64 PushFieldBallItem_offset = 0xd21b20 - VER_OFF;
     const u64 PushUnitObject_offset = 0xd25810 - VER_OFF;
     const u64 PushPokemonModel_offset = 0xd204f0 - VER_OFF;
+    const u64 PushGimmickEncountSpawner_offset = 0xd2a6e0 - VER_OFF;
     const u64 FieldSingleton_offset = 0x2955208;
 
     struct FieldObject : public ScaledWorldObject
@@ -256,10 +264,8 @@ namespace Field {
     struct Camera : FieldObject {
         static const u64 vtable_offset = 0x2550f30;
         virtual int func_0x178();
-        // setter
-        virtual int func_0x180();
-        // getter
-        virtual int func_0x188();
+        virtual void SetCameraInInUse(bool value);
+        virtual bool GetCameraIsInUse();
         u8 unk_9[0x3C];
         float pitch;
         float unk_91[3];
@@ -319,8 +325,8 @@ namespace Field {
     };
     static_assert(sizeof(FieldSingleton) == 0xd0);
 
-    u64 FetchAreaHash() {
-        return external<u64>(FetchAreaHash_offset);
+    u64 FetchZoneHash() {
+        return external<u64>(FetchZoneHash_offset);
     }
     // TODO: PlayerObject
     FieldObject* GetPlayerObject() {

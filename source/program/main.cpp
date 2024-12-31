@@ -12,6 +12,8 @@
 #include "patches/overworld_shiny.hpp"
 #include "patches/freecam.hpp"
 #include "patches/glimwood_overworld.hpp"
+#include "patches/synchro_mode.hpp"
+#include "patches/extended_following.hpp"
 #ifdef DEBUG
 #include "patches/debug.hpp"
 #endif
@@ -59,6 +61,8 @@ extern "C" void exl_main(void* x0, void* x1) {
     install_uncap_level_patch();
     install_freecam_patch();
     install_glimwood_overworld_patch();
+    install_synchro_mode_patch();
+    install_extended_following_patch();
     #ifdef DEBUG
     install_debug_patch();
     #endif

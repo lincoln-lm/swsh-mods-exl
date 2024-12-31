@@ -2,10 +2,17 @@
 ### Configurable [exlaunch](https://github.com/shadowninja108/exlaunch)-based mods for Pokemon Sword and Shield 
 ### v.1.3.2 (latest version) only !
 
-## Installation
+## Installation (Console)
 1. Download the [latest release](https://github.com/Lincoln-LM/swsh-mods-exl/releases/tag/release) for your game version
-1. Unzip the release to your sd card (or the sdmc directory of your emulator)
+1. Unzip the release to your sd card
 1. Edit ``sd:/config/swsh-mods-exl/config.toml`` to your liking
+
+## Installation (Ryujinx)
+1. Download the [latest release](https://github.com/Lincoln-LM/swsh-mods-exl/releases/tag/release) for your game version
+    - Extract the ``atmosphere/contents/<title_id>`` folder and rename it to ``swsh-mods-exl`` as well as the ``config`` folder
+1. Right click on the game in Ryujinx and select "Open Atmosphere Mods Directory"
+1. Place the ``swsh-mods-exl`` folder in the opened directory
+1. Navigate out of the ``sdcard/atmosphere/contents/<title_id>`` directory to the ``sdcard`` directory and place the ``config`` folder there
 
 ## Mods
 
@@ -31,6 +38,18 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/f2a553aa-2f44-40c4-b
     - Leave empty (``""``) for no particle
     - Any .ptcl in romfs or custom layeredfs should work but needs to be configured to repeat
     - string (``""``, ``"bin/field/effect/particle/particle/ef_poke_symbol_aura.ptcl"``, etc.)
+- ``show_aura_for_brilliants``
+    - Controls whether or not regular brilliant spawns show their aura
+    - boolean (``true``, ``false``)
+- ``include_battle_sounds``
+    - Controls whether or not to load the battle sound bank in the overworld (needed for battle shiny sound)
+    - boolean (``true``, ``false``)
+- ``play_sound_for_following``
+    - Controls whether or not to play the shiny sound when the following pokemon respawns
+    - boolean (``true``, ``false``)
+- ``show_ptcl_for_following``
+    - Controls whether or not to show the shiny particle for the following pokemon
+    - boolean (``true``, ``false``)
 - ``boosted_percentage``
     - Controls the percentage for the modified overworld shiny odds
     - Set to 0 for regular shiny odds
@@ -153,9 +172,15 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/87cf634b-e205-48ff-8
 - ``active``
     - Controls whether or not the mod is activated
     - boolean (``true``, ``false``)
+- ``disable_terrain_culling``
+    - Controls whether or not the game's automatic culling of far away terrain is disabled
+    - boolean (``true``, ``false``)
+- ``always_use_extended_camera``
+    - Controls whether or not the extended camera (the wild area camera that you can adjust) is enabled by default in all areas
+    - boolean (``true``, ``false``)
 
 #### Notes
-- Manual camera angle adjustment only possible on "Wide Roads" (wild area/ioa/ct)
+- Manual camera angle adjustment only possible on "Wide Roads" (wild area/ioa/ct) unless ``always_use_extended_camera`` is set
 - Inputs only register from "Npad" controllers (only tested on pro controller)
 
 ### Controls
@@ -182,3 +207,39 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/ada85d46-1754-4750-b
 
 #### Notes
 - Overwrites the maximum symbol count field on any new EncountSpawner with a hash within the hard-coded glimwood list
+
+### Synchro Mode ``[synchro_mode]``
+
+Mod that allows you to pilot your following pokemon
+
+Idea & recommendations by [norainthefuture](https://twitter.com/norainthefuture)
+
+#### Example
+
+
+#### Config
+- ``active``
+    - Controls whether or not the mod is activated
+    - boolean (``true``, ``false``)
+
+#### Notes
+- Inputs only register from "Npad" controllers (only tested on pro controller)
+- Movement can be buggy at times
+- If the following pokemon gets forcefully despawned you may teleport to (0,0)
+
+### Controls
+- L+R to toggle in and out of the state
+
+### Extended Following ``[extended_following]``
+
+Mod that allows following pokemon in the galar mainland wild area
+
+#### Example
+
+
+#### Config
+- ``active``
+    - Controls whether or not the mod is activated
+    - boolean (``true``, ``false``)
+
+<!-- #### Notes -->

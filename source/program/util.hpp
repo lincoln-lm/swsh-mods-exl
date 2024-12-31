@@ -1,12 +1,59 @@
 #pragma once
-#include "symbols.hpp"
 
-// requires vtable_offset
+#include "symbols.hpp"
+#include "flatbuffers/minireflect.h"
+
+Vec3f operator+(const Vec3f& lhs, const Vec3f& rhs) {
+    Vec3f result(0);
+    result.x = lhs.x + rhs.x;
+    result.y = lhs.y + rhs.y;
+    result.z = lhs.z + rhs.z;
+    return result;
+}
+
+Vec3f operator-(const Vec3f& lhs, const Vec3f& rhs) {
+    Vec3f result(0);
+    result.x = lhs.x - rhs.x;
+    result.y = lhs.y - rhs.y;
+    result.z = lhs.z - rhs.z;
+    return result;
+}
+
+namespace FlatbufferObjects {
+    template<typename T>
+    inline std::string ObjectToString(
+        const T* object,
+        bool multi_line = false,
+        bool vector_delimited = true,
+        const std::string &indent = "",
+        bool quotes = false
+    ) {
+        flatbuffers::ToStringVisitor tostring_visitor(multi_line ? "\n" : " ", quotes, indent, vector_delimited);
+        flatbuffers::IterateObject(reinterpret_cast<const u8*>(object), T::MiniReflectTypeTable(), &tostring_visitor);
+        return tostring_visitor.s;
+    }
+}
+
+namespace V3f {
+    float magnitude(const Vec3f& v) {
+        return std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+    }
+
+    float distance(const Vec3f& lhs, const Vec3f& rhs) {
+        return magnitude(lhs - rhs);
+    }
+}
+
+void* getClassInheritance(u64 vtable_offset) {
+    // GetInstanceInheritance() is at vtable_offset + 0x30
+    return external_absolute<void*>(read_main<u64>(vtable_offset + 0x30));
+}
+
+// requires ::vtable_offset
 template<typename T>
 void* getClassInheritance() {
     static_assert(std::is_base_of_v<WorldObject, T>);
-    // GetInstanceInheritance() is at vtable_offset + 0x30
-    return external_absolute<void*>(read_main<u64>(T::vtable_offset + 0x30));
+    return getClassInheritance(T::vtable_offset);
 }
 
 namespace PersonalInfo {
@@ -39,6 +86,7 @@ namespace Field {
         else if constexpr (std::is_same_v<T, FlatbufferObjects::NestHoleEmitter>) return PushNestHoleEmitter_offset;
         else if constexpr (std::is_same_v<T, FlatbufferObjects::UnitObject>) return PushUnitObject_offset;
         else if constexpr (std::is_same_v<T, FlatbufferObjects::PokemonModel>) return PushPokemonModel_offset;
+        else if constexpr (std::is_same_v<T, FlatbufferObjects::GimmickEncountSpawner>) return PushGimmickEncountSpawner_offset;
         else static_assert(always_false<T>);
     }
     FieldSingleton* getFieldSingleton() {

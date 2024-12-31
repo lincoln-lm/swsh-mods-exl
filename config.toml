@@ -7,18 +7,27 @@ active = false
 active = false
 
 # some sounds:
+# "Play_Ba_sys_rare_effect" (battle shiny sound)
 # "Play_Audience_cheer_riser_rnd"
 # "Play_UI_netbattle_rank_up"
 # "Play_UI_Lcircuit_Goal"
 # "Play_Camp_Cooking_Explosion"
 # set to "" for no sound
-sound = "Play_Camp_Cooking_Explosion"
+sound = "Play_Ba_sys_rare_effect"
 # some particles:
 # "bin/field/effect/particle/particle/ef_poke_symbol_aura.ptcl" (brilliant aura)
 # "bin/field/effect/particle/ef_cyc_aura/ef_cyc_aura_rare_bk.ptcl" (squares from the black bike)
 # "bin/field/effect/particle/ef_cyc_aura/ef_cyc_aura_rare_wh.ptcl" (stars from the white bike)
 # set to "" for no particle
 shiny_ptcl = "bin/field/effect/particle/ef_cyc_aura/ef_cyc_aura_rare_bk.ptcl"
+# whether or not brilliant spawns show their aura
+show_aura_for_brilliants = true
+# whether or not to load the battle sound bank in the overworld (needed for battle shiny sound)
+include_battle_sounds = true
+# whether or not to play the shiny sound when the following pokemon respawns
+play_sound_for_following = false
+# whether or not to show the shiny particle for the following pokemon
+show_ptcl_for_following = true
 # 0 for regular shiny rate, [1,100] for modified rate
 boosted_percentage = 70
 
@@ -52,6 +61,8 @@ fully = true
 [freecam]
 active = false
 disable_terrain_culling = true
+# forces the extended camera to be active by default
+always_use_extended_camera = false
 
 # Mod that overwrites the maximum symbol encounter spawn count for spawners in glimwood tangle
 [glimwood_overworld]
@@ -59,3 +70,11 @@ active = false
 
 # maximum symbol count per spawner
 maximum_spawns = 1
+
+# Mod that allows you to pilot your following pokemon
+[synchro_mode]
+active = false
+
+# Mod that allows following pokemon in the galar mainland wild area
+[extended_following]
+active = false
