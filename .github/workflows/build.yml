@@ -36,7 +36,7 @@ jobs:
         cd build
         cmake ..
         make
-        cp ./gf-pawncc /usr/local/bin/gf-pawncc
+        cp ./compiler/gf-pawncc /usr/local/bin/gf-pawncc
         cd ../../../
     - name: Build
       run: |
