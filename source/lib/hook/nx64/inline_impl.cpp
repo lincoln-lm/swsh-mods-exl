@@ -2,14 +2,16 @@
 #include <common.hpp>
 
 #include <array>
-#include <lib.hpp>
 
+#include "../../util/sys/jit.hpp"
+#include "../../armv8.hpp"
 #include "impl.hpp"
 
 namespace exl::hook::nx64 {
 
-    /* Size of stack to reserve for the context. Adjust this along with CTX_STACK_SIZE in inline_asm.s */
-    static constexpr int CtxStackSize = 0x100;
+    /* Size of stack to reserve for the contexts. Adjust this along with variables in inline_asm.s */
+    static constexpr int CtxStackBaseSize = 0x100;
+    static constexpr int CtxStackFloatSize = 0x200;
 
     namespace reg = exl::armv8::reg;
     namespace inst = exl::armv8::inst;
@@ -26,10 +28,15 @@ namespace exl::hook::nx64 {
 
     extern "C" {
         extern char exl_inline_hook_impl;
+        extern char exl_inline_float_hook_impl;
     }
 
-    static uintptr_t GetImpl() {
-        return reinterpret_cast<uintptr_t>(&exl_inline_hook_impl);
+    static uintptr_t GetImpl(bool use_float_impl) {
+        if(!use_float_impl) {
+            return reinterpret_cast<uintptr_t>(&exl_inline_hook_impl);
+        } else {
+            return  reinterpret_cast<uintptr_t>(&exl_inline_float_hook_impl);
+        }
     }
 
     static const Entry* GetEntryRx() {
@@ -44,10 +51,10 @@ namespace exl::hook::nx64 {
         s_InlineHookJit.Initialize();
     }
 
-    void HookInline(uintptr_t hook, uintptr_t callback) {
+    void HookInline(uintptr_t hook, uintptr_t callback, bool capture_floats) {
         /* Ensure enough space in the pool. */
         if(s_EntryIndex >= InlinePoolCount)
-            EXL_ABORT(result::HookTrampolineAllocFail);
+            R_ABORT_UNLESS(result::HookTrampolineAllocFail);
 
         /* Grab entry from pool. */
         auto entryRx = &GetEntryRx()[s_EntryIndex];
@@ -59,11 +66,17 @@ namespace exl::hook::nx64 {
         /* Hook to call into the entry's entrypoint. Assign trampoline to be used by impl. */
         auto trampoline = Hook(hook, entryCb, true);
         /* Offset of LR before SP is moved. */
-        static constexpr int lrBackupOffset = int(offsetof(InlineCtx, m_Gpr.m_Lr)) - CtxStackSize;
+        static constexpr int lrBackupOffset = int(offsetof(InlineCtx, m_Gpr.m_Lr)) - CtxStackBaseSize;
         static_assert(lrBackupOffset == -0x10, "InlineCtx is not ABI compatible.");
 
+        /* Ensure the context's sizes line up.  */
+        static_assert(sizeof(InlineFloatCtx) == CtxStackBaseSize + CtxStackFloatSize, "Float context will not fit in the stack!");
+        static_assert(sizeof(FloatRegisters) == CtxStackFloatSize, "Float context will not fit in stack!");
+
+        /* Select appropriate implementation for entrypoint. */
+        auto impl = GetImpl(capture_floats);
+
         /* Construct entrypoint instructions. */
-        auto impl = GetImpl();
         entryRw->m_CbEntry = {
             /* Backup LR register to stack, as we are about to trash it. */
             inst::SturUnscaledImmediate(reg::LR, reg::SP, lrBackupOffset),

@@ -33,7 +33,7 @@ HOOK_DEFINE_TRAMPOLINE(MainInitHook){
                 nn::settings::LanguageCode::Make(nn::settings::Language::Language_English)
             );
             nn::err::ShowApplicationError(err);
-            EXL_ABORT(0x420);
+            EXL_ABORT("Failed to read config.");
         }
         auto config = toml::parse(config_str);
         if (!config) {
@@ -43,7 +43,7 @@ HOOK_DEFINE_TRAMPOLINE(MainInitHook){
                 nn::settings::LanguageCode::Make(nn::settings::Language::Language_English)
             );
             nn::err::ShowApplicationError(err);
-            EXL_ABORT(0x420);
+            EXL_ABORT("Invalid config.");
         }
         global_config.from_table(config);
         Orig(x0, x1, x2, x3);
@@ -51,6 +51,7 @@ HOOK_DEFINE_TRAMPOLINE(MainInitHook){
 };
 
 extern "C" void exl_main(void* x0, void* x1) {
+    /* Setup hooking environment. */
     exl::hook::Initialize();
     MainInitHook::InstallAtOffset(MainInit_offset);
     install_hid_patch();
@@ -71,6 +72,6 @@ extern "C" void exl_main(void* x0, void* x1) {
 }
 
 extern "C" NORETURN void exl_exception_entry() {
-    /* TODO: exception handling */
-    EXL_ABORT(0x420);
+    /* Note: this is only applicable in the context of applets/sysmodules. */
+    EXL_ABORT("Default exception handler called!");
 }

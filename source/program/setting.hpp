@@ -4,10 +4,8 @@
 
 #ifdef VERSION_SHIELD
 #define EXL_MODULE_NAME "exlaunch_shield"
-#define EXL_MODULE_NAME_LEN 15
 #else
 #define EXL_MODULE_NAME "exlaunch_sword"
-#define EXL_MODULE_NAME_LEN 14
 #endif
 
 #define EXL_DEBUG
@@ -26,6 +24,9 @@ namespace exl::setting {
 
     /* How large the area will be inline hook pool. */
     constexpr size_t InlinePoolSize = 0x4000;
+
+    /* How large the formatting buffer should be for logging. The buffer will be on the stack. */
+    constexpr size_t LogBufferSize = 512;
 
     /* Sanity checks. */
     static_assert(ALIGN_UP(JitSize, PAGE_SIZE) == JitSize, "");
