@@ -10,9 +10,13 @@ HOOK_DEFINE_INLINE(PlayShinySound) {
         if (global_config.overworld_shiny.active) {
             // ensure shininess is pulled from the OverworldSpec
             OverworldEncount::OverworldSpec* overworld_spec = reinterpret_cast<OverworldEncount::OverworldSpec*>(ctx->X[21] + 0x270);
-            // in the base game W[9] should only be set for following pokemon
-            if (global_config.overworld_shiny.play_sound_for_following || !ctx->W[9]) {
-                if (overworld_spec->shininess == 1) {
+            if (overworld_spec->shininess == 1) {
+                // in the base game W[9] should only be set for following pokemon
+                const bool is_following = ctx->W[9];
+                if (global_config.overworld_shiny.show_message_box && !is_following) {
+                    AMX::show_custom_message(u"\023Shiny Pokemon Spawned!\023");
+                }
+                if (global_config.overworld_shiny.play_sound_for_following || !is_following) {
                     // sounds close enough to shiny sparkles
                     SendCommand(global_config.overworld_shiny.sound.c_str());
                 }
@@ -117,6 +121,9 @@ HOOK_DEFINE_INLINE(FishAuraAndShinySound) {
             bool is_shiny = *reinterpret_cast<u8*>(ctx->X[19] + 0x530) == 1;
             if (is_shiny) {
                 SendCommand(global_config.overworld_shiny.sound.c_str());
+                if (global_config.overworld_shiny.show_message_box) {
+                    AMX::show_custom_message(u"\023Shiny Pokemon Spawned!\023");
+                }
             }
             if (global_config.overworld_shiny.show_aura_for_brilliants) {
                 // default brilliant check

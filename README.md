@@ -50,6 +50,9 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/f2a553aa-2f44-40c4-b
 - ``show_ptcl_for_following``
     - Controls whether or not to show the shiny particle for the following pokemon
     - boolean (``true``, ``false``)
+- ``show_message_box``
+    - Controls whether or not to show a message box on screen when a shiny spawns
+    - boolean (``true``, ``false``)
 - ``boosted_percentage``
     - Controls the percentage for the modified overworld shiny odds
     - Set to 0 for regular shiny odds

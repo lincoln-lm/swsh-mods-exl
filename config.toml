@@ -28,6 +28,8 @@ include_battle_sounds = true
 play_sound_for_following = false
 # whether or not to show the shiny particle for the following pokemon
 show_ptcl_for_following = true
+# whether or not to show a message box on screen when a shiny spawns
+show_message_box = false
 # 0 for regular shiny rate, [1,100] for modified rate
 boosted_percentage = 70
 
