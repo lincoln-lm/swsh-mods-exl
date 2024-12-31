@@ -101,8 +101,8 @@ public g_skip_point_max = 99;
 
 stock Suspend(delay)
 {
-	_Suspend(delay);
-	sleep(0);
+    _Suspend(delay);
+    sleep(0);
 }
 
 stock SuspendN(arg0)
