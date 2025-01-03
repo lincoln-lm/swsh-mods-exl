@@ -224,8 +224,75 @@ HOOK_DEFINE_INLINE(DebugTick) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {};
 };
 
+enum PokemonType {
+    Normal = 0,
+    Fighting = 1,
+    Flying = 2,
+    Poison = 3,
+    Ground = 4,
+    Rock = 5,
+    Bug = 6,
+    Ghost = 7,
+    Steel = 8,
+    Fire = 9,
+    Water = 10,
+    Grass = 11,
+    Electric = 12,
+    Psychic = 13,
+    Ice = 14,
+    Dragon = 15,
+    Dark = 16,
+    Fairy = 17,
+    None = 18
+};
+
+const PokemonType TYPE_CHANGE_MAP[18] = {
+    PokemonType::Ghost,
+    PokemonType::Psychic,
+    PokemonType::Ground,
+    PokemonType::Steel,
+    PokemonType::Flying,
+    PokemonType::Fighting,
+    PokemonType::Fire,
+    PokemonType::Dark,
+    PokemonType::Dragon,
+    PokemonType::Water,
+    PokemonType::Grass,
+    PokemonType::Electric,
+    PokemonType::Ice,
+    PokemonType::Bug,
+    PokemonType::Fairy,
+    PokemonType::Rock,
+    PokemonType::Poison,
+};
+
+HOOK_DEFINE_INLINE(WonderGuard) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        // already super effective
+        if (ctx->W[0] < 8) {
+            return;
+        }
+        // Battle::FetchState(ctx->X[20], Battle::StateType::MoveType);
+        PokemonType used_move_type = external<PokemonType>(0x83eb90 - VER_OFF, ctx->X[20], 22);
+        PokemonType new_type = TYPE_CHANGE_MAP[used_move_type];
+        struct {
+            u8 pokemon = 0;
+            u8 unk_1 = 0;
+            u64 type_identifier = 0;
+            // unknown actual size so this is mostly padding
+            u64 unk_2[8] = {0};
+        } PACKED meta;
+        meta.pokemon = ctx->W[19];
+        meta.type_identifier = (PokemonType::None << 10) | (new_type << 5) | (new_type << 0);
+        // change type
+        external<bool>(0x83f5c0 - VER_OFF, ctx->X[20], &meta);
+        ctx->W[0] = 0;
+    };
+};
+
 void install_debug_patch() {
-    hid_callbacks.push_back(debug_input_callback);
-    DebugTick::InstallAtOffset(0xcba730 - VER_OFF);
-    DumpFlatbuffer::InstallAtOffset(GimmickSpawner::GimmickSpawner_offset);
+    WonderGuard::InstallAtOffset(0x88fe2c - VER_OFF);
+    // hid_callbacks.push_back(debug_input_callback);
+    // DebugTick::InstallAtOffset(0xcba730 - VER_OFF);
+    // DumpFlatbuffer::InstallAtOffset(GimmickSpawner::GimmickSpawner_offset);
 }
