@@ -15,6 +15,7 @@
 #include "patches/glimwood_overworld.hpp"
 #include "patches/synchro_mode.hpp"
 #include "patches/extended_following.hpp"
+#include "patches/fishing_tweaks.hpp"
 #ifdef DEBUG
 #include "patches/debug.hpp"
 #endif
@@ -66,6 +67,7 @@ extern "C" void exl_main(void* x0, void* x1) {
     install_glimwood_overworld_patch();
     install_synchro_mode_patch();
     install_extended_following_patch();
+    install_fishing_tweaks_patch();
     #ifdef DEBUG
     install_debug_patch();
     #endif

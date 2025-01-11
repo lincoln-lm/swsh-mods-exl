@@ -80,3 +80,10 @@ active = false
 # Mod that allows following pokemon in the galar mainland wild area
 [extended_following]
 active = false
+
+# Mod that tweaks fishing mechanics
+[fishing_tweaks]
+active = false
+
+# whether or not to retain fishing chains after brilliant pokemon spawn
+keep_chain_after_brilliant = true

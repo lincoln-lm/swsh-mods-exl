@@ -57,6 +57,11 @@ struct PatchConfig {
         bool active;
     } extended_following;
 
+    struct {
+        bool active;
+        bool keep_chain_after_brilliant;
+    } fishing_tweaks;
+
     void from_table(toml::parse_result &table) {
         underworld.active = table["underworld"]["active"].value_or(false);
 
@@ -92,6 +97,9 @@ struct PatchConfig {
         synchro_mode.active = table["synchro_mode"]["active"].value_or(false);
 
         extended_following.active = table["extended_following"]["active"].value_or(false);
+
+        fishing_tweaks.active = table["fishing_tweaks"]["active"].value_or(false);
+        fishing_tweaks.keep_chain_after_brilliant = table["fishing_tweaks"]["keep_chain_after_brilliant"].value_or(true);
 
         initialized = true;
     }
