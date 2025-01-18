@@ -17,6 +17,20 @@ HOOK_DEFINE_INLINE(PatchCameraConstants) {
         }
     }
 };
+
+HOOK_DEFINE_INLINE(DisableDLCMaxPitch) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        EXL_ASSERT(global_config.initialized);
+        if (global_config.camera_tweaks.active) {
+            auto camera_obj = reinterpret_cast<Field::ExtendedCamera*>(ctx->X[21]);
+            // DLC areas set this to 0 entirely seperately for some reason
+            camera_obj->maximum_pitch = global_config.camera_tweaks.max_pitch / 180 * M_PI;
+        }
+    }
+};
+
 void install_camera_tweaks_patch() {
     PatchCameraConstants::InstallAtOffset(Field::ExtendedCamera::ExtendedCamera_offset + 0x164);
+    // TODO: symbol
+    DisableDLCMaxPitch::InstallAtOffset(0xd19c98 - VER_OFF);
 }
