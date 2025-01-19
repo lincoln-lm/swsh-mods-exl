@@ -52,6 +52,7 @@ https://github.com/Lincoln-LM/swsh-mods-exl/assets/73306575/f2a553aa-2f44-40c4-b
     - boolean (``true``, ``false``)
 - ``show_message_box``
     - Controls whether or not to show a message box on screen when a shiny spawns
+    - **Note:** When loading a save or returning from a battle with a shiny pokemon spawned [the message box may not be visible and the game will look like it is infinitely loading](https://github.com/Lincoln-LM/swsh-mods-exl/issues/17#issuecomment-2600940563) but the message box can be cleared as normal
     - boolean (``true``, ``false``)
 - ``boosted_percentage``
     - Controls the percentage for the modified overworld shiny odds
