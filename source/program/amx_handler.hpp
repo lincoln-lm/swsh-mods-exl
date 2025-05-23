@@ -16,7 +16,5 @@ namespace AMX {
 }
 
 void install_amx_patch() {
-    AMX::PG_WordSetRegisterType::InstallAtOffset(AMX::PG_WordSetRegister_offset + 0xf8);
-    AMX::WordSetRegister_Custom::InstallAtOffset(AMX::WordSetRegister_PlayerName_offset + 0xa4);
-    AMX::ExitWordSetRegister_Custom::InstallAtOffset(AMX::WordSetRegister_PlayerName_offset + 0xa8);
+    // ...
 }
