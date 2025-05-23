@@ -68,11 +68,6 @@ def main(*args: Tuple[Any], **kwargs: Dict[str, Any]) -> NoneType:
         # Make output directory.
         ftp_host.makedirs(SD_OUT, exist_ok=True)
         ftp_host.makedirs("config/ironmon/", exist_ok=True)
-        # Upload config file.
-        ftp_host.upload(
-            os.path.join(os.curdir, "config.toml"),
-            ftp_host.path.join("config/ironmon/", "config.toml"),
-        )
         def upload_directory(sub_directory: str) -> NoneType:
             directory = os.path.join(OUT, sub_directory)
             ftp_directory = os.path.join(SD_OUT, sub_directory)
