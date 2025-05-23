@@ -21,6 +21,7 @@ extern "C" void exl_main(void* x0, void* x1) {
     exl::hook::Initialize();
     MainInitHook::InstallAtOffset(MainInit_offset);
     install_learnset_patch();
+    install_hid_patch();
 #ifdef DEBUG
     install_debug_patch();
 #endif

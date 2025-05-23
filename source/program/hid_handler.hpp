@@ -5,7 +5,7 @@
 typedef void HIDCallback(HID::HIDData* data);
 
 std::vector<HIDCallback*> hid_callbacks;
-u64 old_buttons = 0;
+static u64 old_buttons = 0;
 
 // TODO: other controllers
 HOOK_DEFINE_INLINE(HookNpad) {
