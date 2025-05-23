@@ -2,19 +2,6 @@
 #include "external.hpp"
 #include "symbols.hpp"
 
-s16 random_valid_move_id() {
-    // TODO: deterministic rng based on species/form & seed
-    // TODO: ensure unique moves?
-    MoveIdHolder move_id_holder = {
-        .unk = 0,
-        .move_id = 0,
-    };
-    do {
-        move_id_holder.move_id = (exl::util::GetRandomU64() % 820) + 1;
-    } while (!move_id_holder.IsMoveUsable());
-    return move_id_holder.move_id;
-}
-
 HOOK_DEFINE_TRAMPOLINE(RandomLearnsetHook) {
     static void Callback(LearnsetData* learnset_data, u32 species, u32 form) {
         u64 species_form_index = GetSpeciesFormIndex(species, form);

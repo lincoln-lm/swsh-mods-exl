@@ -27,6 +27,7 @@ const u64 InitSoundEngine_offset = 0x7937f0;
 const u64 LoadSoundBank_offset = 0x795650;
 const u64 GetSpeciesFormIndex_offset = 0x77f600;
 const u64 RestorePartyOrder_offset = 0x7df560;
+const u64 LoadTrainerPokeData_offset = 0x1522b30 - VER_OFF; 
 
 // to use the q/v registers (128-bit float/float vector)
 // using f128 is often required
@@ -110,6 +111,37 @@ struct base_party_t {
     party_member_t *members[6];
     u8 count;
 } PACKED;
+
+struct trainer_poke_data_t {
+    u16 gender : 2;
+    u16 unk_0 : 2;
+    u16 ability : 2;
+    u16 unk_1 : 2;
+    u8 nature;
+    u8 ev_hp;
+    u8 ev_atk;
+    u8 ev_def;
+    u8 ev_spa;
+    u8 ev_spd;
+    u8 ev_spe;
+    u8 dynamax_level;
+    u8 can_gigantamax;
+    u16 level;
+    u16 species;
+    u16 form;
+    u16 held_item;
+    u16 moves[4];
+    u16 unk_2;
+    u16 iv_hp : 5;
+    u16 iv_atk : 5;
+    u16 iv_def : 5;
+    u16 iv_spa : 5;
+    u16 iv_spd : 5;
+    u16 iv_spe : 5;
+    bool shiny : 1;
+    bool can_dynamax : 1;
+} PACKED;
+static_assert(sizeof(trainer_poke_data_t) == 0x20);
 
 namespace AMX {
     const u64 CallPawnScript_offset = 0x14c9aa0 - VER_OFF;

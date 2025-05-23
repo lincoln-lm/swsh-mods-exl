@@ -64,6 +64,32 @@ namespace PersonalInfo {
     }
 }
 
+std::tuple<u32, u16> random_species_and_form() {
+    // TODO: deterministic rng based on trainer id/spawner hash/area hash & seed
+    u32 species;
+    u16 form;
+    do {
+        species = (exl::util::GetRandomU64() % 898) + 1;
+        PersonalInfo::FetchInfo(species, 0);
+        u32 form_count = PersonalInfo::GetField(PersonalInfo::InfoField::FORM_COUNT);
+        form = exl::util::GetRandomU64() % form_count;
+    } while (!PersonalInfo::isInGame(species, form));
+    return {species, form};
+}
+
+s16 random_valid_move_id() {
+    // TODO: deterministic rng based on species/form & seed
+    // TODO: ensure unique moves?
+    MoveIdHolder move_id_holder = {
+        .unk = 0,
+        .move_id = 0,
+    };
+    do {
+        move_id_holder.move_id = (exl::util::GetRandomU64() % 820) + 1;
+    } while (!move_id_holder.IsMoveUsable());
+    return move_id_holder.move_id;
+}
+
 hashed_string_t getFNV1aHashedString(const char* string) {
     hashed_string_t hashed_string = {
         .hash = 0xcbf29ce484222645,
