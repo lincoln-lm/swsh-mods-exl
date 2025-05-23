@@ -3,7 +3,7 @@
 import ftplib
 import os
 from types import NoneType
-from typing import Any, Dict, Optional, Self, Tuple, Union
+from typing import Any, Dict, Optional, Tuple, Union
 
 # https://ftputil.sschwarzer.net
 import ftputil
@@ -44,7 +44,7 @@ class SessionFactory(ftplib.FTP):
     """Session factory for FTPHost."""
 
     def __init__(
-        self: Self,
+        self,
         ftp_ip: str,
         ftp_port: int,
         ftp_username: str,
