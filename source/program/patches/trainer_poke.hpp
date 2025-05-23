@@ -25,6 +25,6 @@ HOOK_DEFINE_INLINE(RandomPokeData) {
     }
 };
 
-void install_randomize_trainer_patch() {
+void install_trainer_poke_patch() {
     RandomPokeData::InstallAtOffset(LoadTrainerPokeData_offset + 0xF8);
 }
