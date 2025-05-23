@@ -13,15 +13,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #pragma once
 
-#include "nn_common.hpp"
+#include "nn/nn_common.hpp"
 
 namespace nn::os {
 
-    enum EventClearMode {
-        EventClearMode_ManualClear = 0,
-        EventClearMode_AutoClear   = 1,
+    struct TlsSlot {
+        u32 _value;
     };
+
+    using TlsDestructor = void (*)(uintptr_t arg);
+
+    constexpr inline size_t TlsSlotCountMax    = 16;
+    constexpr inline size_t SdkTlsSlotCountMax = 16;
 
 }
