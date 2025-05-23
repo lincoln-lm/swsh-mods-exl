@@ -25,6 +25,7 @@ const u64 QuaternionToEuler_offset = 0x6101c0;
 const u64 SetUpBattleEnvironment_offset = 0x968b70;
 const u64 InitSoundEngine_offset = 0x7937f0;
 const u64 LoadSoundBank_offset = 0x795650;
+const u64 GetSpeciesFormIndex_offset = 0x77f600;
 
 // to use the q/v registers (128-bit float/float vector)
 // using f128 is often required
@@ -65,6 +66,36 @@ Vec3f QuaternionToEuler(Vec4f* q) {
 Vec4f EulerToQuaternion(float yaw, float pitch, float roll) {
     return external<f128>(EulerToQuaternion_offset, yaw, pitch, roll);
 }
+
+struct MoveIdHolder {
+    static const u64 IsMoveUsable_offset = 0x7814a0;
+    bool IsMoveUsable() {
+        return external<bool>(IsMoveUsable_offset, this);
+    }
+    u64 unk;
+    u32 move_id;
+} PACKED;
+
+struct learnset_item_t {
+    s16 move_id;
+    s16 level;
+} PACKED;
+
+struct LearnsetData {
+    static const u64 FetchLearnsetData_offset = 0x785df0;
+    static const u64 WAZAOBOE_TOTAL_LEARNSET_DATA_offset = 0x292cff0;
+    void FetchLearnsetData(u32 species, u16 form) {
+        return external<void>(FetchLearnsetData_offset, this, species, form);
+    }
+    static learnset_item_t (*WAZAOBOE_TOTAL_LEARNSET_DATA())[65] {
+        return read_main<learnset_item_t (*)[65]>(LearnsetData::WAZAOBOE_TOTAL_LEARNSET_DATA_offset);
+    }
+    u64 vtable;
+    u32 species;
+    u16 form;
+    learnset_item_t learnset_items[65];
+    u8 count;
+} PACKED;
 
 namespace AMX {
     const u64 CallPawnScript_offset = 0x14c9aa0 - VER_OFF;
@@ -134,6 +165,10 @@ void SendCommand(const char* command) {
 
 void LoadSoundBank(u64 unk0, hashed_string_t* name, u64 unk1, u64 unk2, u64 unk3) {
     return external<void>(LoadSoundBank_offset, unk0, name, unk1, unk2, unk3);
+}
+
+u64 GetSpeciesFormIndex(u64 species, u32 form) {
+    return external<u64>(GetSpeciesFormIndex_offset, species, form);
 }
 
 namespace GimmickSpawner {
