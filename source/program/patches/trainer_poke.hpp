@@ -1,3 +1,6 @@
+#include "lib.hpp"
+#include "external.hpp"
+#include "symbols.hpp"
 
 HOOK_DEFINE_INLINE(RandomPokeData) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
