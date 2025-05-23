@@ -26,6 +26,7 @@ const u64 SetUpBattleEnvironment_offset = 0x968b70;
 const u64 InitSoundEngine_offset = 0x7937f0;
 const u64 LoadSoundBank_offset = 0x795650;
 const u64 GetSpeciesFormIndex_offset = 0x77f600;
+const u64 RestorePartyOrder_offset = 0x7df560;
 
 // to use the q/v registers (128-bit float/float vector)
 // using f128 is often required
@@ -94,6 +95,19 @@ struct LearnsetData {
     u32 species;
     u16 form;
     learnset_item_t learnset_items[65];
+    u8 count;
+} PACKED;
+
+struct party_member_t {
+    u8 unk_0[0x74];
+    u32 hp;
+    u8 unk_1[0x5];
+    u8 real_party_index;
+    // unknown size
+} PACKED;
+
+struct base_party_t {
+    party_member_t *members[6];
     u8 count;
 } PACKED;
 

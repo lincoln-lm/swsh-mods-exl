@@ -6,6 +6,7 @@
 #include "hid_handler.hpp"
 #include "amx_handler.hpp"
 #include "patches/learnset.hpp"
+#include "patches/permadeath.hpp"
 #ifdef DEBUG
 #include "patches/debug.hpp"
 #endif
@@ -21,6 +22,7 @@ extern "C" void exl_main(void* x0, void* x1) {
     exl::hook::Initialize();
     MainInitHook::InstallAtOffset(MainInit_offset);
     install_learnset_patch();
+    install_permadeath_patch();
     install_hid_patch();
 #ifdef DEBUG
     install_debug_patch();
