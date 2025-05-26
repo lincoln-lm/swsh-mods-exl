@@ -113,10 +113,10 @@ struct base_party_t {
 } PACKED;
 
 struct trainer_poke_data_t {
-    u16 gender : 2;
-    u16 unk_0 : 2;
-    u16 ability : 2;
-    u16 unk_1 : 2;
+    u8 gender : 2;
+    u8 unk_0 : 2;
+    u8 ability : 2;
+    u8 unk_1 : 2;
     u8 nature;
     u8 ev_hp;
     u8 ev_atk;
@@ -130,17 +130,17 @@ struct trainer_poke_data_t {
     u16 species;
     u16 form;
     u16 held_item;
-    u16 moves[4];
+    s16 moves[4];
     u16 unk_2;
-    u16 iv_hp : 5;
-    u16 iv_atk : 5;
-    u16 iv_def : 5;
-    u16 iv_spa : 5;
-    u16 iv_spd : 5;
-    u16 iv_spe : 5;
+    u32 iv_hp : 5;
+    u32 iv_atk : 5;
+    u32 iv_def : 5;
+    u32 iv_spa : 5;
+    u32 iv_spd : 5;
+    u32 iv_spe : 5;
     bool shiny : 1;
     bool can_dynamax : 1;
-} PACKED;
+};
 static_assert(sizeof(trainer_poke_data_t) == 0x20);
 
 namespace AMX {

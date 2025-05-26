@@ -5,6 +5,7 @@
 #include "symbols.hpp"
 #include "hid_handler.hpp"
 #include "amx_handler.hpp"
+#include "rng_manager.hpp"
 #include "patches/learnset.hpp"
 #include "patches/permadeath.hpp"
 #include "patches/trainer_poke.hpp"
@@ -14,7 +15,9 @@
 #endif
 
 HOOK_DEFINE_TRAMPOLINE(MainInitHook){
-    static void Callback(void* x0, void* x1, void* x2, void* x3){
+    static void Callback(void* x0, void* x1, void* x2, void* x3) {
+        // TODO: store, allow setting, and randomization of seed
+        RngManager::SetSeed(0xcbf29ce484222645);
         Orig(x0, x1, x2, x3);
     }
 };
