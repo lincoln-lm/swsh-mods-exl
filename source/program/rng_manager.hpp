@@ -9,6 +9,9 @@ class MersenneTwister : public std::mt19937_64 {
     public:
         using std::mt19937_64::mt19937_64;
         u64 RandMax(u64 maximum) {
+            if (maximum == 0 || maximum == 1) {
+                return 0;
+            }
             u64 mask = std::bit_ceil(maximum) - 1;
             u64 result;
             do {
