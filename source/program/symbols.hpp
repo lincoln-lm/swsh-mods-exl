@@ -501,7 +501,9 @@ namespace OverworldEncount {
     } PACKED;
 
     struct encounter_tables_t {
-        u8 data[566];
+        u8 minimum_level;
+        u8 maximum_level;
+        encounter_slot_t encounter_slots[10];
     } PACKED;
 
     void InitGimmickSpec(GimmickSpec *gimmick_spec, OverworldSpec* overworld_spec) {
