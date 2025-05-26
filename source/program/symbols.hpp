@@ -281,6 +281,7 @@ namespace Field {
     const u64 PushUnitObject_offset = 0xd25810 - VER_OFF;
     const u64 PushPokemonModel_offset = 0xd204f0 - VER_OFF;
     const u64 PushGimmickEncountSpawner_offset = 0xd2a6e0 - VER_OFF;
+    const u64 DeleteFieldObject_offset = 0xd774e0 - VER_OFF;
     const u64 FieldSingleton_offset = 0x2955208;
 
     struct FieldObject : public ScaledWorldObject
@@ -418,6 +419,9 @@ namespace Field {
     // TODO: PlayerObject
     FieldObject* GetPlayerObject() {
         return external<FieldObject*>(GetPlayerObject_offset);
+    }
+    bool DeleteFieldObject(u64 object_hash) {
+        return external<bool>(DeleteFieldObject_offset, &object_hash);
     }
 }
 

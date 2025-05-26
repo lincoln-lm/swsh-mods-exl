@@ -8,6 +8,7 @@
 #include "patches/learnset.hpp"
 #include "patches/permadeath.hpp"
 #include "patches/trainer_poke.hpp"
+#include "patches/route_restriction.hpp"
 #ifdef DEBUG
 #include "patches/debug.hpp"
 #endif
@@ -25,6 +26,7 @@ extern "C" void exl_main(void* x0, void* x1) {
     install_learnset_patch();
     install_permadeath_patch();
     install_trainer_poke_patch();
+    install_route_restriction_patch();
     install_hid_patch();
 #ifdef DEBUG
     install_debug_patch();

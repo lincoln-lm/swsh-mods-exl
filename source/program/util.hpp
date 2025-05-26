@@ -1,6 +1,7 @@
 #pragma once
 
 #include "symbols.hpp"
+#include <format>
 #include "flatbuffers/minireflect.h"
 
 Vec3f operator+(const Vec3f& lhs, const Vec3f& rhs) {
@@ -17,6 +18,25 @@ Vec3f operator-(const Vec3f& lhs, const Vec3f& rhs) {
     result.y = lhs.y - rhs.y;
     result.z = lhs.z - rhs.z;
     return result;
+}
+
+void debug_message_window(std::string title, std::string description) {
+#ifdef DEBUG
+    nn::err::ApplicationErrorArg err(
+        nn::err::MakeErrorCode(nn::err::ErrorCodeCategoryType::unk1, 0x420), title.c_str(),
+        description.c_str(),
+        nn::settings::LanguageCode::Make(nn::settings::Language::Language_English)
+    );
+    nn::err::ShowApplicationError(err);
+#endif
+}
+
+template<typename... Args>
+void debug_message(std::format_string<Args...> fmt, Args&&... args) {
+#ifdef DEBUG
+    std::string formatted = std::format(fmt, std::forward<Args>(args)...);
+    debug_message_window(formatted, "");
+#endif
 }
 
 namespace FlatbufferObjects {
@@ -90,7 +110,7 @@ s16 random_valid_move_id() {
     return move_id_holder.move_id;
 }
 
-hashed_string_t getFNV1aHashedString(const char* string) {
+constexpr hashed_string_t getFNV1aHashedString(const char* string) {
     hashed_string_t hashed_string = {
         .hash = 0xcbf29ce484222645,
         .string = string,
@@ -101,6 +121,10 @@ hashed_string_t getFNV1aHashedString(const char* string) {
         hashed_string.hash = (hashed_string.hash ^ string[i]) * 0x100000001b3;
     }
     return hashed_string;
+}
+
+consteval hashed_string_t getConstFNV1aHashedString(const char* string) {
+    return getFNV1aHashedString(string);
 }
 
 template <class...> constexpr std::false_type always_false{};
