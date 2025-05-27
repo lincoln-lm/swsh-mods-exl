@@ -81,7 +81,7 @@ void install_wild_pokemon_patch() {
     RandomizeGimmickSpec::InstallAtOffset(0xd5c878 - VER_OFF);
     // TODO: symbol
     // end of FetchHiddenEncountTable
-    RandomizeHiddenEncounterSlots::InstallAtOffset(0xd0508c - VER_OFF);
+    RandomizeHiddenEncounterSlots::InstallAtOffset(0xd05088 - VER_OFF);
     // TODO: symbol
     // end of FetchSymbolEncountTable
     RandomizeSymbolEncounterSlots::InstallAtOffset(0xd05868 - VER_OFF);
