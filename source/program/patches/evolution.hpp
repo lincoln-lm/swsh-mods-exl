@@ -30,6 +30,10 @@ HOOK_DEFINE_TRAMPOLINE(CustomEvolutionBinary) {
             }
             while (true) {
                 auto [species, form] = rng.RandSpeciesAndForm();
+                // force changed evo
+                if (species == method.species && form == method.form) {
+                    continue;
+                }
                 PersonalInfo::FetchInfo(species, form);
                 u8 evo_type_1 = PersonalInfo::GetField(PersonalInfo::InfoField::TYPE_1);
                 u8 evo_type_2 = PersonalInfo::GetField(PersonalInfo::InfoField::TYPE_2);
