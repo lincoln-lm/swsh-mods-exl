@@ -6,7 +6,7 @@
 HOOK_DEFINE_TRAMPOLINE(RandomLearnsetHook) {
     static void Callback(LearnsetData* learnset_data, u32 species, u32 form) {
         const std::string seed = std::format("learnset_{}_{}", species, form);
-        auto rng = RngManager::NewRandomGenerator(std::span(seed));
+        auto rng = RngManager::NewRandomGenerator(seed);
         u64 species_form_index = GetSpeciesFormIndex(species, form);
         auto vanilla_items = LearnsetData::WAZAOBOE_TOTAL_LEARNSET_DATA()[species_form_index];
         std::memcpy(learnset_data->learnset_items, vanilla_items, sizeof(learnset_item_t) * 65);

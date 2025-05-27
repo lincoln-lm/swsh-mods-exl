@@ -18,7 +18,7 @@ HOOK_DEFINE_TRAMPOLINE(CustomEvolutionBinary) {
     static void Callback(evolution_set_t* out, u32 species, u32 form) {
         Orig(out, species, form);
         const std::string seed = std::format("evolution_binary_{}_{}", species, form);
-        auto rng = RngManager::NewRandomGenerator(std::span(seed));
+        auto rng = RngManager::NewRandomGenerator(seed);
         for (int i = 0; i < 9; i++) {
             evolution_method_t& method = (*out->methods)[i];
             // maintain vanilla method but swap species

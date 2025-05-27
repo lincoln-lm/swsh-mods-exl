@@ -16,7 +16,7 @@ HOOK_DEFINE_INLINE(RandomizeGimmickSpec) {
             gimmick_spawner_hash,
             weather
         );
-        auto rng = RngManager::NewRandomGenerator(std::span(seed));
+        auto rng = RngManager::NewRandomGenerator(seed);
         auto [species, form] = rng.RandSpeciesAndForm();
         gimmick_spec->species = species;
         gimmick_spec->form = form;
@@ -39,7 +39,7 @@ HOOK_DEFINE_INLINE(RandomizeHiddenEncounterSlots) {
         u64 area_hash = *reinterpret_cast<u64*>(data + 0x8);
         OverworldEncount::encounter_tables_t* encounter_tables = reinterpret_cast<OverworldEncount::encounter_tables_t*>(data + 0x10);
         const std::string seed = std::format("hidden_encounter_table_{}", area_hash);
-        auto rng = RngManager::NewRandomGenerator(std::span(seed));
+        auto rng = RngManager::NewRandomGenerator(seed);
         for (int weather = 0; weather < 9; weather++) {
             encounter_tables[weather].minimum_level *= 1.5;
             encounter_tables[weather].maximum_level *= 1.5;
@@ -60,7 +60,7 @@ HOOK_DEFINE_INLINE(RandomizeSymbolEncounterSlots) {
         u64 area_hash = *reinterpret_cast<u64*>(data + 0x8);
         OverworldEncount::encounter_tables_t* encounter_tables = reinterpret_cast<OverworldEncount::encounter_tables_t*>(data + 0x10);
         const std::string seed = std::format("symbol_encounter_table_{}", area_hash);
-        auto rng = RngManager::NewRandomGenerator(std::span(seed));
+        auto rng = RngManager::NewRandomGenerator(seed);
         for (int weather = 0; weather < 9; weather++) {
             encounter_tables[weather].minimum_level *= 1.5;
             encounter_tables[weather].maximum_level *= 1.5;

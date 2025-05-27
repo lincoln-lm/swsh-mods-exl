@@ -81,4 +81,7 @@ namespace RngManager {
     MersenneTwister NewRandomGenerator(std::span<const T, Size> input) {
         return MersenneTwister(exl::util::Murmur3::Compute(input, RngManager::GetSeed()));
     }
+    MersenneTwister NewRandomGenerator(const std::string input) {
+        return NewRandomGenerator(std::span(input));
+    }
 };
