@@ -67,7 +67,7 @@ namespace nn::fs {
         size:   File size.
         handle: Handle representing file to check.
     */
-   Result GetFileSize(long* size, nn::fs::FileHandle handle);
+    Result GetFileSize(long* size, nn::fs::FileHandle handle);
 
     /*
         Writes to a file.
@@ -83,5 +83,11 @@ namespace nn::fs {
         Flush file.
         handle: Handle representing file to flush. 
     */
-   Result FlushFile(FileHandle handle);
+    Result FlushFile(FileHandle handle);
+
+   
+    /* 
+        TODO: ?
+    */
+    Result DeleteFile(const char *path);
 }

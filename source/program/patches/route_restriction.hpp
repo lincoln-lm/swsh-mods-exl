@@ -2,12 +2,9 @@
 #include "external.hpp"
 #include "symbols.hpp"
 #include "spawner_data.hpp"
-#include <unordered_set>
 
 // zone hash updated every time an encounter happens
 static u64 encounter_zone_hash = 0;
-// TODO: save this to a file
-static std::unordered_set<u64> blacklisted_zones = {};
 
 enum WildBattleResult {
     Loss,
@@ -26,7 +23,7 @@ HOOK_DEFINE_INLINE(OnBattleResult) {
             auto battle_result = static_cast<WildBattleResult>(ctx->W[20]);
             // capturing or defeating the wild mon consumes the allowed encounter for that zone
             if (battle_result == WildBattleResult::Capture || battle_result == WildBattleResult::Win) {
-                blacklisted_zones.insert(encounter_zone_hash);
+                save_file.blacklisted_zones.insert(encounter_zone_hash);
             }
         }
     }
@@ -69,7 +66,7 @@ HOOK_DEFINE_INLINE(FilterObject) {
         if (zone_hash_search == spawner_zone_map.end()) {
             return;
         }
-        if (blacklisted_zones.find(zone_hash_search->second) != blacklisted_zones.end()) {
+        if (save_file.blacklisted_zones.find(zone_hash_search->second) != save_file.blacklisted_zones.end()) {
             Field::DeleteFieldObject(object->unique_hash);
         }
     }

@@ -3,6 +3,7 @@
 #include "lib.hpp"
 #include "external.hpp"
 #include "symbols.hpp"
+#include "savefile.hpp"
 #include <random>
 
 class MersenneTwister : public std::mt19937_64 {
@@ -65,23 +66,21 @@ class MersenneTwister : public std::mt19937_64 {
         }
 };
 
-// TODO: use a sane structure
 namespace RngManager {
-    // TODO: larger seed?
-    static u64 seed;
-
-    void SetSeed(u64 seed) {
-        RngManager::seed = seed;
-    }
-    u64 GetSeed() {
-        return RngManager::seed;
-    }
     template<typename T, size_t Size>
     requires exl::util::impl::murmur3::Hashable<T>
     MersenneTwister NewRandomGenerator(std::span<const T, Size> input) {
-        return MersenneTwister(exl::util::Murmur3::Compute(input, RngManager::GetSeed()));
+        return MersenneTwister(exl::util::Murmur3::Compute(input, save_file.rng_seed));
     }
     MersenneTwister NewRandomGenerator(const std::string input) {
         return NewRandomGenerator(std::span(input));
+    }
+    template<typename T>
+    requires std::is_integral_v<T>
+    MersenneTwister NewRandomGenerator(const T input) {
+        return NewRandomGenerator(std::span<const char, sizeof(T)>(reinterpret_cast<const char*>(&input), sizeof(T)));
+    }
+    MersenneTwister NewRandomGenerator() {
+        return NewRandomGenerator(exl::util::GetRandomU64());
     }
 };

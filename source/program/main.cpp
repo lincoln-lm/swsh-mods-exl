@@ -5,6 +5,7 @@
 #include "symbols.hpp"
 #include "hid_handler.hpp"
 #include "amx_handler.hpp"
+#include "savefile.hpp"
 #include "rng_manager.hpp"
 #include "patches/learnset.hpp"
 #include "patches/permadeath.hpp"
@@ -18,10 +19,23 @@
 #include "patches/debug.hpp"
 #endif
 
+SaveFile save_file;
+
 HOOK_DEFINE_TRAMPOLINE(MainInitHook){
     static void Callback(void* x0, void* x1, void* x2, void* x3) {
-        // TODO: store, allow setting, and randomization of seed
-        RngManager::SetSeed(0xcbf29ce484222645);
+        FileHandler::MountSD();
+        if (FileHandler::FileExists("sd:/switch/ironmon_save.toml")) {
+            std::string save_string;
+            FileHandler::ReadFile("sd:/switch/ironmon_save.toml", save_string);
+            auto save_table = toml::parse(save_string);
+            if (!save_table) {
+                EXL_ABORT("Invalid Config");
+            }
+            save_file.from_table(save_table);
+        } else {
+            auto rng = RngManager::NewRandomGenerator();
+            save_file.rng_seed = rng();
+        }
         Orig(x0, x1, x2, x3);
     }
 };
@@ -39,6 +53,7 @@ extern "C" void exl_main(void* x0, void* x1) {
     install_evolution_patch();
     install_personal_total_patch();
     install_hid_patch();
+    install_savefile_patch();
 #ifdef DEBUG
     install_debug_patch();
 #endif
