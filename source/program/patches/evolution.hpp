@@ -19,12 +19,31 @@ HOOK_DEFINE_TRAMPOLINE(CustomEvolutionBinary) {
         Orig(out, species, form);
         const std::string seed = std::format("evolution_binary_{}_{}", species, form);
         auto rng = RngManager::NewRandomGenerator(seed);
+        PersonalInfo::FetchInfo(species, form);
+        u8 base_type_1 = PersonalInfo::GetField(PersonalInfo::InfoField::TYPE_1);
+        u8 base_type_2 = PersonalInfo::GetField(PersonalInfo::InfoField::TYPE_2);
+        u8 base_exp_growth = PersonalInfo::GetField(PersonalInfo::InfoField::EXP_GROWTH);
         for (int i = 0; i < 9; i++) {
             evolution_method_t& method = (*out->methods)[i];
-            // maintain vanilla method but swap species
-            auto [species, form] = rng.RandSpeciesAndForm();
-            method.species = species;
-            method.form = form;
+            if (method.species == 0) {
+                continue;
+            }
+            while (true) {
+                auto [species, form] = rng.RandSpeciesAndForm();
+                PersonalInfo::FetchInfo(species, form);
+                u8 evo_type_1 = PersonalInfo::GetField(PersonalInfo::InfoField::TYPE_1);
+                u8 evo_type_2 = PersonalInfo::GetField(PersonalInfo::InfoField::TYPE_2);
+                u8 evo_exp_growth = PersonalInfo::GetField(PersonalInfo::InfoField::EXP_GROWTH);
+                if (evo_exp_growth != base_exp_growth) {
+                    continue;
+                }
+                if (base_type_1 == evo_type_1 || base_type_1 == evo_type_2 ||
+                    base_type_2 == evo_type_1 || base_type_2 == evo_type_2) {
+                    method.species = species;
+                    method.form = form;
+                    break;
+                }
+            }
         }
     }
 };

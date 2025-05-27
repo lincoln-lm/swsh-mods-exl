@@ -430,6 +430,9 @@ namespace PersonalInfo {
     const u64 GetField_offset = 0x764a10;
     const u64 static_CurrentPersonalInfo_offset = 0x28f5a08;
     enum InfoField {
+        TYPE_1 = 0x6,
+        TYPE_2 = 0x7,
+        EXP_GROWTH = 0x17,
         FORM_COUNT = 0x1e,
     };
     void FetchInfo(u16 species, u16 form) {
