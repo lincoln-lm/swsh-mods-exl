@@ -49,6 +49,61 @@ HOOK_DEFINE_INLINE(PersonalTotalHook) {
         for (const auto& [index, personal_info] : personal_total_span | std::views::enumerate) {
             const std::string seed = std::format("personal_total_{}", index);
             auto rng = RngManager::NewRandomGenerator(seed);
+            // bst calc taken from UPR ZX
+            u64 bst;
+            // shedinja gets special handling
+            bool is_shedinja = personal_info.species == 292;
+            if (is_shedinja) {
+                bst = std::accumulate(
+                    personal_info.base_stats,
+                    personal_info.base_stats + 6,
+                    0
+                ) - 51;
+            } else {
+                bst = std::accumulate(
+                    personal_info.base_stats,
+                    personal_info.base_stats + 6,
+                    0
+                ) - 70;
+            }
+            std::array<u16, 6> base_stats;
+            do {
+                f64 hp_weight = rng.RandDouble();
+                f64 attack_weight = rng.RandDouble();
+                f64 defense_weight = rng.RandDouble();
+                f64 special_attack_weight = rng.RandDouble();
+                f64 special_defense_weight = rng.RandDouble();
+                f64 speed_weight = rng.RandDouble();
+                f64 total_weight = (
+                    (is_shedinja ? 0.0d : hp_weight)
+                    + attack_weight
+                    + defense_weight
+                    + special_attack_weight
+                    + special_defense_weight
+                    + speed_weight
+                );
+                if (is_shedinja) {
+                    base_stats[0] = 1;
+                } else {
+                    base_stats[0] = std::max(1.0, std::round(hp_weight / total_weight * bst)) + 20;
+                }
+                base_stats[1] = std::max(1.0, std::round(attack_weight / total_weight * bst)) + 10;
+                base_stats[2] = std::max(1.0, std::round(defense_weight / total_weight * bst)) + 10;
+                base_stats[3] = std::max(1.0, std::round(special_attack_weight / total_weight * bst)) + 10;
+                base_stats[4] = std::max(1.0, std::round(special_defense_weight / total_weight * bst)) + 10;
+                base_stats[5] = std::max(1.0, std::round(speed_weight / total_weight * bst)) + 10;
+            } while (
+                std::any_of(
+                    base_stats.begin(),
+                    base_stats.end(),
+                    [](u16 stat) { return stat > 255; }
+                )
+            );
+            std::copy(
+                base_stats.begin(),
+                base_stats.end(),
+                personal_info.base_stats
+            );
             // TODO: randomize abilities
             personal_info.held_items[0] = rng.RandHeldItem();
             personal_info.held_items[1] = rng.RandHeldItem();

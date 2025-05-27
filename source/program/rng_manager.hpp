@@ -28,6 +28,9 @@ class MersenneTwister : public std::mt19937_64 {
         T RandElement(const std::span<const T, Extent> input) {
             return input[this->RandMax(input.size())];
         }
+        f64 RandDouble() {
+            return static_cast<f64>(this->operator()() / std::numeric_limits<u64>::max());
+        }
         bool RandChance(u64 denominator) {
             return this->RandMax(denominator) == 0;
         }
