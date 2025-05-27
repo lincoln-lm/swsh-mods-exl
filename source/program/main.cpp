@@ -13,6 +13,7 @@
 #include "patches/field_items.hpp"
 #include "patches/wild_pokemon.hpp"
 #include "patches/evolution.hpp"
+#include "patches/personal_total.hpp"
 #ifdef DEBUG
 #include "patches/debug.hpp"
 #endif
@@ -36,6 +37,7 @@ extern "C" void exl_main(void* x0, void* x1) {
     install_field_items_patch();
     install_wild_pokemon_patch();
     install_evolution_patch();
+    install_personal_total_patch();
     install_hid_patch();
 #ifdef DEBUG
     install_debug_patch();
