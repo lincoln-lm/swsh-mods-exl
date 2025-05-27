@@ -40,12 +40,13 @@ HOOK_DEFINE_INLINE(RandomizeHiddenEncounterSlots) {
         OverworldEncount::encounter_tables_t* encounter_tables = reinterpret_cast<OverworldEncount::encounter_tables_t*>(data + 0x10);
         const std::string seed = std::format("hidden_encounter_table_{}", area_hash);
         auto rng = RngManager::NewRandomGenerator(seed);
-        for (int weather = 0; weather < 9; weather++) {
-            encounter_tables[weather].minimum_level *= 1.5;
-            encounter_tables[weather].maximum_level *= 1.5;
+        for (int table = 0; table < 11; table++) {
+            encounter_tables[table].minimum_level *= 1.5;
+            encounter_tables[table].maximum_level *= 1.5;
             for (int i = 0; i < 10; i++) {
-                auto slot = &(encounter_tables[weather].encounter_slots[i]);
-                if (slot->rate == 0) continue;
+                auto slot = &(encounter_tables[table].encounter_slots[i]);
+                // if (slot->rate == 0) continue;
+                slot->rate = 10;
                 auto [species, form] = rng.RandSpeciesAndForm();
                 slot->species = species;
                 slot->form = form;
@@ -66,7 +67,8 @@ HOOK_DEFINE_INLINE(RandomizeSymbolEncounterSlots) {
             encounter_tables[weather].maximum_level *= 1.5;
             for (int i = 0; i < 10; i++) {
                 auto slot = &(encounter_tables[weather].encounter_slots[i]);
-                if (slot->rate == 0) continue;
+                // if (slot->rate == 0) continue;
+                slot->rate = 10;
                 auto [species, form] = rng.RandSpeciesAndForm();
                 slot->species = species;
                 slot->form = form;
