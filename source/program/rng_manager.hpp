@@ -70,6 +70,9 @@ class MersenneTwister : public std::mt19937_64 {
         u16 RandAbility() {
             return this->RandRange(1, 268);
         }
+        u16 RandBall() {
+            return this->RandRange(1, 27);
+        }
 };
 
 namespace RngManager {

@@ -1,0 +1,32 @@
+table EncounterGift {
+    is_egg: int;
+    form: ubyte;
+    dynamax_level: ubyte;
+    ball: int;
+    unk_0: ubyte;
+    hash: ulong;
+    can_gigantamax: bool;
+    held_item: int;
+    level: ubyte;
+    species: int;
+    unk_1: ubyte;
+    memory_code: ubyte;
+    memory_data: ushort;
+    memory_feel: ubyte;
+    memory_level: ubyte;
+    ot_name_id: ulong;
+    ot_gender: int;
+    shiny_lock: int;
+    nature: int;
+    gender: ubyte;
+    iv_spe: byte;
+    iv_atk: byte;
+    iv_def: byte;
+    iv_hp: byte;
+    iv_spa: byte;
+    iv_spd: byte;
+    ability: int;
+    special_move: int;
+}
+
+root_type EncounterGift;
