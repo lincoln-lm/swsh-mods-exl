@@ -104,7 +104,9 @@ HOOK_DEFINE_INLINE(PersonalTotalHook) {
                 base_stats.end(),
                 personal_info.base_stats
             );
-            // TODO: randomize abilities
+            personal_info.abilities[0] = rng.RandAbility();
+            personal_info.abilities[1] = rng.RandAbility();
+            personal_info.abilities[2] = rng.RandAbility();
             personal_info.held_items[0] = rng.RandHeldItem();
             personal_info.held_items[1] = rng.RandHeldItem();
             personal_info.held_items[2] = rng.RandHeldItem();

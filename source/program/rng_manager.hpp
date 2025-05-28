@@ -67,6 +67,9 @@ class MersenneTwister : public std::mt19937_64 {
         u16 RandHeldItem() {
             return this->RandElement(std::span(VALID_HELD_ITEMS));
         }
+        u16 RandAbility() {
+            return this->RandRange(1, 268);
+        }
 };
 
 namespace RngManager {
