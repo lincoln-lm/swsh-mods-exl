@@ -11,15 +11,28 @@ HOOK_DEFINE_TRAMPOLINE(RandomLearnsetHook) {
         auto vanilla_items = LearnsetData::WAZAOBOE_TOTAL_LEARNSET_DATA()[species_form_index];
         std::memcpy(learnset_data->learnset_items, vanilla_items, sizeof(learnset_item_t) * 65);
         learnset_data->count = 0;
+        int level_1_move_count = 0;
         for (int i = 0; i < 65; i++) {
             if (learnset_data->learnset_items[i].move_id == -1 && learnset_data->learnset_items[i].level == -1) {
                 break;
             }
-            // follow the same levels as the vanilla learnset but with random moves
+            if (learnset_data->learnset_items[i].level == 1) {
+                level_1_move_count++;
+            }
+            // replace existing moves
             learnset_data->learnset_items[i].move_id = rng.RandValidMoveId();
             learnset_data->count++;
         }
-
+        if (learnset_data->count) {
+            // ensure at least 4 moves at level 1 (if possible)
+            if (learnset_data->count < 65 - 3 && level_1_move_count < 4) {
+                for (; level_1_move_count < 4; level_1_move_count++) {
+                    learnset_data->learnset_items[learnset_data->count].move_id = rng.RandValidMoveId();
+                    learnset_data->learnset_items[learnset_data->count].level = 1;
+                    learnset_data->count++;
+                }
+            }
+        }
     }
 };
 
