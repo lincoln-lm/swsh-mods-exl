@@ -1,7 +1,7 @@
 #include "lib.hpp"
 #include "external.hpp"
 #include "symbols.hpp"
-#include "spawner_data.hpp"
+#include "placement_zone_data.hpp"
 
 // zone hash updated every time an encounter happens
 static u64 encounter_zone_hash = 0;
@@ -34,8 +34,8 @@ HOOK_DEFINE_INLINE(StoreEncounterSpawner) {
         // TODO: EncountObject struct
         u64 encount_object = ctx->X[23] - 0x50;
         u64 spawner_hash = *reinterpret_cast<u64*>(encount_object + 0xd48);
-        auto result = spawner_zone_map.find(spawner_hash);
-        if (result != spawner_zone_map.end()) {
+        auto result = restriction_zone_map.find(spawner_hash);
+        if (result != restriction_zone_map.end()) {
             encounter_zone_hash = result->second;
         } else {
             encounter_zone_hash = 0;
@@ -47,8 +47,8 @@ HOOK_DEFINE_INLINE(StoreFishingPoint) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
         // TODO: struct
         Field::FieldObject* fishing_point = reinterpret_cast<Field::FieldObject*>(ctx->X[8]);
-        auto result = spawner_zone_map.find(fishing_point->unique_hash);
-        if (result != spawner_zone_map.end()) {
+        auto result = restriction_zone_map.find(fishing_point->unique_hash);
+        if (result != restriction_zone_map.end()) {
             encounter_zone_hash = result->second;
         } else {
             encounter_zone_hash = 0;
@@ -62,8 +62,8 @@ HOOK_DEFINE_INLINE(FilterObject) {
         if (object == nullptr) {
             return;
         }
-        auto zone_hash_search = spawner_zone_map.find(object->unique_hash);
-        if (zone_hash_search == spawner_zone_map.end()) {
+        auto zone_hash_search = restriction_zone_map.find(object->unique_hash);
+        if (zone_hash_search == restriction_zone_map.end()) {
             return;
         }
         if (save_file.blacklisted_zones.find(zone_hash_search->second) != save_file.blacklisted_zones.end()) {
