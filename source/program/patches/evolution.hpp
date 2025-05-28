@@ -1,5 +1,15 @@
+enum evolution_type : u16 {
+    None = 0,
+    LevelUp = 4,
+    Trade = 5,
+    TradeHeldItem = 6,
+    TradeShelmetKarrablast = 7,
+    LevelUpHeldItemDay = 19,
+    LevelUpWithTeammate = 22,
+};
+
 struct evolution_method_t {
-    u16 method;
+    evolution_type method;
     u16 argument;
     u16 species;
     s8 form;
@@ -27,6 +37,23 @@ HOOK_DEFINE_TRAMPOLINE(CustomEvolutionBinary) {
             evolution_method_t& method = (*out->methods)[i];
             if (method.species == 0) {
                 continue;
+            }
+            // regular trade evos -> level 30
+            if (method.method == evolution_type::Trade) {
+                method.method = evolution_type::LevelUp;
+                method.level = 30;
+            // trade held item -> level held item
+            } else if (method.method == evolution_type::TradeHeldItem) {
+                method.method = evolution_type::LevelUpHeldItemDay;
+            // trade with mon -> level with mon
+            } else if (method.method == evolution_type::TradeShelmetKarrablast) {
+                // karrablast
+                if (method.species == 588) {
+                    method.argument = 616;
+                // shelmet
+                } else if (method.species == 616) {
+                    method.argument = 588;
+                }
             }
             while (true) {
                 auto [species, form] = rng.RandSpeciesAndForm();
