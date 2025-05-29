@@ -101,8 +101,8 @@ struct LearnsetData {
 
 struct party_member_t {
     u8 unk_0[0x74];
-    u32 hp;
-    u8 unk_1[0x5];
+    u16 hp;
+    u8 unk_1[0x7];
     u8 real_party_index;
     // unknown size
 } PACKED;
