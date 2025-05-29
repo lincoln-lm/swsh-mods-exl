@@ -19,6 +19,10 @@ static void replace_species_form(u64 hash, s32* species_ptr, s16* form_ptr) {
     // grookey
     } else if (hash == getConstFNV1aHashedString("z_t0101_KUSA").hash) {
         seed = 0xd0f69218d6d84126;
+    // fog zamazenta 
+    } else if (hash == getConstFNV1aHashedString("z_d0101_PM_889_OOKAMIT").hash) {
+        seed = 0x6f0b36ae4a5df4a9;
+    // fog zacian z_d0101_PM_888_OOKAMIK
     } else {
         // it would be neat to randomize all models based on their hash
         // but there is something else limiting how many unique pokemon
