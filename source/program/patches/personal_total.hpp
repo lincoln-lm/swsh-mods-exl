@@ -24,14 +24,15 @@ struct personal_info_t {
     u8 tm[16];
     u8 type_tutors[4];
     u8 tr[16];
-    u16 species;
+    u16 model_id;
     u8 padding_0[8];
     u16 hatch_species;
     u16 local_form_index;
     u16 regional_flags;
     u16 pokedex_index;
     u16 regional_form_index;
-    u8 padding_1[72];
+    u16 form;
+    u8 padding_1[70];
     u8 armor_tutor[4];
     u16 armor_dex_index;
     u16 crown_dex_index;
@@ -52,7 +53,7 @@ HOOK_DEFINE_INLINE(PersonalTotalHook) {
             // bst calc taken from UPR ZX
             u64 bst;
             // shedinja gets special handling
-            bool is_shedinja = personal_info.species == 292;
+            bool is_shedinja = personal_info.model_id == 292;
             if (is_shedinja) {
                 bst = std::accumulate(
                     personal_info.base_stats,
