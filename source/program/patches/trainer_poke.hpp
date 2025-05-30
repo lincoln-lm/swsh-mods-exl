@@ -13,8 +13,8 @@ HOOK_DEFINE_INLINE(RandomPokeData) {
         auto rng = RngManager::NewRandomGenerator(file_path);
         auto trainer_team = reinterpret_cast<trainer_poke_data_t*>(ctx->X[1]);
         for (int i = 0; i < 6; i++) {
-            if (trainer_team[i].level == 0 || trainer_team[i].level > 100) {
-                break;
+            if (trainer_team[i].level == 0 || trainer_team[i].level > 100 || trainer_team[i].species == 0) {
+                continue;
             }
             trainer_team[i].level *= 1.5;
             auto [
@@ -31,7 +31,6 @@ HOOK_DEFINE_INLINE(RandomPokeData) {
 
             // TODO: randomize nature/ivs/evs?
             trainer_team[i].shiny = rng.RandChance(4096);
-            
         }
     }
 };
