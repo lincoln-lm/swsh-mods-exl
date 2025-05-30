@@ -26,6 +26,13 @@ static void replace_species_form(u64 hash, s32* species_ptr, s16* form_ptr) {
     // toxel gift
     } else if (hash == getConstFNV1aHashedString("z_r0501_i0101_PM_848_PUNKII1").hash) {
         seed = 0x534abd7f00ee7e61;
+    // fire gym mons
+    } else if (hash == getConstFNV1aHashedString("z_c0101_g0102_CNT_POKE").hash) {
+        seed = 0x59f8ac028fe0e5c;
+    } else if (hash == getConstFNV1aHashedString("z_c0101_g0102_RIGHT_POKE").hash) {
+        seed = 0x59f8bc028fe100f;
+    } else if (hash == getConstFNV1aHashedString("z_c0101_g0102_LEFT_POKE").hash) {
+        seed = 0x8c311b85a7bab25a;
     } else {
         // it would be neat to randomize all models based on their hash
         // but there is something else limiting how many unique pokemon
