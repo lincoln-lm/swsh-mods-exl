@@ -22,7 +22,10 @@ static void replace_species_form(u64 hash, s32* species_ptr, s16* form_ptr) {
     // fog zamazenta 
     } else if (hash == getConstFNV1aHashedString("z_d0101_PM_889_OOKAMIT").hash) {
         seed = 0x6f0b36ae4a5df4a9;
-    // fog zacian z_d0101_PM_888_OOKAMIK
+        // fog zacian z_d0101_PM_888_OOKAMIK
+    // toxel gift
+    } else if (hash == getConstFNV1aHashedString("z_r0501_i0101_PM_848_PUNKII1").hash) {
+        seed = 0x534abd7f00ee7e61;
     } else {
         // it would be neat to randomize all models based on their hash
         // but there is something else limiting how many unique pokemon
