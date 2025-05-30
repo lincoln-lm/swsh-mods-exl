@@ -77,6 +77,15 @@ HOOK_DEFINE_INLINE(LogEncountObject) {
     }
 };
 
+HOOK_DEFINE_TRAMPOLINE(PatchNullPtrDeref) {
+    static void Callback(u64 param_1, u64** param_2, u32 param_3) {
+        if (param_2[1] == nullptr) {
+            return;
+        }
+        Orig(param_1, param_2, param_3);
+    }
+};
+
 void install_pokemon_models_patch() {
     // TODO: symbol
     // something that reads the fbs to do some preloading before the map loads
@@ -89,5 +98,10 @@ void install_pokemon_models_patch() {
     // TODO: symbol
     // EncountObject::EncountObject + ???
     LogEncountObject::InstallAtOffset(0xd5dabc - VER_OFF);
+    // TODO: symbol
+    // some function that causes a nullptr deref in some circumstances
+    // (specifically triggered when replacing some models with zekrom)
+    // stubbing it when the ptr is null seems to work fine
+    PatchNullPtrDeref::InstallAtOffset(0xd1be90 - VER_OFF);
 }
 
