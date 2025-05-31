@@ -38,11 +38,11 @@ HOOK_DEFINE_TRAMPOLINE(SkipABKeyWait) {
 };
 
 HOOK_DEFINE_TRAMPOLINE(EvCameraSpeed) {
-    static const void Callback(void* options_holder, float* camera_move_settings) {
+    static const void Callback(void* param_1, float* camera_move_settings) {
         if (should_skip) {
             camera_move_settings[15] = 1.0;
         }
-        Orig(options_holder, camera_move_settings);
+        Orig(param_1, camera_move_settings);
     }
 };
 
