@@ -19,6 +19,7 @@
 #include "patches/pokemon_models.hpp"
 #include "patches/event_encounters.hpp"
 #include "patches/speed_qol.hpp"
+#include "patches/level_cap.hpp"
 #ifdef DEBUG
 #include "patches/debug.hpp"
 #endif
@@ -60,6 +61,7 @@ extern "C" void exl_main(void* x0, void* x1) {
     install_pokemon_models_patch();
     install_event_encounters_patch();
     install_speed_qol_patch();
+    install_level_cap_patch();
     install_hid_patch();
     install_savefile_patch();
 #ifdef DEBUG
