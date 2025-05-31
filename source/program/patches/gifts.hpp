@@ -17,6 +17,7 @@ HOOK_DEFINE_TRAMPOLINE(RandomizeGiftPokemon) {
         auto ability = rng.RandRange(0, 3);
         auto gender = 0; // random
         auto nature = 25; // random
+        auto special_move = rng.RandValidMoveId();
         flatbuffers::FlatBufferBuilder builder;
         builder.Finish(
             CreateEncounterGift(
@@ -48,7 +49,7 @@ HOOK_DEFINE_TRAMPOLINE(RandomizeGiftPokemon) {
                 original->iv_spa(),
                 original->iv_spd(),
                 ability,
-                original->special_move()
+                special_move
             )
         );
         u8* data_ptr = builder.GetBufferPointer();
