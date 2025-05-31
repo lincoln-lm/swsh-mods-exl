@@ -5,34 +5,33 @@
 
 static bool is_encount_object = false;
 
+static const std::map<u64, u64> hash_seed_map = {
+    // sobble
+    {getConstFNV1aHashedString("z_t0101_MIZU").hash, 0x289d0e4aa0fd660d},
+    {getConstFNV1aHashedString("z_t0101_i0101_MIZU").hash, 0x289d0e4aa0fd660d},
+    // scorbunny
+    {getConstFNV1aHashedString("z_t0101_HONO").hash, 0xe611a220de507f60},
+    {getConstFNV1aHashedString("z_t0101_i0101_HONO").hash, 0xe611a220de507f60},
+    // grookey
+    {getConstFNV1aHashedString("z_t0101_KUSA").hash, 0xd0f69218d6d84126},
+    {getConstFNV1aHashedString("z_t0101_i0101_KUSA").hash, 0xd0f69218d6d84126},
+    // fog zamazenta 
+    {getConstFNV1aHashedString("z_d0101_PM_889_OOKAMIT").hash, 0x6f0b36ae4a5df4a9},
+    // TODO: fog zacian z_d0101_PM_888_OOKAMIK
+    {getConstFNV1aHashedString("z_r0501_i0101_PM_848_PUNKII1").hash, 0x534abd7f00ee7e61},
+    // fire gym mons
+    {getConstFNV1aHashedString("z_c0101_g0102_CNT_POKE").hash, 0x59f8ac028fe0e5c},
+    {getConstFNV1aHashedString("z_c0101_g0102_RIGHT_POKE").hash, 0x59f8bc028fe100f},
+    {getConstFNV1aHashedString("z_c0101_g0102_LEFT_POKE").hash, 0x8c311b85a7bab25a},
+};
+
 static void replace_species_form(u64 hash, s32* species_ptr, s16* form_ptr) {
     u64 seed;
-    // use gift's add_pokemon hash for the seed
-    // TODO: toxel, type: null, kanto starters, kubfu, cosmog, poipole
-    // TODO: scripted encounters
-    // sobble
-    if (hash == getConstFNV1aHashedString("z_t0101_MIZU").hash) {
-        seed = 0x289d0e4aa0fd660d;
-    // scorbunny
-    } else if (hash == getConstFNV1aHashedString("z_t0101_HONO").hash) {
-        seed = 0xe611a220de507f60;
-    // grookey
-    } else if (hash == getConstFNV1aHashedString("z_t0101_KUSA").hash) {
-        seed = 0xd0f69218d6d84126;
-    // fog zamazenta 
-    } else if (hash == getConstFNV1aHashedString("z_d0101_PM_889_OOKAMIT").hash) {
-        seed = 0x6f0b36ae4a5df4a9;
-        // fog zacian z_d0101_PM_888_OOKAMIK
-    // toxel gift
-    } else if (hash == getConstFNV1aHashedString("z_r0501_i0101_PM_848_PUNKII1").hash) {
-        seed = 0x534abd7f00ee7e61;
-    // fire gym mons
-    } else if (hash == getConstFNV1aHashedString("z_c0101_g0102_CNT_POKE").hash) {
-        seed = 0x59f8ac028fe0e5c;
-    } else if (hash == getConstFNV1aHashedString("z_c0101_g0102_RIGHT_POKE").hash) {
-        seed = 0x59f8bc028fe100f;
-    } else if (hash == getConstFNV1aHashedString("z_c0101_g0102_LEFT_POKE").hash) {
-        seed = 0x8c311b85a7bab25a;
+    // use gift's add_pokemon hash and event encounters' event_encount hash for the seed
+    // TODO: type: null, kanto starters, kubfu, cosmog, poipole, other scripted encounters
+    auto find_seed_result = hash_seed_map.find(hash);
+    if (find_seed_result != hash_seed_map.end()) {
+        seed = find_seed_result->second;
     } else {
         // it would be neat to randomize all models based on their hash
         // but there is something else limiting how many unique pokemon
