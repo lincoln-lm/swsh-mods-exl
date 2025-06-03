@@ -15,8 +15,12 @@ HOOK_DEFINE_TRAMPOLINE(SkipBSeq) {
         auto gffile = *reinterpret_cast<u64*>(bseq_handler + 0x68);
         if (gffile != 0) {
             const char* file_path = *reinterpret_cast<char**>(gffile + 0x68 + 0x8);
-            // skipping the title screen breaks things
-            if (strcmp(file_path, "bin/demo/sequence/sd9010_title.bseq")) {
+            if (
+                // skipping the title screen breaks things
+                strcmp(file_path, "bin/demo/sequence/sd9010_title.bseq")
+                // skipping evolutions break things
+                && strstr(file_path, "evolution") == nullptr
+            ) {
                 auto bseq_header = *reinterpret_cast<u32**>(bseq_handler + 0x178);
 
                 bseq_header[3] = 0; // frame count
