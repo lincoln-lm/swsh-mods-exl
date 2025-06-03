@@ -10,9 +10,13 @@ HOOK_DEFINE_INLINE(RandomPokeData) {
             *reinterpret_cast<const char**>(ctx->X[20] + 0x70),
             *reinterpret_cast<const size_t*>(ctx->X[20] + 0x78)
         );
+        // gamefreak is dumb and always memcpys 192 bytes from this file buffer
+        // if it memcpyd properly, the buffer size would be in x2
+        u64 file_buffer_size = *reinterpret_cast<u64*>(ctx->X[20] + 0x1a0);
+        int team_size = file_buffer_size / sizeof(trainer_poke_data_t);
         auto rng = RngManager::NewRandomGenerator(file_path);
         auto trainer_team = reinterpret_cast<trainer_poke_data_t*>(ctx->X[1]);
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < team_size; i++) {
             if (trainer_team[i].level == 0 || trainer_team[i].level > 100 || trainer_team[i].species == 0) {
                 continue;
             }
