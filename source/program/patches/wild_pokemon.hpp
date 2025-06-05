@@ -5,6 +5,7 @@
 
 HOOK_DEFINE_INLINE(RandomizeGimmickSpec) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        if (!save_file.wild_pokemon_randomization_enabled) return;
         // TODO: GimmickSpawner struct
         Field::FieldObject* gimmick_spawner = reinterpret_cast<Field::FieldObject*>(ctx->X[19]);
         // TODO: Field::GetActiveWeather
@@ -35,6 +36,7 @@ HOOK_DEFINE_INLINE(RandomizeGimmickSpec) {
 
 HOOK_DEFINE_INLINE(RandomizeHiddenEncounterSlots) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        if (!save_file.wild_pokemon_randomization_enabled) return;
         u64 data = ctx->X[19];
         u64 area_hash = *reinterpret_cast<u64*>(data + 0x8);
         OverworldEncount::encounter_tables_t* encounter_tables = reinterpret_cast<OverworldEncount::encounter_tables_t*>(data + 0x10);
@@ -57,6 +59,7 @@ HOOK_DEFINE_INLINE(RandomizeHiddenEncounterSlots) {
 
 HOOK_DEFINE_INLINE(RandomizeSymbolEncounterSlots) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        if (!save_file.wild_pokemon_randomization_enabled) return;
         u64 data = ctx->X[19];
         u64 area_hash = *reinterpret_cast<u64*>(data + 0x8);
         OverworldEncount::encounter_tables_t* encounter_tables = reinterpret_cast<OverworldEncount::encounter_tables_t*>(data + 0x10);

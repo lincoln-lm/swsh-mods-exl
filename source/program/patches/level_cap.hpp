@@ -4,6 +4,7 @@
 
 HOOK_DEFINE_INLINE(TweakLevelCap) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        if (!save_file.level_cap_enabled) return;
         ctx->W[8] *= 1.5;
     }
 };

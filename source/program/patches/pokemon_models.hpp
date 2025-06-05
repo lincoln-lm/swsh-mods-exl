@@ -49,6 +49,7 @@ static void replace_species_form(u64 hash, s32* species_ptr, s16* form_ptr) {
 
 HOOK_DEFINE_INLINE(RandomizePokemonModelsOnLoad) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        if (!save_file.model_randomization_enabled) return;
         auto fb = reinterpret_cast<FlatbufferObjects::PokemonModel*>(ctx->X[27]);
         u64 sp = ctx->X[1] - 0x100;
         u64 hash = fb->inner()->inner()->field_object()->unique_hash();
@@ -62,6 +63,7 @@ HOOK_DEFINE_INLINE(RandomizePokemonModelsOnLoad) {
 
 HOOK_DEFINE_INLINE(RandomizePokemonModels) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        if (!save_file.model_randomization_enabled) return;
         // TODO: this feels hacky
         // is there a more sensible way to detect if the ctor is called
         // within the EncountObject ctor

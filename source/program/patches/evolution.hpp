@@ -27,6 +27,7 @@ struct evolution_set_t {
 HOOK_DEFINE_TRAMPOLINE(CustomEvolutionBinary) {
     static void Callback(evolution_set_t* out, u32 species, u32 form) {
         Orig(out, species, form);
+        if (!save_file.evolution_randomization_enabled) return;
         const std::string seed = std::format("evolution_binary_{}_{}", species, form);
         auto rng = RngManager::NewRandomGenerator(seed);
         PersonalInfo::FetchInfo(species, form);

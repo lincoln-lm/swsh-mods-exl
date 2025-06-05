@@ -20,6 +20,7 @@
 #include "patches/event_encounters.hpp"
 #include "patches/speed_qol.hpp"
 #include "patches/level_cap.hpp"
+#include "patches/settings_menu.hpp"
 #ifdef DEBUG
 #include "patches/debug.hpp"
 #endif
@@ -40,6 +41,7 @@ HOOK_DEFINE_TRAMPOLINE(MainInitHook){
         } else {
             auto rng = RngManager::NewRandomGenerator();
             save_file.rng_seed = rng();
+            save_file.rng_seed_set = true;
         }
         Orig(x0, x1, x2, x3);
     }
@@ -62,8 +64,10 @@ extern "C" void exl_main(void* x0, void* x1) {
     install_event_encounters_patch();
     install_speed_qol_patch();
     install_level_cap_patch();
+    install_settings_menu_patch();
     install_hid_patch();
     install_savefile_patch();
+    install_amx_patch();
 #ifdef DEBUG
     install_debug_patch();
 #endif

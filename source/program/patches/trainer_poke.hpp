@@ -5,6 +5,7 @@
 
 HOOK_DEFINE_INLINE(RandomPokeData) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        if (!save_file.trainer_poke_randomization_enabled) return;
         // TODO: GFFile struct
         const std::span<const char> file_path(
             *reinterpret_cast<const char**>(ctx->X[20] + 0x70),

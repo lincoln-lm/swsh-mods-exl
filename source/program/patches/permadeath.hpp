@@ -14,6 +14,7 @@ void remove_party_member(base_party_t* party, u8 index) {
 
 HOOK_DEFINE_INLINE(PermaDeath) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        if (!save_file.permadeath_enabled) return;
         if (ctx->X[0] == 0) {
             return;
         }
@@ -42,6 +43,7 @@ HOOK_DEFINE_INLINE(PermaDeath) {
 // and will nullptr dereference
 HOOK_DEFINE_INLINE(FixIterationCount) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        if (!save_file.permadeath_enabled) return;
         base_party_t* battle_party = reinterpret_cast<base_party_t*>(ctx->X[23]);
         ctx->W[0] = std::min(static_cast<u8>(ctx->W[0]), battle_party->count);
     }
@@ -49,6 +51,7 @@ HOOK_DEFINE_INLINE(FixIterationCount) {
 
 HOOK_DEFINE_INLINE(RestorePartyOrderPatch) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        if (!save_file.permadeath_enabled) return;
         base_party_t* battle_party = reinterpret_cast<base_party_t*>(ctx->X[8] + 0x8);
         // if the first member is dead & didn't have a chance to be removed in battle,
         // remove it now

@@ -41,6 +41,7 @@ static_assert(sizeof(personal_info_t) == 0xB0);
 
 HOOK_DEFINE_INLINE(PersonalTotalHook) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        if (!save_file.personal_randomization_enabled) return;
         personal_info_t* personal_total_buffer = reinterpret_cast<personal_info_t*>(ctx->X[1]);
         size_t buffer_size = ctx->X[2];
         std::span<personal_info_t> personal_total_span(

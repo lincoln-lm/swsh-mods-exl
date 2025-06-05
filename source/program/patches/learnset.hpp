@@ -5,6 +5,10 @@
 
 HOOK_DEFINE_TRAMPOLINE(RandomLearnsetHook) {
     static void Callback(LearnsetData* learnset_data, u32 species, u32 form) {
+        if (!save_file.learnset_randomization_enabled) {
+            Orig(learnset_data, species, form);
+            return;
+        }
         const std::string seed = std::format("learnset_{}_{}", species, form);
         auto rng = RngManager::NewRandomGenerator(seed);
         u64 species_form_index = GetSpeciesFormIndex(species, form);
