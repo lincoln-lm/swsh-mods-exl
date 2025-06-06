@@ -3,8 +3,6 @@
 #include "symbols.hpp"
 #include <map>
 
-static u8 settings_menu_state = 0;
-
 u64 AddNewSeedDigit(void* amx, u64* params) {
     save_file.rng_seed *= 10;
     save_file.rng_seed += params[1];
@@ -36,9 +34,9 @@ u64 ToggleSetting(void* amx, u64* params) {
 
 HOOK_DEFINE_TRAMPOLINE(SettingsMenuTrigger) {
     static const u64 Callback(u64 param_1) {
-        if (settings_menu_state == 0) {
+        if (save_file.settings_menu_state == 0) {
             AMX::call_pawn_script("settings_dialog");
-        } else if (settings_menu_state == 1) {
+        } else if (save_file.settings_menu_state == 1) {
             // TODO: doc
             u64 scene_transition_data[31] = {
                 0x4,
@@ -75,10 +73,10 @@ HOOK_DEFINE_TRAMPOLINE(SettingsMenuTrigger) {
             // in this instance it is used to reload a_t0101_i0101
             // (the player's house)
             external<unk_holder_t>(0xdf2cd0 - VER_OFF, scene_transition_data);
-        } else if (settings_menu_state >= 2) {
+        } else if (save_file.settings_menu_state >= 2) {
             return Orig(param_1);
         }
-        settings_menu_state++;
+        save_file.settings_menu_state++;
         return 1;
     }
 };

@@ -7,6 +7,8 @@ struct SaveFile {
     u64 rng_seed;
     bool rng_seed_set;
 
+    s64 settings_menu_state = 0;
+
     struct {
         bool enabled = true;
     } evo_rng;
@@ -40,13 +42,16 @@ struct SaveFile {
     } level_cap_boost;
 
     #define LOAD_BOOL(name) this->name = table[#name].as_boolean()->get()
+    #define LOAD_INT(name) this->name = table[#name].as_integer()->get()
     #define SAVE_BOOL(name) table.insert(#name, name)
+    #define SAVE_INT(name) table.insert(#name, name)
 
     SaveFile() {}
     void from_table(const toml::table& table) {
         s64 seed = table["rng_seed"].as_integer()->get();
         this->rng_seed = static_cast<u64>(seed);
         LOAD_BOOL(rng_seed_set);
+        LOAD_INT(settings_menu_state);
         LOAD_BOOL(evo_rng.enabled);
         LOAD_BOOL(learnset_rng.enabled);
         LOAD_BOOL(item_rng.enabled);
@@ -70,6 +75,7 @@ struct SaveFile {
         }
         table.insert("rng_seed", static_cast<s64>(rng_seed));
         SAVE_BOOL(rng_seed_set);
+        SAVE_INT(settings_menu_state);
         SAVE_BOOL(evo_rng.enabled);
         SAVE_BOOL(learnset_rng.enabled);
         SAVE_BOOL(item_rng.enabled);
