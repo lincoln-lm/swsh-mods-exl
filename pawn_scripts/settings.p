@@ -1,11 +1,15 @@
 #include "std.inc"
 
-// TODO: fix name lol
-// WaitUntilMessageWindowIsLoaded
 
 native AddNewSeedDigit(value);
 native ResetSeed();
 native ToggleSetting(index);
+
+AddListItem(index, identifier[]) {
+    // TODO: fix name lol
+    // WaitUntilMessageWindowIsLoaded
+    WaitUntilMessageWindowIsLoaded(index, GetFnvHash64(identifier), 1);
+}
 
 main()
 {
@@ -18,13 +22,13 @@ main()
                 switch (page) {
                     case 0:
                     {
-                        WaitUntilMessageWindowIsLoaded(0, GetFnvHash64("option_confirm_settings"), 1);
-                        WaitUntilMessageWindowIsLoaded(1, GetFnvHash64("option_show_seed"), 1);
-                        WaitUntilMessageWindowIsLoaded(2, GetFnvHash64("option_new_seed"), 1);
-                        WaitUntilMessageWindowIsLoaded(3, GetFnvHash64("option_evolution"), 1);
-                        WaitUntilMessageWindowIsLoaded(4, GetFnvHash64("option_learnset"), 1);
-                        WaitUntilMessageWindowIsLoaded(5, GetFnvHash64("option_items"), 1);
-                        WaitUntilMessageWindowIsLoaded(6, GetFnvHash64("option_next"), 1);
+                        AddListItem(0, "option_confirm_settings");
+                        AddListItem(1, "option_show_seed");
+                        AddListItem(2, "option_new_seed");
+                        AddListItem(3, "option_evo_rng");
+                        AddListItem(4, "option_learnset_rng");
+                        AddListItem(5, "option_item_rng");
+                        AddListItem(6, "option_next");
                         new response = RequestListInput(1, 0, 1, 0);
                         CloseMessageWindow();
                         switch (response) {
@@ -46,13 +50,13 @@ main()
                                         switch (seed_page) {
                                             case 0:
                                             {
-                                                WaitUntilMessageWindowIsLoaded(0, GetFnvHash64("0"), 1);
-                                                WaitUntilMessageWindowIsLoaded(1, GetFnvHash64("1"), 1);
-                                                WaitUntilMessageWindowIsLoaded(2, GetFnvHash64("2"), 1);
-                                                WaitUntilMessageWindowIsLoaded(3, GetFnvHash64("3"), 1);
-                                                WaitUntilMessageWindowIsLoaded(4, GetFnvHash64("4"), 1);
-                                                WaitUntilMessageWindowIsLoaded(5, GetFnvHash64("5"), 1);
-                                                WaitUntilMessageWindowIsLoaded(6, GetFnvHash64("option_next"), 1);
+                                                AddListItem(0, "0");
+                                                AddListItem(1, "1");
+                                                AddListItem(2, "2");
+                                                AddListItem(3, "3");
+                                                AddListItem(4, "4");
+                                                AddListItem(5, "5");
+                                                AddListItem(6, "option_next");
                                                 new seed_response = RequestListInput(1, 0, 1, 0);
                                                 CloseMessageWindow();
                                                 if (seed_response == 6) {
@@ -64,11 +68,11 @@ main()
                                             }
                                             case 1:
                                             {
-                                                WaitUntilMessageWindowIsLoaded(0, GetFnvHash64("option_back"), 1);
-                                                WaitUntilMessageWindowIsLoaded(1, GetFnvHash64("6"), 1);
-                                                WaitUntilMessageWindowIsLoaded(2, GetFnvHash64("7"), 1);
-                                                WaitUntilMessageWindowIsLoaded(3, GetFnvHash64("8"), 1);
-                                                WaitUntilMessageWindowIsLoaded(4, GetFnvHash64("9"), 1);
+                                                AddListItem(0, "option_back");
+                                                AddListItem(1, "6");
+                                                AddListItem(2, "7");
+                                                AddListItem(3, "8");
+                                                AddListItem(4, "9");
                                                 new seed_response = RequestListInput(1, 0, 1, 0);
                                                 CloseMessageWindow();
                                                 if (seed_response == 0) {
@@ -93,13 +97,13 @@ main()
                     }
                     case 1:
                     {
-                        WaitUntilMessageWindowIsLoaded(0, GetFnvHash64("option_back"), 1);
-                        WaitUntilMessageWindowIsLoaded(1, GetFnvHash64("option_personal"), 1);
-                        WaitUntilMessageWindowIsLoaded(2, GetFnvHash64("option_trainer_poke"), 1);
-                        WaitUntilMessageWindowIsLoaded(3, GetFnvHash64("option_wild_pokemon"), 1);
-                        WaitUntilMessageWindowIsLoaded(4, GetFnvHash64("option_models"), 1);
-                        WaitUntilMessageWindowIsLoaded(5, GetFnvHash64("option_permadeath"), 1);
-                        WaitUntilMessageWindowIsLoaded(6, GetFnvHash64("option_next"), 1);
+                        AddListItem(0, "option_back");
+                        AddListItem(1, "option_personal_rng");
+                        AddListItem(2, "option_trainer_rng");
+                        AddListItem(3, "option_wild_rng");
+                        AddListItem(4, "option_model_rng");
+                        AddListItem(5, "option_permadeath");
+                        AddListItem(6, "option_next");
                         new response = RequestListInput(1, 0, 1, 0);
                         CloseMessageWindow();
                         switch (response) {
@@ -120,9 +124,9 @@ main()
                     }
                     case 2:
                     {
-                        WaitUntilMessageWindowIsLoaded(0, GetFnvHash64("option_back"), 1);
-                        WaitUntilMessageWindowIsLoaded(1, GetFnvHash64("option_route_restriction"), 1);
-                        WaitUntilMessageWindowIsLoaded(2, GetFnvHash64("option_level_cap"), 1);
+                        AddListItem(0, "option_back");
+                        AddListItem(1, "option_route_restriction");
+                        AddListItem(2, "option_level_cap_boost");
                         new response = RequestListInput(1, 0, 1, 0);
                         CloseMessageWindow();
                         switch (response) {

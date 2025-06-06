@@ -5,7 +5,7 @@
 
 HOOK_DEFINE_TRAMPOLINE(RandomLearnsetHook) {
     static void Callback(LearnsetData* learnset_data, u32 species, u32 form) {
-        if (!save_file.learnset_randomization_enabled) {
+        if (!save_file.learnset_rng.enabled) {
             Orig(learnset_data, species, form);
             return;
         }

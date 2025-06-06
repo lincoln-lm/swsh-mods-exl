@@ -18,13 +18,13 @@ enum WildBattleResult {
 
 HOOK_DEFINE_INLINE(OnBattleResult) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
-        if (!save_file.route_restriction_enabled) return;
+        if (!save_file.route_restriction.enabled) return;
         // is wild battle
         if (*reinterpret_cast<u8*>(ctx->X[19] + 300) == 3) {
             auto battle_result = static_cast<WildBattleResult>(ctx->W[20]);
             // capturing or defeating the wild mon consumes the allowed encounter for that zone
             if (battle_result == WildBattleResult::Capture || battle_result == WildBattleResult::Win) {
-                save_file.blacklisted_zones.insert(encounter_zone_hash);
+                save_file.route_restriction.blacklisted_zones.insert(encounter_zone_hash);
             }
         }
     }
@@ -32,7 +32,7 @@ HOOK_DEFINE_INLINE(OnBattleResult) {
 
 HOOK_DEFINE_INLINE(StoreEncounterSpawner) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
-        if (!save_file.route_restriction_enabled) return;
+        if (!save_file.route_restriction.enabled) return;
         // TODO: EncountObject struct
         u64 encount_object = ctx->X[23] - 0x50;
         u64 spawner_hash = *reinterpret_cast<u64*>(encount_object + 0xd48);
@@ -47,7 +47,7 @@ HOOK_DEFINE_INLINE(StoreEncounterSpawner) {
 
 HOOK_DEFINE_INLINE(StoreFishingPoint) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
-        if (!save_file.route_restriction_enabled) return;
+        if (!save_file.route_restriction.enabled) return;
         // TODO: struct
         Field::FieldObject* fishing_point = reinterpret_cast<Field::FieldObject*>(ctx->X[8]);
         auto result = restriction_zone_map.find(fishing_point->unique_hash);
@@ -61,7 +61,7 @@ HOOK_DEFINE_INLINE(StoreFishingPoint) {
 
 HOOK_DEFINE_INLINE(FilterObject) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
-        if (!save_file.route_restriction_enabled) return;
+        if (!save_file.route_restriction.enabled) return;
         auto object = reinterpret_cast<Field::FieldObject*>(ctx->X[0]);
         if (object == nullptr) {
             return;
@@ -70,7 +70,7 @@ HOOK_DEFINE_INLINE(FilterObject) {
         if (zone_hash_search == restriction_zone_map.end()) {
             return;
         }
-        if (save_file.blacklisted_zones.find(zone_hash_search->second) != save_file.blacklisted_zones.end()) {
+        if (save_file.route_restriction.blacklisted_zones.find(zone_hash_search->second) != save_file.route_restriction.blacklisted_zones.end()) {
             Field::DeleteFieldObject(object->unique_hash);
         }
     }

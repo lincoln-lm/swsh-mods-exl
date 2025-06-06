@@ -20,16 +20,16 @@ u64 ResetSeed(void* amx, u64* params) {
 
 u64 ToggleSetting(void* amx, u64* params) {
     switch (params[1]) {
-        case 0: save_file.evolution_randomization_enabled ^= 1; break;
-        case 1: save_file.learnset_randomization_enabled ^= 1; break;
-        case 2: save_file.item_randomization_enabled ^= 1; break;
-        case 3: save_file.personal_randomization_enabled ^= 1; break;
-        case 4: save_file.trainer_poke_randomization_enabled ^= 1; break;
-        case 5: save_file.wild_pokemon_randomization_enabled ^= 1; break;
-        case 6: save_file.model_randomization_enabled ^= 1; break;
-        case 7: save_file.permadeath_enabled ^= 1; break;
-        case 8: save_file.route_restriction_enabled ^= 1; break;
-        case 9: save_file.level_cap_enabled ^= 1; break;
+        case 0: save_file.evo_rng.enabled ^= 1; break;
+        case 1: save_file.learnset_rng.enabled ^= 1; break;
+        case 2: save_file.item_rng.enabled ^= 1; break;
+        case 3: save_file.personal_rng.enabled ^= 1; break;
+        case 4: save_file.trainer_rng.enabled ^= 1; break;
+        case 5: save_file.wild_rng.enabled ^= 1; break;
+        case 6: save_file.model_rng.enabled ^= 1; break;
+        case 7: save_file.permadeath.enabled ^= 1; break;
+        case 8: save_file.route_restriction.enabled ^= 1; break;
+        case 9: save_file.level_cap_boost.enabled ^= 1; break;
     }
     return 1;
 }
@@ -90,24 +90,38 @@ struct fake_gf_string_t {
 
 static u64 last_hash = 0;
 
-static const std::map<u64, const char16_t*> custom_messages = {
-    {getConstFNV1aHashedString("ask_settings").hash, u"Configure challenge settings."},
-    {getConstFNV1aHashedString("option_confirm_settings").hash, u"Confirm settings"},
-    {getConstFNV1aHashedString("option_confirm").hash, u"Confirm"},
-    {getConstFNV1aHashedString("option_next").hash, u"Next"},
-    {getConstFNV1aHashedString("option_back").hash, u"Back"},
-    {getConstFNV1aHashedString("option_new_seed").hash, u"Enter custom seed"},
-    {getConstFNV1aHashedString("option_show_seed").hash, u"Show current seed"},
-    {getConstFNV1aHashedString("0").hash, u"0"},
-    {getConstFNV1aHashedString("1").hash, u"1"},
-    {getConstFNV1aHashedString("2").hash, u"2"},
-    {getConstFNV1aHashedString("3").hash, u"3"},
-    {getConstFNV1aHashedString("4").hash, u"4"},
-    {getConstFNV1aHashedString("5").hash, u"5"},
-    {getConstFNV1aHashedString("6").hash, u"6"},
-    {getConstFNV1aHashedString("7").hash, u"7"},
-    {getConstFNV1aHashedString("8").hash, u"8"},
-    {getConstFNV1aHashedString("9").hash, u"9"},
+#define BASIC_MESSAGE(identifier, message) \
+    {getConstFNV1aHashedString(identifier).hash, []() { return u ## message; }}
+#define TOGGLE_MESSAGE(identifier, message, flag) \
+    {getConstFNV1aHashedString(identifier).hash, []() { return flag ? u ## message u" (on)" : u ## message u" (off)"; }}
+static const std::map<u64, std::function<const char16_t* ()>> custom_messages = {
+    BASIC_MESSAGE("ask_settings", "Configure challenge settings."),
+    BASIC_MESSAGE("option_confirm_settings", "Confirm settings"),
+    BASIC_MESSAGE("option_confirm", "Confirm"),
+    BASIC_MESSAGE("option_next", "Next"),
+    BASIC_MESSAGE("option_back", "Back"),
+    BASIC_MESSAGE("option_new_seed", "Enter custom seed"),
+    BASIC_MESSAGE("option_show_seed", "Show current seed"),
+    BASIC_MESSAGE("0", "0"),
+    BASIC_MESSAGE("1", "1"),
+    BASIC_MESSAGE("2", "2"),
+    BASIC_MESSAGE("3", "3"),
+    BASIC_MESSAGE("4", "4"),
+    BASIC_MESSAGE("5", "5"),
+    BASIC_MESSAGE("6", "6"),
+    BASIC_MESSAGE("7", "7"),
+    BASIC_MESSAGE("8", "8"),
+    BASIC_MESSAGE("9", "9"),
+    TOGGLE_MESSAGE("option_evo_rng", "Toggle evolution randomization", save_file.evo_rng.enabled),
+    TOGGLE_MESSAGE("option_learnset_rng", "Toggle learnset randomization", save_file.learnset_rng.enabled),
+    TOGGLE_MESSAGE("option_item_rng", "Toggle item randomization", save_file.item_rng.enabled),
+    TOGGLE_MESSAGE("option_personal_rng", "Toggle personal info randomization", save_file.personal_rng.enabled),
+    TOGGLE_MESSAGE("option_trainer_rng", "Toggle trainer randomization", save_file.trainer_rng.enabled),
+    TOGGLE_MESSAGE("option_wild_rng", "Toggle wild randomization", save_file.wild_rng.enabled),
+    TOGGLE_MESSAGE("option_model_rng", "Toggle pokemon model randomization", save_file.model_rng.enabled),
+    TOGGLE_MESSAGE("option_permadeath", "Toggle nuzlocke permadeath", save_file.permadeath.enabled),
+    TOGGLE_MESSAGE("option_route_restriction", "Toggle nuzlocke route restriction", save_file.route_restriction.enabled),
+    TOGGLE_MESSAGE("option_level_cap_boost", "Toggle level cap boost", save_file.level_cap_boost.enabled)
 };
 
 HOOK_DEFINE_TRAMPOLINE(MsgStringReplace) {
@@ -121,87 +135,17 @@ HOOK_DEFINE_TRAMPOLINE(MsgStringReplace) {
                 auto end_ptr = std::char_traits<char16_t>::length(replacement_buffer);
                 // ceil(64/log2(10))
                 auto decimal_repr = std::format("{:020d}", save_file.rng_seed);
-                for (int i = 0; i < decimal_repr.length(); i++) {
+                for (u64 i = 0; i < decimal_repr.length(); i++) {
                     replacement_buffer[end_ptr++] = decimal_repr[i];
                 }
                 replacement_buffer[end_ptr++] = u'\000';
             }
             replacement.string = replacement_buffer;
             src = &replacement;
-        } else if (last_hash == getConstFNV1aHashedString("option_evolution").hash) {
-            if (save_file.evolution_randomization_enabled) {
-                replacement.string = u"Toggle evolution randomization (on)";
-            } else {
-                replacement.string = u"Toggle evolution randomization (off)";
-            }
-            src = &replacement;
-        } else if (last_hash == getConstFNV1aHashedString("option_learnset").hash) {
-            if (save_file.learnset_randomization_enabled) {
-                replacement.string = u"Toggle learnset randomization (on)";
-            } else {
-                replacement.string = u"Toggle learnset randomization (off)";
-            }
-            src = &replacement;
-        } else if (last_hash == getConstFNV1aHashedString("option_items").hash) {
-            if (save_file.item_randomization_enabled) {
-                replacement.string = u"Toggle item randomization (on)";
-            } else {
-                replacement.string = u"Toggle item randomization (off)";
-            }
-            src = &replacement;
-        } else if (last_hash == getConstFNV1aHashedString("option_personal").hash) {
-            if (save_file.personal_randomization_enabled) {
-                replacement.string = u"Toggle personal info randomization (on)";
-            } else {
-                replacement.string = u"Toggle personal info randomization (off)";
-            }
-            src = &replacement;
-        } else if (last_hash == getConstFNV1aHashedString("option_trainer_poke").hash) {
-            if (save_file.trainer_poke_randomization_enabled) {
-                replacement.string = u"Toggle trainer randomization (on)";
-            } else {
-                replacement.string = u"Toggle trainer randomization (off)";
-            }
-            src = &replacement;
-        } else if (last_hash == getConstFNV1aHashedString("option_wild_pokemon").hash) {
-            if (save_file.wild_pokemon_randomization_enabled) {
-                replacement.string = u"Toggle wild randomization (on)";
-            } else {
-                replacement.string = u"Toggle wild randomization (off)";
-            }
-            src = &replacement;
-        } else if (last_hash == getConstFNV1aHashedString("option_models").hash) {
-            if (save_file.model_randomization_enabled) {
-                replacement.string = u"Toggle pokemon model randomization (on)";
-            } else {
-                replacement.string = u"Toggle pokemon model randomization (off)";
-            }
-            src = &replacement;
-        } else if (last_hash == getConstFNV1aHashedString("option_permadeath").hash) {
-            if (save_file.permadeath_enabled) {
-                replacement.string = u"Toggle nuzlocke permadeath (on)";
-            } else {
-                replacement.string = u"Toggle nuzlocke permadeath (off)";
-            }
-            src = &replacement;
-        } else if (last_hash == getConstFNV1aHashedString("option_route_restriction").hash) {
-            if (save_file.route_restriction_enabled) {
-                replacement.string = u"Toggle nuzlocke route restriction (on)";
-            } else {
-                replacement.string = u"Toggle nuzlocke route restriction (off)";
-            }
-            src = &replacement;
-        } else if (last_hash == getConstFNV1aHashedString("option_level_cap").hash) {
-            if (save_file.level_cap_enabled) {
-                replacement.string = u"Toggle level cap boost (on)";
-            } else {
-                replacement.string = u"Toggle level cap boost (off)";
-            }
-            src = &replacement;
         } else {
             auto result = custom_messages.find(last_hash);
             if (result != custom_messages.end()) {
-                replacement.string = result->second;
+                replacement.string = result->second();
                 src = &replacement;
             }
         }

@@ -42,7 +42,7 @@ static_assert(sizeof(personal_info_t) == 0xB0);
 HOOK_DEFINE_TRAMPOLINE(FetchPersonalInfoHook) {
     static void Callback(personal_info_t* personal_info, u32 species, u16 form) {
         Orig(personal_info, species, form);
-        if (!save_file.personal_randomization_enabled) return;
+        if (!save_file.personal_rng.enabled) return;
 
         const std::string seed = std::format("personal_total_{}_{}", species, form);
         auto rng = RngManager::NewRandomGenerator(seed);

@@ -5,7 +5,7 @@
 
 HOOK_DEFINE_INLINE(RandomizeSparkleItem) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
-        if (!save_file.item_randomization_enabled) return;
+        if (!save_file.item_rng.enabled) return;
         // TODO: FieldSparkleItem struct
         u64 sparkle_item = ctx->X[26];
         u64 sparkle_item_hash = ctx->X[1];
@@ -26,7 +26,7 @@ HOOK_DEFINE_INLINE(RandomizeSparkleItem) {
 
 HOOK_DEFINE_INLINE(RandomizeBallItem) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
-        if (!save_file.item_randomization_enabled) return;
+        if (!save_file.item_rng.enabled) return;
         u64 ball_item_hash = ctx->X[1];
         const std::string seed = std::format("ball_item_{}_{}", ball_item_hash, 0);
         auto rng = RngManager::NewRandomGenerator(seed);

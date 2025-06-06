@@ -7,66 +7,80 @@ struct SaveFile {
     u64 rng_seed;
     bool rng_seed_set;
 
-    bool evolution_randomization_enabled = true;
+    struct {
+        bool enabled = true;
+    } evo_rng;
+    struct {
+        bool enabled = true;
+    } learnset_rng;
+    struct {
+        bool enabled = true;
+    } item_rng;
+    struct {
+        bool enabled = true;
+    } personal_rng;
+    struct {
+        bool enabled = true;
+    } trainer_rng;
+    struct {
+        bool enabled = true;
+    } wild_rng;
+    struct {
+        bool enabled = true;
+    } model_rng;
+    struct {
+        bool enabled = true;
+    } permadeath;
+    struct {
+        bool enabled = true;
+        std::unordered_set<u64> blacklisted_zones;
+    } route_restriction;
+    struct {
+        bool enabled = true;
+    } level_cap_boost;
 
-    bool learnset_randomization_enabled = true;
+    #define LOAD_BOOL(name) this->name = table[#name].as_boolean()->get()
+    #define SAVE_BOOL(name) table.insert(#name, name)
 
-    bool item_randomization_enabled = true;
-
-    bool personal_randomization_enabled = true;
-
-    bool trainer_poke_randomization_enabled = true;
-
-    bool wild_pokemon_randomization_enabled = true;
-
-    bool model_randomization_enabled = true;
-
-    bool permadeath_enabled = true;
-
-    bool route_restriction_enabled = true;
-    std::unordered_set<u64> blacklisted_zones;
-
-    bool level_cap_enabled = true;
-    
     SaveFile() {}
     void from_table(const toml::table& table) {
         s64 seed = table["rng_seed"].as_integer()->get();
         this->rng_seed = static_cast<u64>(seed);
-        this->rng_seed_set = table["rng_seed_set"].as_boolean()->get();
-        this->evolution_randomization_enabled = table["evolution_randomization_enabled"].as_boolean()->get();
-        this->learnset_randomization_enabled = table["learnset_randomization_enabled"].as_boolean()->get();
-        this->item_randomization_enabled = table["item_randomization_enabled"].as_boolean()->get();
-        this->personal_randomization_enabled = table["personal_randomization_enabled"].as_boolean()->get();
-        this->trainer_poke_randomization_enabled = table["trainer_poke_randomization_enabled"].as_boolean()->get();
-        this->wild_pokemon_randomization_enabled = table["wild_pokemon_randomization_enabled"].as_boolean()->get();
-        this->model_randomization_enabled = table["model_randomization_enabled"].as_boolean()->get();
-        this->permadeath_enabled = table["permadeath_enabled"].as_boolean()->get();
-        this->route_restriction_enabled = table["route_restriction_enabled"].as_boolean()->get();
-        if (auto zones = table["blacklisted_zones"].as_array()) {
+        LOAD_BOOL(rng_seed_set);
+        LOAD_BOOL(evo_rng.enabled);
+        LOAD_BOOL(learnset_rng.enabled);
+        LOAD_BOOL(item_rng.enabled);
+        LOAD_BOOL(personal_rng.enabled);
+        LOAD_BOOL(trainer_rng.enabled);
+        LOAD_BOOL(wild_rng.enabled);
+        LOAD_BOOL(model_rng.enabled);
+        LOAD_BOOL(permadeath.enabled);
+        LOAD_BOOL(route_restriction.enabled);
+        if (auto zones = table["route_restriction.blacklisted_zones"].as_array()) {
             for (const auto& zone : *zones) {
-                this->blacklisted_zones.insert(static_cast<u64>(zone.as_integer()->get()));
+                this->route_restriction.blacklisted_zones.insert(static_cast<u64>(zone.as_integer()->get()));
             }
         }
-        this->level_cap_enabled = table["level_cap_enabled"].as_boolean()->get();
+        LOAD_BOOL(level_cap_boost.enabled);
     }
     void to_table(toml::table& table) const {
         toml::array zones;
-        for (const auto& zone : blacklisted_zones) {
+        for (const auto& zone : route_restriction.blacklisted_zones) {
             zones.push_back(static_cast<s64>(zone));
         }
         table.insert("rng_seed", static_cast<s64>(rng_seed));
-        table.insert("rng_seed_set", rng_seed_set);
-        table.insert("evolution_randomization_enabled", evolution_randomization_enabled);
-        table.insert("learnset_randomization_enabled", learnset_randomization_enabled);
-        table.insert("item_randomization_enabled", item_randomization_enabled);
-        table.insert("personal_randomization_enabled", personal_randomization_enabled);
-        table.insert("trainer_poke_randomization_enabled", trainer_poke_randomization_enabled);
-        table.insert("wild_pokemon_randomization_enabled", wild_pokemon_randomization_enabled);
-        table.insert("model_randomization_enabled", model_randomization_enabled);
-        table.insert("permadeath_enabled", permadeath_enabled);
-        table.insert("route_restriction_enabled", route_restriction_enabled);
-        table.insert("blacklisted_zones", zones);
-        table.insert("level_cap_enabled", level_cap_enabled);
+        SAVE_BOOL(rng_seed_set);
+        SAVE_BOOL(evo_rng.enabled);
+        SAVE_BOOL(learnset_rng.enabled);
+        SAVE_BOOL(item_rng.enabled);
+        SAVE_BOOL(personal_rng.enabled);
+        SAVE_BOOL(trainer_rng.enabled);
+        SAVE_BOOL(wild_rng.enabled);
+        SAVE_BOOL(model_rng.enabled);
+        SAVE_BOOL(permadeath.enabled);
+        SAVE_BOOL(route_restriction.enabled);
+        table.insert("route_restriction.blacklisted_zones", zones);
+        SAVE_BOOL(level_cap_boost.enabled);
     }
 };
 
