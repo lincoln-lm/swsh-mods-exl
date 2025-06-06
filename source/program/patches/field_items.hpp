@@ -18,7 +18,6 @@ HOOK_DEFINE_INLINE(RandomizeSparkleItem) {
         }
         const std::string seed = std::format("sparkle_item_{}_{}", sparkle_item_hash, item_idx);
         auto rng = RngManager::NewRandomGenerator(seed);
-        // TODO: handling for key items & tms
         ctx->X[2] = rng.RandHeldItem();
         // ctx->X[3] = item_count;
     }
@@ -30,8 +29,11 @@ HOOK_DEFINE_INLINE(RandomizeBallItem) {
         u64 ball_item_hash = ctx->X[1];
         const std::string seed = std::format("ball_item_{}_{}", ball_item_hash, 0);
         auto rng = RngManager::NewRandomGenerator(seed);
-        // TODO: handling for key items & tms
-        ctx->X[2] = rng.RandHeldItem();
+        if (std::find(VALID_TMS.begin(), VALID_TMS.end(), ctx->X[2]) == VALID_TMS.end()) {
+            ctx->X[2] = rng.RandHeldItem();
+        } else {
+            ctx->X[2] = rng.RandTM();
+        }
         // ctx->X[3] = item_count;
     }
 };
