@@ -9,6 +9,7 @@ static std::vector<u8> template_data;
 HOOK_DEFINE_TRAMPOLINE(RandomizeGiftPokemon) {
     static const EncounterGift* Callback(void* table, u64* gift_hash) {
         const EncounterGift* original = Orig(table, gift_hash);
+        if (!save_file.gift_rng.enabled) return original;
         auto rng = RngManager::NewRandomGenerator(*gift_hash);
         auto [species, form] = rng.RandSpeciesAndForm();
         auto ball = rng.RandBall();

@@ -32,6 +32,12 @@ struct SaveFile {
     } wild_rng;
     struct {
         bool enabled = true;
+    } scripted_rng;
+    struct {
+        bool enabled = true;
+    } gift_rng;
+    struct {
+        bool enabled = true;
     } model_rng;
     struct {
         bool enabled = true;
@@ -64,6 +70,8 @@ struct SaveFile {
         LOAD_BOOL(wild_rng.enabled);
         LOAD_BOOL(wild_rng.live);
         LOAD_BOOL(wild_rng.level_boost);
+        LOAD_BOOL(scripted_rng.enabled);
+        LOAD_BOOL(gift_rng.enabled);
         LOAD_BOOL(model_rng.enabled);
         LOAD_BOOL(permadeath.enabled);
         LOAD_BOOL(route_restriction.enabled);
@@ -91,6 +99,8 @@ struct SaveFile {
         SAVE_BOOL(wild_rng.enabled);
         SAVE_BOOL(wild_rng.live);
         SAVE_BOOL(wild_rng.level_boost);
+        SAVE_BOOL(scripted_rng.enabled);
+        SAVE_BOOL(gift_rng.enabled);
         SAVE_BOOL(model_rng.enabled);
         SAVE_BOOL(permadeath.enabled);
         SAVE_BOOL(route_restriction.enabled);

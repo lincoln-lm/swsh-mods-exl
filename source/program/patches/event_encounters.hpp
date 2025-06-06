@@ -31,6 +31,7 @@ static_assert(sizeof(encounter_event_t) == 0x64);
 
 HOOK_DEFINE_INLINE(RandomizeEventEncounters) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        if (!save_file.scripted_rng.enabled) return;
         auto encount = reinterpret_cast<encounter_event_t*>(ctx->X[0]);
         auto rng = RngManager::NewRandomGenerator(encount->hash);
         auto [species, form] = rng.RandSpeciesAndForm();
