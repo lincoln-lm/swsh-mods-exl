@@ -39,8 +39,16 @@ struct personal_info_t {
 } PACKED;
 static_assert(sizeof(personal_info_t) == 0xB0);
 
+struct extended_personal_info_t {
+    u64 unk_0;
+    u32 species;
+    u16 form;
+    u16 padding;
+    personal_info_t body;
+} PACKED;
+
 HOOK_DEFINE_TRAMPOLINE(FetchPersonalInfoHook) {
-    static void Callback(personal_info_t* personal_info, u32 species, u16 form) {
+    static void Callback(extended_personal_info_t* personal_info, u32 species, u16 form) {
         Orig(personal_info, species, form);
         if (!save_file.personal_rng.enabled) return;
 
@@ -52,14 +60,14 @@ HOOK_DEFINE_TRAMPOLINE(FetchPersonalInfoHook) {
         bool is_shedinja = species == 292;
         if (is_shedinja) {
             bst = std::accumulate(
-                personal_info->base_stats,
-                personal_info->base_stats + 6,
+                personal_info->body.base_stats,
+                personal_info->body.base_stats + 6,
                 0
             ) - 51;
         } else {
             bst = std::accumulate(
-                personal_info->base_stats,
-                personal_info->base_stats + 6,
+                personal_info->body.base_stats,
+                personal_info->body.base_stats + 6,
                 0
             ) - 70;
         }
@@ -99,14 +107,14 @@ HOOK_DEFINE_TRAMPOLINE(FetchPersonalInfoHook) {
         std::copy(
             base_stats.begin(),
             base_stats.end(),
-            personal_info->base_stats
+            personal_info->body.base_stats
         );
-        personal_info->abilities[0] = rng.RandAbility();
-        personal_info->abilities[1] = rng.RandAbility();
-        personal_info->abilities[2] = rng.RandAbility();
-        personal_info->held_items[0] = rng.RandHeldItem();
-        personal_info->held_items[1] = rng.RandHeldItem();
-        personal_info->held_items[2] = rng.RandHeldItem();
+        personal_info->body.abilities[0] = rng.RandAbility();
+        personal_info->body.abilities[1] = rng.RandAbility();
+        personal_info->body.abilities[2] = rng.RandAbility();
+        personal_info->body.held_items[0] = rng.RandHeldItem();
+        personal_info->body.held_items[1] = rng.RandHeldItem();
+        personal_info->body.held_items[2] = rng.RandHeldItem();
         // TODO: randomize TR/TM/Tutors?
     }
 };
