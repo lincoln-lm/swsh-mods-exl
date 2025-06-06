@@ -39,84 +39,78 @@ struct personal_info_t {
 } PACKED;
 static_assert(sizeof(personal_info_t) == 0xB0);
 
-HOOK_DEFINE_INLINE(PersonalTotalHook) {
-    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+HOOK_DEFINE_TRAMPOLINE(FetchPersonalInfoHook) {
+    static void Callback(personal_info_t* personal_info, u32 species, u16 form) {
+        Orig(personal_info, species, form);
         if (!save_file.personal_randomization_enabled) return;
-        personal_info_t* personal_total_buffer = reinterpret_cast<personal_info_t*>(ctx->X[1]);
-        size_t buffer_size = ctx->X[2];
-        std::span<personal_info_t> personal_total_span(
-            personal_total_buffer,
-            buffer_size / sizeof(personal_info_t)
-        );
-        for (const auto& [index, personal_info] : personal_total_span | std::views::enumerate) {
-            const std::string seed = std::format("personal_total_{}", index);
-            auto rng = RngManager::NewRandomGenerator(seed);
-            // bst calc taken from UPR ZX
-            u64 bst;
-            // shedinja gets special handling
-            bool is_shedinja = personal_info.model_id == 292;
-            if (is_shedinja) {
-                bst = std::accumulate(
-                    personal_info.base_stats,
-                    personal_info.base_stats + 6,
-                    0
-                ) - 51;
-            } else {
-                bst = std::accumulate(
-                    personal_info.base_stats,
-                    personal_info.base_stats + 6,
-                    0
-                ) - 70;
-            }
-            std::array<u16, 6> base_stats;
-            do {
-                f64 hp_weight = rng.RandDouble();
-                f64 attack_weight = rng.RandDouble();
-                f64 defense_weight = rng.RandDouble();
-                f64 special_attack_weight = rng.RandDouble();
-                f64 special_defense_weight = rng.RandDouble();
-                f64 speed_weight = rng.RandDouble();
-                f64 total_weight = (
-                    (is_shedinja ? 0.0d : hp_weight)
-                    + attack_weight
-                    + defense_weight
-                    + special_attack_weight
-                    + special_defense_weight
-                    + speed_weight
-                );
-                if (is_shedinja) {
-                    base_stats[0] = 1;
-                } else {
-                    base_stats[0] = std::max(1.0, std::round(hp_weight / total_weight * bst)) + 20;
-                }
-                base_stats[1] = std::max(1.0, std::round(attack_weight / total_weight * bst)) + 10;
-                base_stats[2] = std::max(1.0, std::round(defense_weight / total_weight * bst)) + 10;
-                base_stats[3] = std::max(1.0, std::round(special_attack_weight / total_weight * bst)) + 10;
-                base_stats[4] = std::max(1.0, std::round(special_defense_weight / total_weight * bst)) + 10;
-                base_stats[5] = std::max(1.0, std::round(speed_weight / total_weight * bst)) + 10;
-            } while (
-                std::any_of(
-                    base_stats.begin(),
-                    base_stats.end(),
-                    [](u16 stat) { return stat > 255; }
-                )
+
+        const std::string seed = std::format("personal_total_{}_{}", species, form);
+        auto rng = RngManager::NewRandomGenerator(seed);
+        // bst calc taken from UPR ZX
+        u64 bst;
+        // shedinja gets special handling
+        bool is_shedinja = species == 292;
+        if (is_shedinja) {
+            bst = std::accumulate(
+                personal_info->base_stats,
+                personal_info->base_stats + 6,
+                0
+            ) - 51;
+        } else {
+            bst = std::accumulate(
+                personal_info->base_stats,
+                personal_info->base_stats + 6,
+                0
+            ) - 70;
+        }
+        std::array<u16, 6> base_stats;
+        do {
+            f64 hp_weight = rng.RandDouble();
+            f64 attack_weight = rng.RandDouble();
+            f64 defense_weight = rng.RandDouble();
+            f64 special_attack_weight = rng.RandDouble();
+            f64 special_defense_weight = rng.RandDouble();
+            f64 speed_weight = rng.RandDouble();
+            f64 total_weight = (
+                (is_shedinja ? 0.0d : hp_weight)
+                + attack_weight
+                + defense_weight
+                + special_attack_weight
+                + special_defense_weight
+                + speed_weight
             );
-            std::copy(
+            if (is_shedinja) {
+                base_stats[0] = 1;
+            } else {
+                base_stats[0] = std::max(1.0, std::round(hp_weight / total_weight * bst)) + 20;
+            }
+            base_stats[1] = std::max(1.0, std::round(attack_weight / total_weight * bst)) + 10;
+            base_stats[2] = std::max(1.0, std::round(defense_weight / total_weight * bst)) + 10;
+            base_stats[3] = std::max(1.0, std::round(special_attack_weight / total_weight * bst)) + 10;
+            base_stats[4] = std::max(1.0, std::round(special_defense_weight / total_weight * bst)) + 10;
+            base_stats[5] = std::max(1.0, std::round(speed_weight / total_weight * bst)) + 10;
+        } while (
+            std::any_of(
                 base_stats.begin(),
                 base_stats.end(),
-                personal_info.base_stats
-            );
-            personal_info.abilities[0] = rng.RandAbility();
-            personal_info.abilities[1] = rng.RandAbility();
-            personal_info.abilities[2] = rng.RandAbility();
-            personal_info.held_items[0] = rng.RandHeldItem();
-            personal_info.held_items[1] = rng.RandHeldItem();
-            personal_info.held_items[2] = rng.RandHeldItem();
-            // TODO: randomize TR/TM/Tutors?
-        }
+                [](u16 stat) { return stat > 255; }
+            )
+        );
+        std::copy(
+            base_stats.begin(),
+            base_stats.end(),
+            personal_info->base_stats
+        );
+        personal_info->abilities[0] = rng.RandAbility();
+        personal_info->abilities[1] = rng.RandAbility();
+        personal_info->abilities[2] = rng.RandAbility();
+        personal_info->held_items[0] = rng.RandHeldItem();
+        personal_info->held_items[1] = rng.RandHeldItem();
+        personal_info->held_items[2] = rng.RandHeldItem();
+        // TODO: randomize TR/TM/Tutors?
     }
 };
 
 void install_personal_total_patch() {
-    PersonalTotalHook::InstallAtOffset(0x77f350);
+    FetchPersonalInfoHook::InstallAtOffset(0x77f540);
 }
