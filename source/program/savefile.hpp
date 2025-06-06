@@ -26,6 +26,7 @@ struct SaveFile {
     } trainer_rng;
     struct {
         bool enabled = true;
+        bool live = false;
     } wild_rng;
     struct {
         bool enabled = true;
@@ -58,6 +59,7 @@ struct SaveFile {
         LOAD_BOOL(personal_rng.enabled);
         LOAD_BOOL(trainer_rng.enabled);
         LOAD_BOOL(wild_rng.enabled);
+        LOAD_BOOL(wild_rng.live);
         LOAD_BOOL(model_rng.enabled);
         LOAD_BOOL(permadeath.enabled);
         LOAD_BOOL(route_restriction.enabled);
@@ -82,6 +84,7 @@ struct SaveFile {
         SAVE_BOOL(personal_rng.enabled);
         SAVE_BOOL(trainer_rng.enabled);
         SAVE_BOOL(wild_rng.enabled);
+        SAVE_BOOL(wild_rng.live);
         SAVE_BOOL(model_rng.enabled);
         SAVE_BOOL(permadeath.enabled);
         SAVE_BOOL(route_restriction.enabled);

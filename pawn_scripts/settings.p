@@ -101,8 +101,8 @@ main()
                         AddListItem(1, "option_personal_rng");
                         AddListItem(2, "option_trainer_rng");
                         AddListItem(3, "option_wild_rng");
-                        AddListItem(4, "option_model_rng");
-                        AddListItem(5, "option_permadeath");
+                        AddListItem(4, "option_wild_live_rng");
+                        AddListItem(5, "option_model_rng");
                         AddListItem(6, "option_next");
                         new response = RequestListInput(1, 0, 1, 0);
                         CloseMessageWindow();
@@ -125,8 +125,9 @@ main()
                     case 2:
                     {
                         AddListItem(0, "option_back");
-                        AddListItem(1, "option_route_restriction");
-                        AddListItem(2, "option_level_cap_boost");
+                        AddListItem(1, "option_permadeath");
+                        AddListItem(2, "option_route_restriction");
+                        AddListItem(3, "option_level_cap_boost");
                         new response = RequestListInput(1, 0, 1, 0);
                         CloseMessageWindow();
                         switch (response) {
@@ -136,6 +137,7 @@ main()
                             }
                             case 1: ToggleSetting(8);
                             case 2: ToggleSetting(9);
+                            case 3: ToggleSetting(10);
                         }
                     }
                 }

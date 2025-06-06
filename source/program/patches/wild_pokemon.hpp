@@ -17,7 +17,12 @@ HOOK_DEFINE_INLINE(RandomizeGimmickSpec) {
             gimmick_spawner_hash,
             weather
         );
-        auto rng = RngManager::NewRandomGenerator(seed);
+        MersenneTwister rng;
+        if (save_file.wild_rng.live) {
+            rng = RngManager::NewRandomGenerator();
+        } else {
+            rng = RngManager::NewRandomGenerator(seed);
+        }
         auto [species, form] = rng.RandSpeciesAndForm();
         gimmick_spec->species = species;
         gimmick_spec->form = form;
@@ -60,6 +65,7 @@ HOOK_DEFINE_INLINE(RandomizeHiddenEncounterSlots) {
 HOOK_DEFINE_INLINE(RandomizeSymbolEncounterSlots) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
         if (!save_file.wild_rng.enabled) return;
+        if (save_file.wild_rng.live) return;
         u64 data = ctx->X[19];
         u64 area_hash = *reinterpret_cast<u64*>(data + 0x8);
         OverworldEncount::encounter_tables_t* encounter_tables = reinterpret_cast<OverworldEncount::encounter_tables_t*>(data + 0x10);
@@ -80,6 +86,20 @@ HOOK_DEFINE_INLINE(RandomizeSymbolEncounterSlots) {
     }
 };
 
+HOOK_DEFINE_TRAMPOLINE(LiveRandomizeSlotSpawns) {
+    static void Callback(long param_1, OverworldEncount::OverworldSpec *overworld_spec, OverworldEncount::encounter_slot_t *encounter_slot, int minimum_level, int maximum_level, long param_6) {
+        if (save_file.wild_rng.live) {
+            auto rng = RngManager::NewRandomGenerator();
+            auto [species, form] = rng.RandSpeciesAndForm();
+            minimum_level *= 1.5;
+            maximum_level *= 1.5;
+            encounter_slot->species = species;
+            encounter_slot->form = form;
+        }
+        Orig(param_1, overworld_spec, encounter_slot, minimum_level, maximum_level, param_6);
+    }
+};
+
 void install_wild_pokemon_patch() {
     // TODO: symbol
     // on OverworldEncount::GenerateGimmick call
@@ -90,4 +110,5 @@ void install_wild_pokemon_patch() {
     // TODO: symbol
     // end of FetchSymbolEncountTable
     RandomizeSymbolEncounterSlots::InstallAtOffset(0xd05868 - VER_OFF);
+    LiveRandomizeSlotSpawns::InstallAtOffset(OverworldEncount::GenerateBasicSpec_offset);
 }
