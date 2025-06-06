@@ -64,7 +64,6 @@ HOOK_DEFINE_INLINE(RandomizeHiddenEncounterSlots) {
 
 HOOK_DEFINE_INLINE(RandomizeSymbolEncounterSlots) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
-        if (!save_file.wild_rng.enabled) return;
         if (save_file.wild_rng.live) return;
         u64 data = ctx->X[19];
         u64 area_hash = *reinterpret_cast<u64*>(data + 0x8);
@@ -72,8 +71,13 @@ HOOK_DEFINE_INLINE(RandomizeSymbolEncounterSlots) {
         const std::string seed = std::format("symbol_encounter_table_{}", area_hash);
         auto rng = RngManager::NewRandomGenerator(seed);
         for (int weather = 0; weather < 9; weather++) {
-            encounter_tables[weather].minimum_level *= 1.5;
-            encounter_tables[weather].maximum_level *= 1.5;
+            if (save_file.wild_rng.level_boost) {
+                encounter_tables[weather].minimum_level *= 1.5;
+                encounter_tables[weather].maximum_level *= 1.5;
+            }
+            if (!save_file.wild_rng.enabled) {
+                continue;
+            }
             for (int i = 0; i < 10; i++) {
                 auto slot = &(encounter_tables[weather].encounter_slots[i]);
                 // if (slot->rate == 0) continue;
@@ -91,8 +95,10 @@ HOOK_DEFINE_TRAMPOLINE(LiveRandomizeSlotSpawns) {
         if (save_file.wild_rng.live) {
             auto rng = RngManager::NewRandomGenerator();
             auto [species, form] = rng.RandSpeciesAndForm();
-            minimum_level *= 1.5;
-            maximum_level *= 1.5;
+            if (save_file.wild_rng.level_boost) {
+                minimum_level *= 1.5;
+                maximum_level *= 1.5;
+            }
             encounter_slot->species = species;
             encounter_slot->form = form;
         }

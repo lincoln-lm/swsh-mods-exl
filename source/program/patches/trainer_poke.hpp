@@ -5,7 +5,6 @@
 
 HOOK_DEFINE_INLINE(RandomPokeData) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
-        if (!save_file.trainer_rng.enabled) return;
         // TODO: GFFile struct
         const std::span<const char> file_path(
             *reinterpret_cast<const char**>(ctx->X[20] + 0x70),
@@ -21,7 +20,12 @@ HOOK_DEFINE_INLINE(RandomPokeData) {
             if (trainer_team[i].level == 0 || trainer_team[i].level > 100 || trainer_team[i].species == 0) {
                 continue;
             }
-            trainer_team[i].level *= 1.5;
+            if (save_file.trainer_rng.level_boost) {
+                trainer_team[i].level *= 1.5;
+            }
+            if (!save_file.trainer_rng.enabled) {
+                continue;
+            }
             auto [
                 species,
                 form
