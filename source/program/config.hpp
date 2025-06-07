@@ -62,6 +62,10 @@ struct PatchConfig {
         bool keep_chain_after_brilliant;
     } fishing_tweaks;
 
+    struct {
+        bool active;
+    } dex_animations;
+
     void from_table(toml::parse_result &table) {
         underworld.active = table["underworld"]["active"].value_or(false);
 
@@ -100,6 +104,8 @@ struct PatchConfig {
 
         fishing_tweaks.active = table["fishing_tweaks"]["active"].value_or(false);
         fishing_tweaks.keep_chain_after_brilliant = table["fishing_tweaks"]["keep_chain_after_brilliant"].value_or(true);
+
+        dex_animations.active = table["dex_animations"]["active"].value_or(false);
 
         initialized = true;
     }

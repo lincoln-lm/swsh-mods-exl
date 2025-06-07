@@ -87,3 +87,7 @@ active = false
 
 # whether or not to retain fishing chains after brilliant pokemon spawn
 keep_chain_after_brilliant = true
+
+# Mod allows cycling dex animations
+[dex_animations]
+active = false

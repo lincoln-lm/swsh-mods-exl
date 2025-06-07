@@ -16,6 +16,7 @@
 #include "patches/synchro_mode.hpp"
 #include "patches/extended_following.hpp"
 #include "patches/fishing_tweaks.hpp"
+#include "patches/dex_animations.hpp"
 #ifdef DEBUG
 #include "patches/debug.hpp"
 #endif
@@ -68,6 +69,7 @@ extern "C" void exl_main(void* x0, void* x1) {
     install_synchro_mode_patch();
     install_extended_following_patch();
     install_fishing_tweaks_patch();
+    install_dex_animations_patch();
     #ifdef DEBUG
     install_debug_patch();
     #endif
