@@ -11,6 +11,8 @@ struct SaveFile {
 
     struct {
         bool enabled = true;
+        bool match_types = true;
+        bool each_level = false;
     } evo_rng;
     struct {
         bool enabled = true;
@@ -62,6 +64,8 @@ struct SaveFile {
         LOAD_BOOL(rng_seed_set);
         LOAD_INT(settings_menu_state);
         LOAD_BOOL(evo_rng.enabled);
+        LOAD_BOOL(evo_rng.match_types);
+        LOAD_BOOL(evo_rng.each_level);
         LOAD_BOOL(learnset_rng.enabled);
         LOAD_BOOL(item_rng.enabled);
         LOAD_BOOL(personal_rng.enabled);
@@ -91,6 +95,8 @@ struct SaveFile {
         SAVE_BOOL(rng_seed_set);
         SAVE_INT(settings_menu_state);
         SAVE_BOOL(evo_rng.enabled);
+        SAVE_BOOL(evo_rng.match_types);
+        SAVE_BOOL(evo_rng.each_level);
         SAVE_BOOL(learnset_rng.enabled);
         SAVE_BOOL(item_rng.enabled);
         SAVE_BOOL(personal_rng.enabled);

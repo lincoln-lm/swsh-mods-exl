@@ -18,33 +18,45 @@ u64 ResetSeed(void* amx, u64* params) {
 
 u64 ToggleSetting(void* amx, u64* params) {
     switch (params[1]) {
-        case 0: save_file.evo_rng.enabled ^= 1; break;
-        case 1: save_file.learnset_rng.enabled ^= 1; break;
-        case 2: save_file.item_rng.enabled ^= 1; break;
-        case 3: save_file.personal_rng.enabled ^= 1; break;
-        case 4:
+        case 0:
+            save_file.evo_rng.enabled ^= 1;
+            save_file.evo_rng.match_types &= save_file.evo_rng.enabled;
+            save_file.evo_rng.each_level &= save_file.evo_rng.enabled;
+            break;
+        case 1:
+            save_file.evo_rng.match_types ^= 1;
+            save_file.evo_rng.match_types &= save_file.evo_rng.enabled;
+            break;
+        case 2:
+            save_file.evo_rng.each_level ^= 1;
+            save_file.evo_rng.each_level &= save_file.evo_rng.enabled;
+            break;
+        case 3: save_file.learnset_rng.enabled ^= 1; break;
+        case 4: save_file.item_rng.enabled ^= 1; break;
+        case 5: save_file.personal_rng.enabled ^= 1; break;
+        case 6:
             save_file.trainer_rng.enabled ^= 1;
             break;
-        case 5:
+        case 7:
             save_file.trainer_rng.level_boost ^= 1;
             break;
-        case 6:
+        case 8:
             save_file.wild_rng.enabled ^= 1;
             save_file.wild_rng.live &= save_file.wild_rng.enabled;
             break;
-        case 7:
+        case 9:
             save_file.wild_rng.live ^= 1;
             save_file.wild_rng.live &= save_file.wild_rng.enabled;
             break;
-        case 8:
+        case 10:
             save_file.wild_rng.level_boost ^= 1;
             break;
-        case 9: save_file.scripted_rng.enabled ^= 1; break;
-        case 10: save_file.gift_rng.enabled ^= 1; break;
-        case 11: save_file.model_rng.enabled ^= 1; break;
-        case 12: save_file.permadeath.enabled ^= 1; break;
-        case 13: save_file.route_restriction.enabled ^= 1; break;
-        case 14: save_file.level_cap_boost.enabled ^= 1; break;
+        case 11: save_file.scripted_rng.enabled ^= 1; break;
+        case 12: save_file.gift_rng.enabled ^= 1; break;
+        case 13: save_file.model_rng.enabled ^= 1; break;
+        case 14: save_file.permadeath.enabled ^= 1; break;
+        case 15: save_file.route_restriction.enabled ^= 1; break;
+        case 16: save_file.level_cap_boost.enabled ^= 1; break;
     }
     return 1;
 }
@@ -128,6 +140,8 @@ static const std::map<u64, std::function<const char16_t* ()>> custom_messages = 
     BASIC_MESSAGE("8", "8"),
     BASIC_MESSAGE("9", "9"),
     TOGGLE_MESSAGE("option_evo_rng", "Toggle evolution randomization", save_file.evo_rng.enabled),
+    TOGGLE_MESSAGE("option_evo_match_types", "Toggle evolutions match types", save_file.evo_rng.match_types),
+    TOGGLE_MESSAGE("option_evo_each_level", "Toggle evolve each level", save_file.evo_rng.each_level),
     TOGGLE_MESSAGE("option_learnset_rng", "Toggle learnset randomization", save_file.learnset_rng.enabled),
     TOGGLE_MESSAGE("option_item_rng", "Toggle item randomization", save_file.item_rng.enabled),
     TOGGLE_MESSAGE("option_personal_rng", "Toggle personal info randomization", save_file.personal_rng.enabled),
