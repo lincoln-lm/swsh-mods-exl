@@ -42,6 +42,8 @@ HOOK_DEFINE_INLINE(SwapAnimation) {
 
 
 void install_dex_animations_patch() {
-    LogAnimationRequested::InstallAtOffset(0x162e1dc - VER_OFF);
+    // TODO: document better
+    // this offset is off by 0x90 in sword instead of 0x30
+    LogAnimationRequested::InstallAtOffset(0x162e1dc - VER_OFF * 3);
     SwapAnimation::InstallAtOffset(0x5b1f30);
 }
