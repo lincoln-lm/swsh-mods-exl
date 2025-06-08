@@ -8,6 +8,18 @@ static const char16_t** name_loc = nullptr;
 static bool should_replace = false;
 
 namespace AMX {
+    struct Symbol {
+        const char* name;
+        u64 (*function)(void*, u64*);
+    };
+    std::vector<Symbol> custom_symbols = {
+        {nullptr, nullptr}
+    };
+    void add_new_symbol(const char* name, u64 (*function)(void*, u64*)) {
+        AMX::custom_symbols.emplace(AMX::custom_symbols.end() - 1, name, function);
+    }
+
+    // TODO: replace this with msg_handler
     HOOK_DEFINE_INLINE(WordSetRegister_Custom) {
         static void Callback(exl::hook::nx64::InlineCtx* ctx) {
             prev_value = nullptr;
@@ -58,8 +70,18 @@ namespace AMX {
     }
 }
 
+HOOK_DEFINE_TRAMPOLINE(RegisterAMXFunctions) {
+    static const void Callback(u64 param_1) {
+        Orig(param_1);
+        // TODO: symbol
+        // actually registers an array of symbols
+        external<void>(0x66cba0, param_1, AMX::custom_symbols.data());
+    }
+};
+
 void install_amx_patch() {
     AMX::PG_WordSetRegisterType::InstallAtOffset(AMX::PG_WordSetRegister_offset + 0xf8);
     AMX::WordSetRegister_Custom::InstallAtOffset(AMX::WordSetRegister_PlayerName_offset + 0xa4);
     AMX::ExitWordSetRegister_Custom::InstallAtOffset(AMX::WordSetRegister_PlayerName_offset + 0xa8);
+    RegisterAMXFunctions::InstallAtOffset(0x1464ff0 - VER_OFF);
 }

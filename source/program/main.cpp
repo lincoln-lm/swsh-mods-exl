@@ -6,6 +6,7 @@
 #include "symbols.hpp"
 #include "hid_handler.hpp"
 #include "amx_handler.hpp"
+#include "msg_handler.hpp"
 #include "patches/uncap_level.hpp"
 #include "patches/camera_tweaks.hpp"
 #include "patches/randomizer.hpp"
@@ -58,6 +59,7 @@ extern "C" void exl_main(void* x0, void* x1) {
     MainInitHook::InstallAtOffset(MainInit_offset);
     install_hid_patch();
     install_amx_patch();
+    install_msg_handler_patch();
 
     install_underworld_patch();
     install_overworld_shiny_patch();

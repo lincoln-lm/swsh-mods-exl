@@ -19,6 +19,9 @@ shutil.copytree("static_romfs", "deploy/romfs", dirs_exist_ok=True)
 custom_scripts = {
     "custom_message": [
         "custom_message",
+    ],
+    "dex_animations": [
+        "dex_dialog",
     ]
 }
 
