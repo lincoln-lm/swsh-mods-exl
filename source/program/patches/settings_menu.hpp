@@ -202,8 +202,8 @@ HOOK_DEFINE_TRAMPOLINE(ValidateMessages) {
 
 void install_settings_menu_patch() {
     SettingsMenuTrigger::InstallAtOffset(0x14c8ac0 - VER_OFF);
-    MsgStringReplace::InstallAtOffset(0x67d4d0 - VER_OFF);
-    MsgHashStore::InstallAtOffset(0x67eb10 - VER_OFF);
+    MsgStringReplace::InstallAtOffset(0x67d4d0);
+    MsgHashStore::InstallAtOffset(0x67eb10);
     ValidateMessages::InstallAtOffset(0x13bca40 - VER_OFF);
     AMX::add_new_symbol("AddNewSeedDigit", AddNewSeedDigit);
     AMX::add_new_symbol("ResetSeed", ResetSeed);
