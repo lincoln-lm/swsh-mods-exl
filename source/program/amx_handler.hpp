@@ -31,7 +31,7 @@ HOOK_DEFINE_TRAMPOLINE(RegisterAMXFunctions) {
         Orig(param_1);
         // TODO: symbol
         // actually registers an array of symbols
-        external<void>(0x66cba0 - VER_OFF, param_1, AMX::custom_symbols.data());
+        external<void>(0x66cba0, param_1, AMX::custom_symbols.data());
     }
 };
 
