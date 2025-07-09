@@ -284,6 +284,19 @@ namespace Field {
     const u64 DeleteFieldObject_offset = 0xd774e0 - VER_OFF;
     const u64 FieldSingleton_offset = 0x2955208;
 
+    struct GimmickSpawner : public WorldObject {
+        static const u64 vtable_offset = 0x255a750;
+    };
+    struct EncountObject : public WorldObject {
+        static const u64 vtable_offset = 0x255a940;
+    };
+    struct FieldBallItem : public WorldObject {
+        static const u64 vtable_offset = 0x255cfd8;
+    };
+    struct FieldSparkleItem : public WorldObject {
+        static const u64 vtable_offset = 0x2559778;
+    };
+
     struct FieldObject : public ScaledWorldObject
     {
         static const u64 vtable_offset = 0x254f888;
