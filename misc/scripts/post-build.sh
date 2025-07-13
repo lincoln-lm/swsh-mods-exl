@@ -10,9 +10,9 @@ rm -rf ${OUT}
 # Create out directory.
 mkdir ${OUT}
 mkdir ${OUT}/exefs
-mkdir ${OUT}/romfs
+# mkdir ${OUT}/romfs
 
-${PYTHON} ${SCRIPTS_PATH}/build_romfs.py
+# ${PYTHON} ${SCRIPTS_PATH}/build_romfs.py
 
 # Copy build into out
 mv ${NAME}.nso ${OUT_NSO}
