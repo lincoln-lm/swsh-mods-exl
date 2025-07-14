@@ -14,12 +14,18 @@ HOOK_DEFINE_INLINE(FilterObject) {
         u64 encount_object_vtable = main_offset(Field::EncountObject::vtable_offset);
         u64 field_ball_item_vtable = main_offset(Field::FieldBallItem::vtable_offset);
         u64 field_sparkle_item_vtable = main_offset(Field::FieldSparkleItem::vtable_offset);
+        u64 fishing_point_vtable = main_offset(Field::FishingPoint::vtable_offset);
+        u64 nest_hole_vtable = main_offset(Field::NestHole::vtable_offset);
+        u64 nest_hole_emitter_vtable = main_offset(Field::NestHoleEmitter::vtable_offset);
         if (
             vtable == encount_spawner_vtable
             || vtable == gimmick_spawner_vtable
             || vtable == encount_object_vtable
             || vtable == field_ball_item_vtable
             || vtable == field_sparkle_item_vtable
+            || vtable == fishing_point_vtable
+            || vtable == nest_hole_vtable
+            || vtable == nest_hole_emitter_vtable
         ) {
             Field::DeleteFieldObject(obj->unique_hash);
         }

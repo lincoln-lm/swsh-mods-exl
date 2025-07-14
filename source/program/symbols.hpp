@@ -296,6 +296,15 @@ namespace Field {
     struct FieldSparkleItem : public WorldObject {
         static const u64 vtable_offset = 0x2559778;
     };
+    struct FishingPoint : public WorldObject {
+        static const u64 vtable_offset = 0x255b048;
+    };
+    struct NestHole : public WorldObject {
+        static const u64 vtable_offset = 0x25594d0;
+    };
+    struct NestHoleEmitter : public WorldObject {
+        static const u64 vtable_offset = 0x2565970;
+    };
 
     struct FieldObject : public ScaledWorldObject
     {
