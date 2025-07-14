@@ -35,4 +35,5 @@ HOOK_DEFINE_INLINE(FilterObject) {
 void install_filter_objects_patch() {
     FilterObject::InstallAtOffset(0xd18e44 - VER_OFF);
     FilterObject::InstallAtOffset(0xcbb2f8 - VER_OFF);
+    FilterObject::InstallAtOffset(0xec52bc - VER_OFF);
 }
