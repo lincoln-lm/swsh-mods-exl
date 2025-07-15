@@ -15,8 +15,10 @@ HOOK_DEFINE_INLINE(FilterObject) {
         u64 field_ball_item_vtable = main_offset(Field::FieldBallItem::vtable_offset);
         u64 field_sparkle_item_vtable = main_offset(Field::FieldSparkleItem::vtable_offset);
         u64 fishing_point_vtable = main_offset(Field::FishingPoint::vtable_offset);
+
         u64 nest_hole_vtable = main_offset(Field::NestHole::vtable_offset);
         u64 nest_hole_emitter_vtable = main_offset(Field::NestHoleEmitter::vtable_offset);
+
         if (
             vtable == encount_spawner_vtable
             || vtable == gimmick_spawner_vtable
@@ -24,10 +26,16 @@ HOOK_DEFINE_INLINE(FilterObject) {
             || vtable == field_ball_item_vtable
             || vtable == field_sparkle_item_vtable
             || vtable == fishing_point_vtable
-            || vtable == nest_hole_vtable
             || vtable == nest_hole_emitter_vtable
         ) {
             Field::DeleteFieldObject(obj->unique_hash);
+        // deleting nest holes causes issues -> move them out of the way instead
+        } else if (
+            vtable == nest_hole_vtable
+        ) {
+            obj->position.x = -50000;
+            obj->position.y = -50000;
+            obj->position.z = -50000;
         }
     }
 };
