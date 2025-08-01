@@ -58,3 +58,4 @@ FTP_PASSWORD :=
 
 # Settings for deploying to Ryu. Used by the deploy-ryu.sh script.
 RYU_PATH := /mnt/c/Users/shado/AppData/Roaming/Ryujinx
+EDEN_PATH := ${HOME}/.local/share/eden
