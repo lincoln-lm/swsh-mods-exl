@@ -11,3 +11,6 @@ deploy-ftp:
 
 deploy-ryu:
 	@$(SHELL) $(SCRIPTS_PATH)/deploy-ryu.sh
+
+deploy-eden:
+	@$(SHELL) $(SCRIPTS_PATH)/deploy-eden.sh
