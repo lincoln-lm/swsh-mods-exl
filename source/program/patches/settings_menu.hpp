@@ -64,7 +64,10 @@ u64 ToggleSetting(void* amx, u64* params) {
         case 15: save_file.permadeath.enabled ^= 1; break;
         case 16: save_file.route_restriction.enabled ^= 1; break;
         case 17: save_file.level_cap_boost.enabled ^= 1; break;
-    }
+        case 18:
+            save_file.filter_shop_items.enabled ^= 1;
+            break;
+        }
     return 1;
 }
 
@@ -128,7 +131,7 @@ static u64 last_hash = 0;
     {getConstFNV1aHashedString(identifier).hash, []() { return u ## message; }}
 #define TOGGLE_MESSAGE(identifier, message, flag) \
     {getConstFNV1aHashedString(identifier).hash, []() { return flag ? u ## message u" (on)" : u ## message u" (off)"; }}
-static const std::map<u64, std::function<const char16_t* ()>> custom_messages = {
+static const std::map<u64, std::function<const char16_t*()>> custom_messages = {
     BASIC_MESSAGE("ask_settings", "Configure challenge settings."),
     BASIC_MESSAGE("option_confirm_settings", "Confirm settings"),
     BASIC_MESSAGE("option_confirm", "Confirm"),
@@ -163,7 +166,8 @@ static const std::map<u64, std::function<const char16_t* ()>> custom_messages = 
     TOGGLE_MESSAGE("option_model_hide_starters", "Hide starter randomization", save_file.model_rng.hide_starters),
     TOGGLE_MESSAGE("option_permadeath", "Toggle nuzlocke permadeath", save_file.permadeath.enabled),
     TOGGLE_MESSAGE("option_route_restriction", "Toggle nuzlocke route restriction", save_file.route_restriction.enabled),
-    TOGGLE_MESSAGE("option_level_cap_boost", "Toggle 1.5x level cap", save_file.level_cap_boost.enabled)
+    TOGGLE_MESSAGE("option_level_cap_boost", "Toggle 1.5x level cap", save_file.level_cap_boost.enabled),
+    TOGGLE_MESSAGE("option_filter_shop_items", "Toggle shop item filter", save_file.filter_shop_items.enabled)
 };
 
 HOOK_DEFINE_TRAMPOLINE(MsgStringReplace) {

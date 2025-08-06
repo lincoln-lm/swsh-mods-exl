@@ -157,6 +157,7 @@ main()
                         AddListItem(3, "option_permadeath");
                         AddListItem(4, "option_route_restriction");
                         AddListItem(5, "option_level_cap_boost");
+                        AddListItem(6, "option_filter_shop_items");
                         // AddListItem(6, "option_next");
                         new response = RequestListInput(1, 0, 1, 0);
                         CloseMessageWindow();
@@ -170,6 +171,7 @@ main()
                             case 3: ToggleSetting(15);
                             case 4: ToggleSetting(16);
                             case 5: ToggleSetting(17);
+                            case 6: ToggleSetting(18);
                             // case 6:
                             // {
                             //     page++;

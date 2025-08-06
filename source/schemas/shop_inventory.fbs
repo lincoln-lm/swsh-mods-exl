@@ -1,0 +1,5 @@
+table ShopInventory {
+    items: [int];
+}
+
+root_type ShopInventory;

@@ -4,9 +4,9 @@
 #include "rng_manager.hpp"
 #include "schemas/encounter_gift_generated.h"
 
-static std::vector<u8> template_data;
-
 HOOK_DEFINE_TRAMPOLINE(RandomizeGiftPokemon) {
+    static inline std::vector<u8> template_data = {};
+
     static const EncounterGift* Callback(void* table, u64* gift_hash) {
         const EncounterGift* original = Orig(table, gift_hash);
         if (!save_file.gift_rng.enabled) return original;

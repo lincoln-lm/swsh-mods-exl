@@ -1,5 +1,6 @@
 #pragma once
 
+#include "err.hpp"
 #include "symbols.hpp"
 #include <format>
 #include "flatbuffers/minireflect.h"
@@ -36,6 +37,14 @@ void debug_message(std::format_string<Args...> fmt, Args&&... args) {
 #ifdef DEBUG
     std::string formatted = std::format(fmt, std::forward<Args>(args)...);
     debug_message_window(formatted, "");
+#endif
+}
+
+template<typename... Args>
+void printf_log(std::format_string<Args...> fmt, Args&&... args) {
+#ifdef DEBUG
+    std::string formatted = std::format(fmt, std::forward<Args>(args)...);
+    external<void>(0x18fe1d0, formatted.c_str());
 #endif
 }
 
