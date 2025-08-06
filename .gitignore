@@ -3,6 +3,9 @@ build/*
 out/*
 deploy/*
 artifact/*
+.cache/*
+
+compile_commands.json
 
 *.elf
 *.nso
