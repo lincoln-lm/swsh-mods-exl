@@ -40,6 +40,7 @@ struct SaveFile {
     } gift_rng;
     struct {
         bool enabled = true;
+        bool hide_starters = false;
     } model_rng;
     struct {
         bool enabled = true;
@@ -77,6 +78,7 @@ struct SaveFile {
         LOAD_BOOL(scripted_rng.enabled);
         LOAD_BOOL(gift_rng.enabled);
         LOAD_BOOL(model_rng.enabled);
+        LOAD_BOOL(model_rng.hide_starters);
         LOAD_BOOL(permadeath.enabled);
         LOAD_BOOL(route_restriction.enabled);
         if (auto zones = table["route_restriction.blacklisted_zones"].as_array()) {
@@ -108,6 +110,7 @@ struct SaveFile {
         SAVE_BOOL(scripted_rng.enabled);
         SAVE_BOOL(gift_rng.enabled);
         SAVE_BOOL(model_rng.enabled);
+        SAVE_BOOL(model_rng.hide_starters);
         SAVE_BOOL(permadeath.enabled);
         SAVE_BOOL(route_restriction.enabled);
         table.insert("route_restriction.blacklisted_zones", zones);

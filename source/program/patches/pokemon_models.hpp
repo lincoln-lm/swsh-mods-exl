@@ -1,9 +1,20 @@
 #include "lib.hpp"
 #include "external.hpp"
+#include "savefile.hpp"
 #include "symbols.hpp"
 #include "rng_manager.hpp"
 
 static bool is_encount_object = false;
+
+// hide only the initial starter models
+static const std::set<u64> starters = {
+    // sobble
+    getConstFNV1aHashedString("z_t0101_MIZU").hash,
+    // scorbunny
+    getConstFNV1aHashedString("z_t0101_HONO").hash,
+    // grookey
+    getConstFNV1aHashedString("z_t0101_KUSA").hash,
+};
 
 static const std::map<u64, u64> hash_seed_map = {
     // sobble
@@ -43,6 +54,12 @@ static void replace_species_form(u64 hash, s32* species_ptr, s16* form_ptr) {
     // randomize the same as gifts.hpp
     auto rng = RngManager::NewRandomGenerator(seed);
     auto [species, form] = rng.RandSpeciesAndForm();
+    if (save_file.model_rng.hide_starters && starters.find(hash) != starters.end()) {
+        // (0, 0) is a pikachu
+        // TODO: fun custom model?
+        species = 0;
+        form = 0;
+    }
     *species_ptr = species;
     *form_ptr = form;
 }
