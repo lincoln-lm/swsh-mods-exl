@@ -32,9 +32,9 @@ SaveFile save_file;
 HOOK_DEFINE_TRAMPOLINE(MainInitHook){
     static void Callback(void* x0, void* x1, void* x2, void* x3) {
         FileHandler::MountSD();
-        if (FileHandler::FileExists("sd:/switch/ironmon_save.toml")) {
+        if (FileHandler::FileExists("sd:/switch/swsh_challenge_pack_save.toml")) {
             std::string save_string;
-            FileHandler::ReadFile("sd:/switch/ironmon_save.toml", save_string);
+            FileHandler::ReadFile("sd:/switch/swsh_challenge_pack_save.toml", save_string);
             auto save_table = toml::parse(save_string);
             if (!save_table) {
                 EXL_ABORT("Invalid Config");

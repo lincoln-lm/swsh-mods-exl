@@ -67,7 +67,7 @@ def main(*args: Tuple[Any], **kwargs: Dict[str, Any]) -> NoneType:
     ) as ftp_host:
         # Make output directory.
         ftp_host.makedirs(SD_OUT, exist_ok=True)
-        ftp_host.makedirs("config/ironmon/", exist_ok=True)
+        ftp_host.makedirs("config/swsh-challenge-pack/", exist_ok=True)
         def upload_directory(sub_directory: str) -> NoneType:
             directory = os.path.join(OUT, sub_directory)
             ftp_directory = os.path.join(SD_OUT, sub_directory)

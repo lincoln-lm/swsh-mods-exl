@@ -138,7 +138,7 @@ HOOK_DEFINE_INLINE(SaveSaveFile) {
             std::stringstream save_string;
             save_string << save_table;
             FileHandler::WriteFile(
-                "sd:/switch/ironmon_save.toml",
+                "sd:/switch/swsh_challenge_pack_save.toml",
                 save_string.str()
             );
         }
