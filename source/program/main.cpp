@@ -21,6 +21,7 @@
 #include "patches/speed_qol.hpp"
 #include "patches/level_cap.hpp"
 #include "patches/shop_items.hpp"
+#include "patches/gift_tms.hpp"
 #include "patches/settings_menu.hpp"
 #ifdef DEBUG
 #include "patches/debug.hpp"
@@ -66,6 +67,7 @@ extern "C" void exl_main(void* x0, void* x1) {
     install_speed_qol_patch();
     install_level_cap_patch();
     install_shop_items_patch();
+    install_gift_tms_patch();
     install_settings_menu_patch();
     install_hid_patch();
     install_savefile_patch();

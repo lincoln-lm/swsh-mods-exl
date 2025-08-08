@@ -1,18 +1,49 @@
 #pragma once
+#include "hook/inline.hpp"
 #include "lib.hpp"
+#include "types.h"
 #include "util.hpp"
 
 
 namespace AMX {
+    struct AMX_INSTANCE {
+        void* unk_0[6];
+        u64 cip;
+        u64 frm;
+        u64 hea;
+        u64 hlw;
+        u64 stk;
+        u64 stp;
+        // ...
+    };
+    struct AMX_HEADER {
+        u32 size;
+        u16 magic;
+        u8 file_version;
+        u8 amx_version;
+        u16 flags;
+        u16 defsize;
+        u32 cod;
+        u32 dat;
+        u32 hea;
+        u32 stp;
+        u32 cip;
+        // ...
+    };
     struct Symbol {
         const char* name;
         u64 (*function)(void*, u64*);
     };
-    std::vector<Symbol> custom_symbols = {
+    static inline std::vector<Symbol> custom_symbols = {
         {nullptr, nullptr}
     };
+    typedef void (*amx_callback)(AMX_INSTANCE*, u64*);
+    static inline std::vector<amx_callback> amx_callbacks = {};
     void add_new_symbol(const char* name, u64 (*function)(void*, u64*)) {
         AMX::custom_symbols.emplace(AMX::custom_symbols.end() - 1, name, function);
+    }
+    void add_amx_callback(amx_callback callback) {
+        AMX::amx_callbacks.emplace_back(callback);
     }
     u64 call_pawn_script(const char* script_id) {
         // hacky: pad to >128 to trigger return storage
@@ -35,6 +66,18 @@ HOOK_DEFINE_TRAMPOLINE(RegisterAMXFunctions) {
     }
 };
 
+HOOK_DEFINE_INLINE(OnAmxCallback) {
+    static void Callback(exl::hook::nx64::InlineCtx* ctx) {
+        AMX::AMX_INSTANCE* instance = reinterpret_cast<AMX::AMX_INSTANCE*>(ctx->X[0]);
+        u64* args = reinterpret_cast<u64*>(ctx->X[1]);
+        for (auto& callback : AMX::amx_callbacks) {
+            callback(instance, args);
+        }
+    }
+};
+
 void install_amx_patch() {
     RegisterAMXFunctions::InstallAtOffset(0x1464ff0 - VER_OFF);
+    // amx_Callback
+    OnAmxCallback::InstallAtOffset(0x66d04c);
 }

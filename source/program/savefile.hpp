@@ -55,6 +55,9 @@ struct SaveFile {
     struct {
         bool enabled = true;
     } level_cap_boost;
+    struct {
+        bool enabled = true;
+    } gift_tms_rng;
 
     #define LOAD_BOOL(name) this->name = table[#name].as_boolean()->get()
     #define LOAD_INT(name) this->name = table[#name].as_integer()->get()
@@ -91,6 +94,7 @@ struct SaveFile {
         }
         LOAD_BOOL(filter_shop_items.enabled);
         LOAD_BOOL(level_cap_boost.enabled);
+        LOAD_BOOL(gift_tms_rng.enabled);
     }
     void to_table(toml::table& table) const {
         toml::array zones;
@@ -120,6 +124,7 @@ struct SaveFile {
         table.insert("route_restriction.blacklisted_zones", zones);
         SAVE_BOOL(filter_shop_items.enabled);
         SAVE_BOOL(level_cap_boost.enabled);
+        SAVE_BOOL(gift_tms_rng.enabled);
     }
 };
 

@@ -100,9 +100,9 @@ main()
                         AddListItem(0, "option_back");
                         AddListItem(1, "option_learnset_rng");
                         AddListItem(2, "option_item_rng");
-                        AddListItem(3, "option_personal_rng");
-                        AddListItem(4, "option_trainer_rng");
-                        AddListItem(5, "option_trainer_level_boost");
+                        AddListItem(3, "option_gift_tms_rng");
+                        AddListItem(4, "option_personal_rng");
+                        AddListItem(5, "option_trainer_rng");
                         AddListItem(6, "option_next");
                         new response = RequestListInput(1, 0, 1, 0);
                         CloseMessageWindow();
@@ -125,11 +125,11 @@ main()
                     case 2:
                     {
                         AddListItem(0, "option_back");
-                        AddListItem(1, "option_wild_rng");
-                        AddListItem(2, "option_wild_live_rng");
-                        AddListItem(3, "option_wild_level_boost");
-                        AddListItem(4, "option_scripted_rng");
-                        AddListItem(5, "option_gift_rng");
+                        AddListItem(1, "option_trainer_level_boost");
+                        AddListItem(2, "option_wild_rng");
+                        AddListItem(3, "option_wild_live_rng");
+                        AddListItem(4, "option_wild_level_boost");
+                        AddListItem(5, "option_scripted_rng");
                         AddListItem(6, "option_next");
                         new response = RequestListInput(1, 0, 1, 0);
                         CloseMessageWindow();
@@ -152,13 +152,12 @@ main()
                     case 3:
                     {
                         AddListItem(0, "option_back");
-                        AddListItem(1, "option_model_rng");
-                        AddListItem(2, "option_model_hide_starters");
-                        AddListItem(3, "option_permadeath");
-                        AddListItem(4, "option_route_restriction");
-                        AddListItem(5, "option_level_cap_boost");
-                        AddListItem(6, "option_filter_shop_items");
-                        // AddListItem(6, "option_next");
+                        AddListItem(1, "option_gift_rng");
+                        AddListItem(2, "option_model_rng");
+                        AddListItem(3, "option_model_hide_starters");
+                        AddListItem(4, "option_permadeath");
+                        AddListItem(5, "option_route_restriction");
+                        AddListItem(6, "option_next");
                         new response = RequestListInput(1, 0, 1, 0);
                         CloseMessageWindow();
                         switch (response) {
@@ -171,7 +170,30 @@ main()
                             case 3: ToggleSetting(15);
                             case 4: ToggleSetting(16);
                             case 5: ToggleSetting(17);
-                            case 6: ToggleSetting(18);
+                            case 6:
+                            {
+                                page++;
+                            }
+                        }
+                    }
+                    case 4:
+                    {
+                        AddListItem(0, "option_back");
+                        AddListItem(1, "option_level_cap_boost");
+                        AddListItem(2, "option_filter_shop_items");
+                        // AddListItem(6, "option_next");
+                        new response = RequestListInput(1, 0, 1, 0);
+                        CloseMessageWindow();
+                        switch (response) {
+                            case 0: 
+                            {
+                                page--;
+                            }
+                            case 1: ToggleSetting(18);
+                            case 2: ToggleSetting(19);
+                            // case 3: ToggleSetting(20);
+                            // case 4: ToggleSetting(21);
+                            // case 5: ToggleSetting(22);
                             // case 6:
                             // {
                             //     page++;

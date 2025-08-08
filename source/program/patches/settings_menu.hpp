@@ -33,38 +33,39 @@ u64 ToggleSetting(void* amx, u64* params) {
             break;
         case 3: save_file.learnset_rng.enabled ^= 1; break;
         case 4: save_file.item_rng.enabled ^= 1; break;
-        case 5: save_file.personal_rng.enabled ^= 1; break;
-        case 6:
+        case 5: save_file.gift_tms_rng.enabled ^= 1; break;
+        case 6: save_file.personal_rng.enabled ^= 1; break;
+        case 7:
             save_file.trainer_rng.enabled ^= 1;
             break;
-        case 7:
+        case 8:
             save_file.trainer_rng.level_boost ^= 1;
             break;
-        case 8:
+        case 9:
             save_file.wild_rng.enabled ^= 1;
             save_file.wild_rng.live &= save_file.wild_rng.enabled;
             break;
-        case 9:
+        case 10:
             save_file.wild_rng.live ^= 1;
             save_file.wild_rng.live &= save_file.wild_rng.enabled;
             break;
-        case 10:
+        case 11:
             save_file.wild_rng.level_boost ^= 1;
             break;
-        case 11: save_file.scripted_rng.enabled ^= 1; break;
-        case 12: save_file.gift_rng.enabled ^= 1; break;
-        case 13:
+        case 12: save_file.scripted_rng.enabled ^= 1; break;
+        case 13: save_file.gift_rng.enabled ^= 1; break;
+        case 14:
             save_file.model_rng.enabled ^= 1;
             save_file.model_rng.hide_starters &= save_file.model_rng.enabled;
             break;
-        case 14:
+        case 15:
             save_file.model_rng.hide_starters ^= 1;
             save_file.model_rng.hide_starters &= save_file.model_rng.enabled;
             break;
-        case 15: save_file.permadeath.enabled ^= 1; break;
-        case 16: save_file.route_restriction.enabled ^= 1; break;
-        case 17: save_file.level_cap_boost.enabled ^= 1; break;
-        case 18:
+        case 16: save_file.permadeath.enabled ^= 1; break;
+        case 17: save_file.route_restriction.enabled ^= 1; break;
+        case 18: save_file.level_cap_boost.enabled ^= 1; break;
+        case 19:
             save_file.filter_shop_items.enabled ^= 1;
             break;
         }
@@ -167,7 +168,8 @@ static const std::map<u64, std::function<const char16_t*()>> custom_messages = {
     TOGGLE_MESSAGE("option_permadeath", "Toggle nuzlocke permadeath", save_file.permadeath.enabled),
     TOGGLE_MESSAGE("option_route_restriction", "Toggle nuzlocke route restriction", save_file.route_restriction.enabled),
     TOGGLE_MESSAGE("option_level_cap_boost", "Toggle 1.5x level cap", save_file.level_cap_boost.enabled),
-    TOGGLE_MESSAGE("option_filter_shop_items", "Toggle shop item filter", save_file.filter_shop_items.enabled)
+    TOGGLE_MESSAGE("option_filter_shop_items", "Toggle shop item filter", save_file.filter_shop_items.enabled),
+    TOGGLE_MESSAGE("option_gift_tms_rng", "Toggle gift tm randomization", save_file.gift_tms_rng.enabled)
 };
 
 HOOK_DEFINE_TRAMPOLINE(MsgStringReplace) {
