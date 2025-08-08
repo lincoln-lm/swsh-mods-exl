@@ -164,7 +164,7 @@ static const std::map<u64, std::function<const char16_t*()>> custom_messages = {
     TOGGLE_MESSAGE("option_scripted_rng", "Toggle scripted encounter randomization", save_file.scripted_rng.enabled),
     TOGGLE_MESSAGE("option_gift_rng", "Toggle gift randomization", save_file.gift_rng.enabled),
     TOGGLE_MESSAGE("option_model_rng", "Toggle Pokémon model randomization", save_file.model_rng.enabled),
-    TOGGLE_MESSAGE("option_model_hide_starters", "Hide starter randomization", save_file.model_rng.hide_starters),
+    TOGGLE_MESSAGE("option_model_hide_starters", "Toggle hide starter randomization", save_file.model_rng.hide_starters),
     TOGGLE_MESSAGE("option_permadeath", "Toggle nuzlocke permadeath", save_file.permadeath.enabled),
     TOGGLE_MESSAGE("option_route_restriction", "Toggle nuzlocke route restriction", save_file.route_restriction.enabled),
     TOGGLE_MESSAGE("option_level_cap_boost", "Toggle 1.5x level cap", save_file.level_cap_boost.enabled),
