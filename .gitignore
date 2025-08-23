@@ -8,3 +8,5 @@ artifact/*
 *.nso
 *.npdm
 *_generated.h
+
+compile_commands.json
