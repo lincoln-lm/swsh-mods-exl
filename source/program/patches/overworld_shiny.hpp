@@ -22,7 +22,7 @@ HOOK_DEFINE_INLINE(PlayShinySound) {
                 }
             }
             // always show shininess
-            ctx->W[9] = true;
+            // ctx->W[9] = true;
         }
     }
 };
